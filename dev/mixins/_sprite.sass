@@ -1,0 +1,121 @@
+// SASS variables are information about icon's compiled state, stored under its original file name
+//
+// .icon-home
+//   width: $icon-home-width
+//
+// The large array-like variables contain all information about a single icon
+// $icon-home: x y offset_x offset_y width height total_width total_height image_path
+//
+// At the bottom of this section, we provide information about the spritesheet itself
+// $spritesheet: width height image $spritesheet-sprites
+$facebook-name: 'facebook'
+$facebook-x: 0px
+$facebook-y: 0px
+$facebook-offset-x: 0px
+$facebook-offset-y: 0px
+$facebook-width: 30px
+$facebook-height: 30px
+$facebook-total-width: 150px
+$facebook-total-height: 30px
+$facebook-image: '../img/sprite.png'
+$facebook: (0px, 0px, 0px, 0px, 30px, 30px, 150px, 30px, '../img/sprite.png', 'facebook', )
+$mail-name: 'mail'
+$mail-x: 30px
+$mail-y: 0px
+$mail-offset-x: -30px
+$mail-offset-y: 0px
+$mail-width: 30px
+$mail-height: 30px
+$mail-total-width: 150px
+$mail-total-height: 30px
+$mail-image: '../img/sprite.png'
+$mail: (30px, 0px, -30px, 0px, 30px, 30px, 150px, 30px, '../img/sprite.png', 'mail', )
+$rss-name: 'rss'
+$rss-x: 60px
+$rss-y: 0px
+$rss-offset-x: -60px
+$rss-offset-y: 0px
+$rss-width: 30px
+$rss-height: 30px
+$rss-total-width: 150px
+$rss-total-height: 30px
+$rss-image: '../img/sprite.png'
+$rss: (60px, 0px, -60px, 0px, 30px, 30px, 150px, 30px, '../img/sprite.png', 'rss', )
+$twitter-name: 'twitter'
+$twitter-x: 90px
+$twitter-y: 0px
+$twitter-offset-x: -90px
+$twitter-offset-y: 0px
+$twitter-width: 30px
+$twitter-height: 30px
+$twitter-total-width: 150px
+$twitter-total-height: 30px
+$twitter-image: '../img/sprite.png'
+$twitter: (90px, 0px, -90px, 0px, 30px, 30px, 150px, 30px, '../img/sprite.png', 'twitter', )
+$vimeo-name: 'vimeo'
+$vimeo-x: 120px
+$vimeo-y: 0px
+$vimeo-offset-x: -120px
+$vimeo-offset-y: 0px
+$vimeo-width: 30px
+$vimeo-height: 30px
+$vimeo-total-width: 150px
+$vimeo-total-height: 30px
+$vimeo-image: '../img/sprite.png'
+$vimeo: (120px, 0px, -120px, 0px, 30px, 30px, 150px, 30px, '../img/sprite.png', 'vimeo', )
+$spritesheet-width: 150px
+$spritesheet-height: 30px
+$spritesheet-image: '../img/sprite.png'
+$spritesheet-sprites: ($facebook, $mail, $rss, $twitter, $vimeo, )
+$spritesheet: (150px, 30px, '../img/sprite.png', $spritesheet-sprites, )
+
+// The provided mixins are intended to be used with the array-like variables
+//
+// .icon-home
+//   @include sprite-width($icon-home)
+//
+// .icon-email
+//   @include sprite($icon-email)
+//
+// Example usage in HTML:
+//   `display: block` sprite:
+//   <div class="icon-home"></div>
+//
+// To change `display` (e.g. `display: inline-block;`), we suggest using a common CSS class:
+//   // CSS
+//   .icon {
+//     display: inline-block;
+//   }
+//
+//   // HTML
+//   <i class="icon icon-home"></i>
+@mixin sprite-width($sprite)
+  width: nth($sprite, 5)
+
+@mixin sprite-height($sprite)
+  height: nth($sprite, 6)
+
+@mixin sprite-position($sprite)
+  $sprite-offset-x: nth($sprite, 3)
+  $sprite-offset-y: nth($sprite, 4)
+  background-position: $sprite-offset-x  $sprite-offset-y
+
+@mixin sprite-image($sprite)
+  $sprite-image: nth($sprite, 9)
+  background-image: url(#{$sprite-image})
+
+@mixin sprite($sprite)
+  @include sprite-image($sprite)
+  @include sprite-position($sprite)
+  @include sprite-width($sprite)
+  @include sprite-height($sprite)
+
+// The `sprites` mixin generates identical output to the CSS template
+//   but can be overridden inside of SASS
+//
+// @include sprites($spritesheet-sprites)
+@mixin sprites($sprites)
+  @each $sprite in $sprites
+    $sprite-name: nth($sprite, 10)
+    .#{$sprite-name}
+      @include sprite($sprite)

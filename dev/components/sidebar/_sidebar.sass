@@ -1,0 +1,50 @@
+.sidebar
+  flex: 1
+  margin-right: 10px
+  @media screen and (max-width: 640px)
+    margin-left: 0
+    padding-left: 0
+    box-shadow: none
+
+.sidebar__text
+  @include text
+  margin-bottom: 25px
+
+.sidebar__list
+  @include text
+  list-style: none
+  padding-left: 0
+
+.sidebar__widget
+  margin-bottom: 15px
+  overflow: hidden
+
+.sidebar__title
+  @include title
+  margin-left: 20px
+  font-size: 1.5rem
+
+.sidebar__title a
+  @include header
+  font-size: 1.5rem
+  text-decoration: none
+
+.sidebar__content
+  margin-left: 20px
+  margin-right: 10px
+  padding: 0 10px
+
+.sidebar__list
+  list-style: none
+
+.sidebar__list-item
+  @include text
+  margin: 0
+
+.sidebar__list-item a
+  @include text
+  text-decoration: none
+  transition: color 0.2s
+
+.sidebar__list-item a:hover
+  color: $cLinkHover

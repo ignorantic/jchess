@@ -1,0 +1,18 @@
+-
+    navBar = [
+        {'name': 'home', 'url': 'index.html'},
+        {'name': 'about us','url': 'about.html'},
+        {'name': 'contact us', 'url': 'contact.html'}]
+
+nav.menubar
+    .menubar__btn
+        .menubar__btn-icon
+            span
+    ul.menu
+        each item, index in navBar
+            if activeIndex == index
+                - className = 'menu__item menu__item_active'
+            else
+                - className = 'menu__item'
+            li(class=className)
+                a.menu__link(href=item.url)=item.name

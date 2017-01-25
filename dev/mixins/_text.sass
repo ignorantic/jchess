@@ -1,0 +1,25 @@
+@mixin header
+  font-family: "Sans", sans-serif
+  font-weight: 500
+  color: $cHead
+  font-size: 24px
+  text-transform: lowercase
+
+@mixin title
+  @include header
+  background: $cFaceLimpAlt
+  margin: 10px 10px 10px 40px
+  padding: 5px 10px
+  box-shadow: 0 0 10px $cFaceLimpAlt
+  white-space: nowrap
+
+@mixin text
+  font-family: "Sans", sans-serif
+  font-size: 0.8rem
+  color: $cText
+  line-height: 1.5
+  margin: 10px auto
+
+@mixin pageText
+  margin: auto 40px
+  padding: 0 10px
