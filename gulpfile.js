@@ -22,6 +22,7 @@ const uglify        = require('gulp-uglify');
 const cached        = require('gulp-cached');
 const gulpif        = require('gulp-if');
 const spritesmith   = require('gulp.spritesmith');
+const svgSprite     = require('gulp-svg-sprite');
 const mocha         = require('gulp-mocha');
 const Karma         = require('karma').Server;
 const babelify      = require('babelify');
@@ -32,8 +33,9 @@ const source        = require('vinyl-source-stream');
 
 const isDev = !process.env.NODE_ENV || process.env.NODE_ENV == 'development';
 
-paths = {
-    build: {
+const paths = {
+    build:  {
+        root:   'build',
         pug:    'build/',
         js:     'build/js/',
         css:    'build/css/',
@@ -41,16 +43,24 @@ paths = {
         fonts:  'build/fonts/'
     },
     src:    {
-        img:    ['dev/img/**/*.{png,jpg,gif,svg}', '!dev/img/sprite/**/*.*'],
+        root:   'dev',
+        img:   ['dev/img/**/*.{png,jpg,gif,svg}', '!dev/img/sprite/**/*.*'],
+        sprite: 'dev/img/sprite/**/*.*',
         pug:    'dev/pages/*.pug',
         sass:   'dev/index/main.sass',
         js:     'dev/index/app.js',
         fonts:  'dev/fonts/**/*.*'
     },
+    sprite: {
+        svg:    'dev/img/sprite.svg',
+        png:    'dev/img/sprite.png',
+        mixins: 'dev/mixins/',
+        img:    'dev/img/'
+    },
     clean:      './build',
     watch:  {
-        pug:    ['dev/blocks/**/*.pug', 'dev/components/**/*.pug', 'dev/pages/**/*.pug'],
-        js:     ['dev/index/**/*.js', 'dev/blocks/**/*.js', 'dev/components/**/*.js', 'dev/lib/**/*.js'],
+        pug:   ['dev/blocks/**/*.pug', 'dev/components/**/*.pug', 'dev/pages/**/*.pug'],
+        js:    ['dev/index/**/*.js', 'dev/blocks/**/*.js', 'dev/components/**/*.js', 'dev/lib/**/*.js'],
         sass:   'dev/{index,blocks,components,mixins}/**/*.{sass,css}',
         img:    'dev/img/**/*.{png,jpg,gif,svg}',
         fonts:  'dev/fonts/**/*.{ttf,eot,svg,woff,woff2}',
@@ -164,9 +174,42 @@ gulp.task('build:sprite', function (done) {
         cssName:    '_sprite.sass',
         algorithm:  'left-right'
     }));
-    spriteData.img.pipe(gulp.dest('dev/img/'));
-    spriteData.css.pipe(gulp.dest('dev/mixins/'));
+    spriteData.img.pipe(gulp.dest(paths.sprite.img));
+    spriteData.css.pipe(gulp.dest(paths.sprite.mixins));
     done();
+});
+
+/*
+ *      SVG SPRITE
+ */
+
+gulp.task('build:svgSprite', function () {
+    return gulp.src(paths.src.sprite)
+        .pipe(svgSprite({
+            shape: {
+                spacing: {
+                    // padding: 5
+                }
+            },
+            mode: {
+                css: {
+                    dest: './',
+                    // layout: 'diagonal',
+                    sprite: paths.sprite.svg,
+                    bust: false,
+                    render: {
+                        scss: {
+                            dest: 'dev/mixins/_sprite_svg.scss',
+                            template: 'dev/mixins/tmpl/sprite_template.scss'
+                        }
+                    }
+                }
+            },
+            variables: {
+                mapname: 'icons'
+            }
+        }))
+        .pipe(gulp.dest('./'));
 });
 
 /*

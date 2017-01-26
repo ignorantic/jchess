@@ -1,4 +1,26 @@
 .board
-  height: 100px
-  width: 100%
-  background: $cBase
+  display: flex
+  flex-direction: column-reverse
+  flex-wrap: wrap
+  height: 360px
+  width: 360px
+  margin: 40px auto
+  border: 1px solid $cBase
+
+.board__square
+  height: 45px
+  width: 45px
+
+.board__square_white
+  background: $cWhiteSquare
+
+.board__square_black
+  background: $cBlackSquare
+
+.board__piece
+    $wp: map-get($icons, wp)
+    $sprite: map-get($icons, sprite)
+    width: map-get($wp, width)
+    height: map-get($wp, height)
+    background-image: url(map-get($sprite, svgPath))
+    background-position: map-get($wp, backgroundX) map-get($wp, backgroundX)
