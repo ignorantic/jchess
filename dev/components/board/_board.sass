@@ -17,10 +17,52 @@
 .board__square_black
   background: $cBlackSquare
 
-.board__piece
-    $wp: map-get($icons, wp)
+.board__square_selected
+  background: $cSelectedBlackSquare
+
+.board__square_marked
+  background: $cMarkedBlackSquare
+
+@mixin piece($i)
+    $piece: map-get($icons, $i)
     $sprite: map-get($icons, sprite)
-    width: map-get($wp, width)
-    height: map-get($wp, height)
+    width: map-get($piece, width)
+    height: map-get($piece, height)
     background-image: url(map-get($sprite, svgPath))
-    background-position: map-get($wp, backgroundX) map-get($wp, backgroundX)
+    background-position: map-get($piece, backgroundX) map-get($piece, backgroundX)
+
+.board__square_pawn_white
+  @include piece(wp)
+
+.board__square_pawn_black
+  @include piece(bp)
+
+.board__square_rook_white
+  @include piece(wr)
+
+.board__square_rook_black
+  @include piece(br)
+
+.board__square_knight_white
+  @include piece(wn)
+
+.board__square_knight_black
+  @include piece(bn)
+
+.board__square_bishop_white
+  @include piece(wb)
+
+.board__square_bishop_black
+  @include piece(bb)
+
+.board__square_queen_white
+  @include piece(wq)
+
+.board__square_queen_black
+  @include piece(bq)
+
+.board__square_king_white
+  @include piece(wk)
+
+.board__square_king_black
+  @include piece(bk)

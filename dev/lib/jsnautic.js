@@ -63,4 +63,20 @@ export default class $_N {
         }
         return result;
     }
+
+    static removeClassInNodeList(nodeList, Class) {
+
+        let result = null;
+        if (typeof nodeList !== 'object') return undefined;
+        if (typeof nodeList[0] !== 'object' || !nodeList[0].classList || !Class) return undefined;
+        if (typeof Class !== 'string') return undefined;
+
+        for (let i = 0; i < nodeList.length; i++) {
+            if (nodeList[i].classList.contains(Class)) {
+                result = true;
+                nodeList[i].classList.remove(Class);
+            }
+        }
+        return result;
+    }
 }

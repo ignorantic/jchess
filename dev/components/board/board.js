@@ -13,14 +13,55 @@ export default function initBoard(jchess) {
     board.classList.add('board');
     for (let file = 0; file < 8; file++) {
         for (let rank = 0; rank < 8; rank++) {
-            let square = document.createElement('div');
-            square.classList.add('board__square');
-            if (rank === 1) {
-                square.classList.add('board__piece');
-            }
-            square.classList.add('board__square_' + jchess.getSquareColor(file, rank).color);
+            let square = newSquare(jchess, file, rank);
+            square.addEventListener('click',
+                (e) => {
+                    jchess.pickSquare(e.target.dataset.file, e.target.dataset.rank);
+                    drawBoard(jchess);
+                }
+            );
             board.appendChild(square);
         }
     }
     wrap.appendChild(board);
+}
+
+function drawBoard(jchess) {
+    let squares = document.getElementsByClassName('board__square');
+    for (let i = 0; i < squares.length; i++) {
+        let file = squares[i].dataset.file,
+            rank = squares[i].dataset.rank;
+        if (squares[i].dataset.selected != jchess.isSquareSelected(file, rank)) {
+            drawSquare(squares[i], jchess, file, rank)
+        }
+    }
+}
+
+function newSquare(jchess, file, rank) {
+    let square = document.createElement('div');
+    square.dataset.file = file;
+    square.dataset.rank = rank;
+    drawSquare(square, jchess, file, rank);
+    return square;
+}
+
+function drawSquare(square, jchess, file, rank) {
+    square.dataset.selected = +jchess.isSquareSelected(file, rank);
+    square.dataset.piece = +!!jchess.getPieceType(file, rank);
+    setClasses(square, jchess, file, rank);
+    return true;
+}
+
+function setClasses(square, jchess, file, rank) {
+    square.removeAttribute('class');
+    square.classList.add('board__square');
+    square.classList.add('board__square_' + jchess.getSquareColor(file, rank));
+    if (square.dataset.selected == 1) {
+        square.classList.add('board__square_selected');
+    }
+    if (square.dataset.piece == 1) {
+        square.classList.add('board__square_' + jchess.getPieceType(file, rank) + '_'
+            + jchess.getPieceColor(file, rank));
+    }
+
 }

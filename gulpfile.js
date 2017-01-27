@@ -194,7 +194,7 @@ gulp.task('build:svgSprite', function () {
             mode: {
                 css: {
                     dest: './',
-                    // layout: 'diagonal',
+                    layout: 'diagonal',
                     sprite: paths.sprite.svg,
                     bust: false,
                     render: {

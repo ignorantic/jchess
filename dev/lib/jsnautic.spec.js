@@ -5,7 +5,7 @@
  */
 
 import $_N from './jsnautic';
-import {describe, it, before} from 'mocha';
+import {describe, it, before, beforeEach} from 'mocha';
 
 describe('jsNautic', () => {
     describe('getIndexOfElementByClass', () => {
@@ -159,6 +159,51 @@ describe('jsNautic', () => {
             expect($_N.replaceClassInNodeList({}, 'red', 'yellow')).to.be.undefined;
             expect($_N.replaceClassInNodeList(spanList, '', 'yellow')).to.be.undefined;
             expect($_N.replaceClassInNodeList(spanList, 'purple', {})).to.be.undefined;
+        })
+    });
+
+    describe('removeClassInNodeList', () => {
+
+        let div = document.createElement('div');
+        let newChild;
+        let spanList;
+
+        before(() => {
+            for (let i = 0; i < 5; i++) {
+                newChild = document.createElement('span');
+                newChild.classList.add('green');
+                div.appendChild(newChild);
+            }
+        });
+
+        beforeEach(() => {
+            spanList = div.getElementsByTagName('span');
+            for (let i = 0; i < 5; i++) {
+                spanList[i].classList.add('green');
+                spanList[i].classList.add('red');
+            }
+        })
+
+        it('return true if replacing was succesfull' , () => {
+            expect($_N.removeClassInNodeList(spanList, 'green')).to.be.true;
+        })
+
+        it('after remove elements containt only class' , () => {
+            expect($_N.removeClassInNodeList(spanList, 'red')).to.be.true;
+            expect(spanList[2].classList.contains('red')).to.be.flase;
+            expect(spanList[3].classList.contains('green')).to.be.true;
+            expect(spanList[3].classList.contains('yellow')).to.be.false;
+        })
+
+        it('return null if removing class not found' , () => {
+            expect($_N.removeClassInNodeList(spanList, 'purple')).to.be.null;
+        })
+
+        it('return undefined if arguments aren\'t correct' , () => {
+            expect($_N.removeClassInNodeList()).to.be.undefined;
+            expect($_N.removeClassInNodeList(spanList)).to.be.undefined;
+            expect($_N.removeClassInNodeList({}, 'red', 'yellow')).to.be.undefined;
+            expect($_N.removeClassInNodeList(spanList, '')).to.be.undefined;
         })
     });
 });
