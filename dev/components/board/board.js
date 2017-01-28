@@ -1,7 +1,7 @@
 
 /*
  *     board.js for jChess project
- *     2016 by Andrii Sorokin
+ *     2017 by Andrii Sorokin
  *     https://github.com/ignorantic/jchess.git
  */
 
