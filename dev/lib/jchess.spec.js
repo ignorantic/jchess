@@ -727,6 +727,33 @@ describe('jChess', () => {
             let moves = jchess._getMovesPawn(jchess.board, 5, 3);
             expect(moves).to.be.null;
         })
+
+        it('return three squares for pawn b2', () => {
+            let moves = jchess._getMovesPawn(jchess.board, 1, 1);
+            expect(moves[0].file).to.be.equal(1);
+            expect(moves[0].rank).to.be.equal(2);
+            expect(moves[1].file).to.be.equal(1);
+            expect(moves[1].rank).to.be.equal(3);
+            expect(moves[2].file).to.be.equal(2);
+            expect(moves[2].rank).to.be.equal(2);
+            expect(moves[3]).to.be.undefined;
+        })
+
+        it('return only square for pawn h2', () => {
+            let moves = jchess._getMovesPawn(jchess.board, 7, 1);
+            expect(moves[0].file).to.be.equal(7);
+            expect(moves[0].rank).to.be.equal(2);
+            expect(moves[1]).to.be.undefined;
+        })
+
+        it('return two squares for pawn h4', () => {
+            let moves = jchess._getMovesPawn(jchess.board, 7, 3);
+            expect(moves[0].file).to.be.equal(7);
+            expect(moves[0].rank).to.be.equal(2);
+            expect(moves[1].file).to.be.equal(6);
+            expect(moves[1].rank).to.be.equal(2);
+            expect(moves[2]).to.be.undefined;
+        })
     })
 
     describe('isSquareSelected', () => {

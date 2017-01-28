@@ -436,27 +436,56 @@ export default class JChess {
         let result = [];
         let moveDirection = (this._getPieceColor(board, file, rank) === 'white') ? 1 : -1
 
-        if (this._validateSquare(file, rank + moveDirection)) {
-            if (!this._getPieceType(board, file, rank + moveDirection)) {
-                let move = {
-                    file: file,
-                    rank: rank + moveDirection
-                };
-                result.push(move);
+        let targetFile = file;
+        let targetRank = rank + moveDirection;
+
+        if (this._validateSquare(targetFile, targetRank)) {
+            if (!this._getPieceType(board, targetFile, targetRank)) {
+                pushMove(targetFile, targetRank);
                 if ((moveDirection * rank === 1) || (moveDirection * rank === -6)) {
-                    if (!this._getPieceType(board, file, rank + 2 * moveDirection)) {
-                        let move = {
-                            file: file,
-                            rank: rank + 2 * moveDirection
-                        };
-                        result.push(move);
+
+                    targetRank = rank + 2 * moveDirection;
+
+                    if (!this._getPieceType(board, targetFile, targetRank)) {
+                        pushMove(targetFile, targetRank);
+
+                        /*
+                         *           ДОБАВИТЬ РЕКУРСИЮ
+                         */
                     }
                 }
             }
         }
 
+        targetRank = rank + moveDirection;
+        targetFile = file - 1;
+        checkCapture(this, targetFile, targetRank)
+        targetFile = file + 1;
+        checkCapture(this, targetFile, targetRank)
+
         if (result.length) return result;
         return null;
+
+        function checkCapture(self, file, rank) {
+            if (self._validateSquare(file, rank)) {
+                if (isCapture(self, file, rank)) {
+                    pushMove(file, rank);
+                }
+            }
+        }
+
+        function isCapture(self, file, rank) {
+            return (self._getPieceColor(board, file, rank) == 'black' && moveDirection == 1) ||
+            (self._getPieceColor(board, file, rank) == 'white' && moveDirection == -1);
+        }
+
+        function pushMove(file, rank) {
+            let move = {
+                file: file,
+                rank: rank
+            };
+            result.push(move);
+        }
     }
 
     _validateSquare(file, rank) {
