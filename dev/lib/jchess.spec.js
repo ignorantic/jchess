@@ -70,6 +70,7 @@ describe('jChess', () => {
 
         before(() => {
             jchess = new JChess;
+            jchess.setUpInitial();
         })
 
         it('return null if arguments aren\'t correct', () => {
@@ -100,6 +101,7 @@ describe('jChess', () => {
 
         before(() => {
             jchess = new JChess;
+            jchess.setUpInitial();
         })
 
         it('return null if arguments aren\'t correct', () => {
@@ -125,12 +127,13 @@ describe('jChess', () => {
         })
     })
 
-    describe('setUpPieces', () => {
+    describe('setUpInitial', () => {
 
         let jchess;
 
         before(() => {
             jchess = new JChess;
+            jchess.setUpInitial();
         })
 
         it('check rooks' , () => {
@@ -191,6 +194,56 @@ describe('jChess', () => {
         })
     })
 
+    describe('setUpPosition', () => {
+
+        let jchess;
+
+        before(() => {
+            jchess = new JChess;
+            jchess.setUpPosition([
+                {
+                    file: 0,
+                    rank: 1,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 1,
+                    rank: 2,
+                    piece: {
+                        type: 'knight',
+                        color: 'black'
+                    }
+                },
+                {
+                    file: 5,
+                    rank: 7,
+                    piece: {
+                        type: 'queen',
+                        color: 'black'
+                    }
+                }
+            ]);
+        })
+
+        it('check pawn' , () => {
+            jchess.board[0][1].piece.type.should.be.equal('pawn');
+            jchess.board[0][1].piece.color.should.be.equal('white');
+        })
+
+        it('check knight' , () => {
+            jchess.board[1][2].piece.type.should.be.equal('knight');
+            jchess.board[1][2].piece.color.should.be.equal('black');
+        })
+
+        it('check queen' , () => {
+            jchess.board[5][7].piece.type.should.be.equal('queen');
+            jchess.board[5][7].piece.color.should.be.equal('black');
+        })
+    })
+
     describe('pickSquare', () => {
 
         let jchess;
@@ -223,30 +276,205 @@ describe('jChess', () => {
         })
     })
 
-    // describe('isSquareMarked', () => {
-    //
-    //     let jchess;
-    //
-    //     before(() => {
-    //         jchess = new JChess;
-    //         jchess.pickSquare(1, 5);
-    //         jchess.pickSquare(7, 7);
-    //     })
-    //
-    //     it('return null if arguments aren\'t correct', () => {
-    //         expect(jchess.isSquareMarked(0, 8)).to.be.null;
-    //         expect(jchess.isSquareMarked(8, 0)).to.be.null;
-    //         expect(jchess.isSquareMarked(-1, 0)).to.be.null;
-    //         expect(jchess.isSquareMarked(0, -1)).to.be.null;
-    //     })
-    //
-    //     it('return true or false if arguments are correct', () => {
-    //         expect(jchess.isSquareMarked(0, 0)).to.be.false;
-    //         expect(jchess.isSquareMarked(1, 5)).to.be.true;
-    //         expect(jchess.isSquareMarked(5, 6)).to.be.false;
-    //         expect(jchess.isSquareMarked(7, 7)).to.be.true;
-    //     })
-    // })
+    describe('_resetSelect', () => {
+
+        let jchess;
+
+        before(() => {
+            jchess = new JChess;
+            jchess.pickSquare(4, 4);
+        })
+
+        it('reset selected square', () => {
+            expect(jchess.isSquareSelected(4, 4)).to.be.true;
+            expect(jchess.isSquareSelected(4, 5)).to.be.false;
+            jchess._resetSelect(jchess.board);
+            expect(jchess.isSquareSelected(4, 4)).to.be.false;
+            expect(jchess.isSquareSelected(4, 5)).to.be.false;
+        })
+    })
+
+    describe('isSquareMarked', () => {
+
+        let jchess;
+
+        before(() => {
+            jchess = new JChess;
+        })
+
+        it('return null if arguments aren\'t correct', () => {
+            expect(jchess.isSquareMarked(0, 8)).to.be.null;
+            expect(jchess.isSquareMarked(8, 0)).to.be.null;
+            expect(jchess.isSquareMarked(-1, 0)).to.be.null;
+            expect(jchess.isSquareMarked(0, -1)).to.be.null;
+        })
+
+        it('return true or false if arguments are correct', () => {
+            // expect(jchess.isSquareMarked(0, 0)).to.be.false;
+            // expect(jchess.isSquareMarked(1, 5)).to.be.true;
+            // expect(jchess.isSquareMarked(5, 6)).to.be.false;
+            // expect(jchess.isSquareMarked(7, 7)).to.be.true;
+        })
+    })
+
+    describe('_getMovesPawn', () => {
+
+        let jchess;
+
+        before(() => {
+            jchess = new JChess;
+            jchess.setUpPosition([
+                {
+                    file: 0,
+                    rank: 1,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 1,
+                    rank: 1,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 4,
+                    rank: 1,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 5,
+                    rank: 3,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 6,
+                    rank: 2,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 7,
+                    rank: 1,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 3,
+                    rank: 4,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 3,
+                    rank: 5,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 2,
+                    rank: 4,
+                    piece: {
+                        type: 'pawn',
+                        color: 'black'
+                    }
+                },
+                {
+                    file: 7,
+                    rank: 3,
+                    piece: {
+                        type: 'pawn',
+                        color: 'black'
+                    }
+                },
+                {
+                    file: 2,
+                    rank: 2,
+                    piece: {
+                        type: 'knight',
+                        color: 'black'
+                    }
+                },
+                {
+                    file: 5,
+                    rank: 4,
+                    piece: {
+                        type: 'knight',
+                        color: 'black'
+                    }
+                }
+            ]);
+        })
+
+        it('return null if arguments aren\'t correct', () => {
+            expect(jchess._getMovesPawn(jchess.board, 0, 8)).to.be.null;
+            expect(jchess._getMovesPawn(jchess.board, 8, 0)).to.be.null;
+            expect(jchess._getMovesPawn(jchess.board, -1, 0)).to.be.null;
+            expect(jchess._getMovesPawn(jchess.board, 0, -1)).to.be.null;
+        })
+
+        it('return object if piece is pawn', () => {
+            expect(typeof jchess._getMovesPawn(jchess.board, 1, 1)).to.be.equal('object');
+            expect(typeof jchess._getMovesPawn(jchess.board, 3, 4)).to.be.equal('object');
+        })
+
+        it('return null if piece isn\'t pawn', () => {
+            expect(jchess._getMovesPawn(jchess.board, 2, 2)).to.be.null;
+            expect(jchess._getMovesPawn(jchess.board, 5, 4)).to.be.null;
+        })
+
+        it('return two squares for pawn a2', () => {
+            let moves = jchess._getMovesPawn(jchess.board, 0, 1);
+            expect(moves[0].file).to.be.equal(0);
+            expect(moves[0].rank).to.be.equal(2);
+            expect(moves[1].file).to.be.equal(0);
+            expect(moves[1].rank).to.be.equal(3);
+            expect(moves[2]).to.be.undefined;
+        })
+
+        it('return two squares for pawn e2', () => {
+            let moves = jchess._getMovesPawn(jchess.board, 4, 1);
+            expect(moves[0].file).to.be.equal(4);
+            expect(moves[0].rank).to.be.equal(2);
+            expect(moves[1].file).to.be.equal(4);
+            expect(moves[1].rank).to.be.equal(3);
+            expect(moves[2]).to.be.undefined;
+        })
+
+        it('return only square for pawn c5', () => {
+            let moves = jchess._getMovesPawn(jchess.board, 2, 4);
+            expect(moves[0].file).to.be.equal(2);
+            expect(moves[0].rank).to.be.equal(3);
+            expect(moves[1]).to.be.undefined;
+        })
+
+        it('return null for pawn d5', () => {
+            let moves = jchess._getMovesPawn(jchess.board, 3, 4);
+            expect(moves).to.be.null;
+        })
+
+        it('return null for pawn f4', () => {
+            let moves = jchess._getMovesPawn(jchess.board, 5, 3);
+            expect(moves).to.be.null;
+        })
+    })
 
     describe('isSquareSelected', () => {
 
@@ -270,6 +498,29 @@ describe('jChess', () => {
             jchess.pickSquare(7, 7);
             expect(jchess.isSquareSelected(1, 5)).to.be.false;
             expect(jchess.isSquareSelected(7, 7)).to.be.true;
+        })
+    })
+
+    describe('_validateSquare', () => {
+
+        let jchess;
+
+        before(() => {
+            jchess = new JChess;
+        })
+
+        it('return false if square isn\'t correct', () => {
+            expect(jchess._validateSquare(0, 8)).to.be.false;
+            expect(jchess._validateSquare(8, 0)).to.be.false;
+            expect(jchess._validateSquare(-1, 0)).to.be.false;
+            expect(jchess._validateSquare(0, -1)).to.be.false;
+        })
+
+        it('return true if square is correct', () => {
+            expect(jchess._validateSquare(0, 0)).to.be.true;
+            expect(jchess._validateSquare(7, 7)).to.be.true;
+            expect(jchess._validateSquare(0, 3)).to.be.true;
+            expect(jchess._validateSquare(3, 5)).to.be.true;
         })
     })
 })

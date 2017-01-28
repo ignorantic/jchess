@@ -24,6 +24,7 @@ export default function initBoard(jchess) {
         }
     }
     wrap.appendChild(board);
+    return true;
 }
 
 function drawBoard(jchess) {
@@ -35,6 +36,7 @@ function drawBoard(jchess) {
             drawSquare(squares[i], jchess, file, rank)
         }
     }
+    return true;
 }
 
 function newSquare(jchess, file, rank) {
@@ -63,5 +65,5 @@ function setClasses(square, jchess, file, rank) {
         square.classList.add('board__square_' + jchess.getPieceType(file, rank) + '_'
             + jchess.getPieceColor(file, rank));
     }
-
+    return true;
 }

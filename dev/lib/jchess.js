@@ -10,55 +10,343 @@ export default class JChess {
     constructor() {
 
         this.board = [];
-        JChess._paintBoard(this.board);
-        JChess._setUpPieces(this.board);
+        this._initBoard(this.board);
+        this._paintBoard(this.board);
     }
 
-    static _paintBoard(board) {
-        let countSquare = 0;
+    static INITIAL_POSITION = [
+        {
+            file: 0,
+            rank: 0,
+            piece: {
+                type: 'rook',
+                color: 'white'
+            }
+        },
+        {
+            file: 1,
+            rank: 0,
+            piece: {
+                type: 'knight',
+                color: 'white'
+            }
+        },
+        {
+            file: 2,
+            rank: 0,
+            piece: {
+                type: 'bishop',
+                color: 'white'
+            }
+        },
+        {
+            file: 3,
+            rank: 0,
+            piece: {
+                type: 'queen',
+                color: 'white'
+            }
+        },
+        {
+            file: 4,
+            rank: 0,
+            piece: {
+                type: 'king',
+                color: 'white'
+            }
+        },
+        {
+            file: 5,
+            rank: 0,
+            piece: {
+                type: 'bishop',
+                color: 'white'
+            }
+        },
+        {
+            file: 6,
+            rank: 0,
+            piece: {
+                type: 'knight',
+                color: 'white'
+            }
+        },
+        {
+            file: 7,
+            rank: 0,
+            piece: {
+                type: 'rook',
+                color: 'white'
+            }
+        },
+        {
+            file: 0,
+            rank: 7,
+            piece: {
+                type: 'rook',
+                color: 'black'
+            }
+        },
+        {
+            file: 1,
+            rank: 7,
+            piece: {
+                type: 'knight',
+                color: 'black'
+            }
+        },
+        {
+            file: 2,
+            rank: 7,
+            piece: {
+                type: 'bishop',
+                color: 'black'
+            }
+        },
+        {
+            file: 3,
+            rank: 7,
+            piece: {
+                type: 'queen',
+                color: 'black'
+            }
+        },
+        {
+            file: 4,
+            rank: 7,
+            piece: {
+                type: 'king',
+                color: 'black'
+            }
+        },
+        {
+            file: 5,
+            rank: 7,
+            piece: {
+                type: 'bishop',
+                color: 'black'
+            }
+        },
+        {
+            file: 6,
+            rank: 7,
+            piece: {
+                type: 'knight',
+                color: 'black'
+            }
+        },
+        {
+            file: 7,
+            rank: 7,
+            piece: {
+                type: 'rook',
+                color: 'black'
+            }
+        },
+
+        {
+            file: 0,
+            rank: 1,
+            piece: {
+                type: 'pawn',
+                color: 'white'
+            }
+        },
+        {
+            file: 1,
+            rank: 1,
+            piece: {
+                type: 'pawn',
+                color: 'white'
+            }
+        },
+        {
+            file: 2,
+            rank: 1,
+            piece: {
+                type: 'pawn',
+                color: 'white'
+            }
+        },
+        {
+            file: 3,
+            rank: 1,
+            piece: {
+                type: 'pawn',
+                color: 'white'
+            }
+        },
+        {
+            file: 4,
+            rank: 1,
+            piece: {
+                type: 'pawn',
+                color: 'white'
+            }
+        },
+        {
+            file: 5,
+            rank: 1,
+            piece: {
+                type: 'pawn',
+                color: 'white'
+            }
+        },
+        {
+            file: 6,
+            rank: 1,
+            piece: {
+                type: 'pawn',
+                color: 'white'
+            }
+        },
+        {
+            file: 7,
+            rank: 1,
+            piece: {
+                type: 'pawn',
+                color: 'white'
+            }
+        },
+        {
+            file: 0,
+            rank: 6,
+            piece: {
+                type: 'pawn',
+                color: 'black'
+            }
+        },
+        {
+            file: 1,
+            rank: 6,
+            piece: {
+                type: 'pawn',
+                color: 'black'
+            }
+        },
+        {
+            file: 2,
+            rank: 6,
+            piece: {
+                type: 'pawn',
+                color: 'black'
+            }
+        },
+        {
+            file: 3,
+            rank: 6,
+            piece: {
+                type: 'pawn',
+                color: 'black'
+            }
+        },
+        {
+            file: 4,
+            rank: 6,
+            piece: {
+                type: 'pawn',
+                color: 'black'
+            }
+        },
+        {
+            file: 5,
+            rank: 6,
+            piece: {
+                type: 'pawn',
+                color: 'black'
+            }
+        },
+        {
+            file: 6,
+            rank: 6,
+            piece: {
+                type: 'pawn',
+                color: 'black'
+            }
+        },
+        {
+            file: 7,
+            rank: 6,
+            piece: {
+                type: 'pawn',
+                color: 'black'
+            }
+        }
+    ];
+
+    _initBoard(board) {
         for (let i = 0; i < 8; i++) {
             board[i] = [];
+            for (let j = 0; j < 8; j++) {
+                board[i][j] = {
+                    selected: false,
+                    marked: false,
+                    piece: {
+                        type: null,
+                        color: null
+                    }
+                };
+            }
+        }
+    }
+
+    _paintBoard(board) {
+        let countSquare = 0;
+        for (let i = 0; i < 8; i++) {
             countSquare++
             for (let j = 0; j < 8; j++) {
-                board[i][j] = (countSquare++ % 2) ?
-                    {
-                        color: 'black',
-                        selected: false,
-                        marked: false
-                    } :
-                    {
-                        color: 'white',
-                        selected: false,
-                        marked: false
-                    };
+                board[i][j].color = (countSquare++ % 2) ? 'black' : 'white';
             }
         }
     }
 
     getSquare(file, rank) {
-        return JChess._getSquare(this.board, file, rank);
+        return this._getSquare(this.board, file, rank);
+    }
+
+    _getSquare(board, file, rank) {
+        if (!this._validateSquare(file, rank)) return null;
+        return board[file][rank];
     }
 
     getSquareColor(file, rank) {
-        return JChess._getSquare(this.board, file, rank) && JChess._getSquare(this.board, file, rank).color;
+        return this._getSquare(this.board, file, rank) && this._getSquare(this.board, file, rank).color;
     }
 
     getPieceType(file, rank) {
-        return JChess._getSquare(this.board, file, rank) && JChess._getSquare(this.board, file, rank).piece.type;
+        return this._getPieceType(this.board, file, rank);
+    }
+
+    _getPieceType(board, file, rank) {
+        return this._getSquare(board, file, rank) && this._getSquare(board, file, rank).piece.type;
     }
 
     getPieceColor(file, rank) {
-        return JChess._getSquare(this.board, file, rank) && JChess._getSquare(this.board, file, rank).piece.color;
+        return this._getPieceColor(this.board, file, rank);
+    }
+
+    _getPieceColor(board, file, rank) {
+        return this._getSquare(board, file, rank) && this._getSquare(board, file, rank).piece.color;
     }
 
     setUpPieces() {
-        return JChess._setUpPieces(this.board)
+        return this._setUpInitial(this.board)
     }
 
     pickSquare(file, rank) {
-        let square = JChess._getSquare(this.board, file, rank);
+        return this._pickSquare(this.board, file, rank);
+    }
+
+    _pickSquare(board, file, rank) {
+        let square = this._getSquare(board, file, rank);
         if (!square) return null;
-        this.board.forEach(
+        this._resetSelect(board)
+        square.selected = true;
+        return true;
+    }
+
+    _resetSelect(board) {
+        board.forEach(
             (file) => {
                 file.forEach(
                     (square) => {
@@ -67,66 +355,79 @@ export default class JChess {
                 )
             }
         )
-        square.selected = true;
-        return true;
-    }
-
-    isSquareMarked(file, rank) {
-        let square = JChess._getSquare(this.board, file, rank);
-        if (!square) return null;
-        return square.marked;
     }
 
     isSquareSelected(file, rank) {
-        let square = JChess._getSquare(this.board, file, rank);
+        let square = this._getSquare(this.board, file, rank);
         if (!square) return null;
         return square.selected;
     }
 
-    static _getSquare(board, file, rank) {
-        if (file < 0 || file > 7 || rank < 0 || rank > 7) return null;
-        return board[file][rank];
+    setUpInitial() {
+        this._setUpInitial(this.board);
     }
 
-    static _setUpPieces(board) {
-        let pieceSet = ['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook'];
-        for (let rank = 0; rank < 8; rank++) {
-            switch (rank) {
-                case 0:
-                    board.forEach((item, index) =>
-                        JChess._setUpPiece(board, index, rank, pieceSet[index], 'white')
-                    );
-                    break;
-                case 7:
-                    board.forEach((item, index) =>
-                        JChess._setUpPiece(board, index, rank, pieceSet[index], 'black')
-                    );
-                    break;
-                case 1:
-                    for (let file = 0; file < 8; file++) {
-                        JChess._setUpPiece(board, file, rank, 'pawn', 'white')
-                    }
-                    break;
-                case 6:
-                    for (let file = 0; file < 8; file++) {
-                        JChess._setUpPiece(board, file, rank, 'pawn', 'black')
-                    }
-                    break;
-                default:
-                    for (let file = 0; file < 8; file++) {
-                        JChess._setUpPiece(board, file, rank, null, null)
-                    }
+    _setUpInitial(board) {
+        this._setUpPosition(board, JChess.INITIAL_POSITION);
+    }
 
+    setUpPosition(pieceSet) {
+        this._setUpPosition(this.board, pieceSet)
+    }
+
+    _setUpPosition(board, pieceSet) {
+        pieceSet.forEach(
+            (item) => {
+                this._setUpPiece(board, item.file, item.rank, item.piece.type, item.piece.color);
             }
-        }
+        )
     }
 
-    static _setUpPiece(board, file, rank, type, color) {
-        if (file < 0 || file > 7 || rank < 0 || rank > 7) return null;
+    _setUpPiece(board, file, rank, type, color) {
+        if (!this._validateSquare(file, rank)) return null;
         board[file][rank].piece = {
             type: type,
             color: color
         }
         return true;
+    }
+
+    isSquareMarked(file, rank) {
+        let square = this._getSquare(this.board, file, rank);
+        if (!square) return null;
+        return square.marked;
+    }
+
+    _getMovesPawn(board, file, rank) {
+        if (!this._validateSquare(file, rank)) return null;
+        if (!(this._getPieceType(board, file, rank) === 'pawn')) return null;
+        let result = [];
+        let moveDirection = (this._getPieceColor(board, file, rank) === 'white') ? 1 : -1
+
+        if (this._validateSquare(file, rank + moveDirection)) {
+            if (!this._getPieceType(board, file, rank + moveDirection)) {
+                let move = {
+                    file: file,
+                    rank: rank + moveDirection
+                };
+                result.push(move);
+                if ((moveDirection * rank === 1) || (moveDirection * rank === -6)) {
+                    if (!this._getPieceType(board, file, rank + 2 * moveDirection)) {
+                        let move = {
+                            file: file,
+                            rank: rank + 2 * moveDirection
+                        };
+                        result.push(move);
+                    }
+                }
+            }
+        }
+
+        if (result.length) return result;
+        return null;
+    }
+
+    _validateSquare(file, rank) {
+        return (file >= 0 && file <= 7 && rank >= 0 && rank <= 7);
     }
 }
