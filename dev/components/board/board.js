@@ -16,7 +16,7 @@ export default function initBoard(jchess) {
             let square = newSquare(jchess, file, rank);
             square.addEventListener('click',
                 (e) => {
-                    jchess.pickSquare(e.target.dataset.file, e.target.dataset.rank);
+                    jchess.pickSquare(+e.target.dataset.file, +e.target.dataset.rank);
                     drawBoard(jchess);
                 }
             );
@@ -35,6 +35,9 @@ function drawBoard(jchess) {
         if (squares[i].dataset.selected != jchess.isSquareSelected(file, rank)) {
             drawSquare(squares[i], jchess, file, rank)
         }
+        if (squares[i].dataset.marked != jchess.isSquareMarked(file, rank)) {
+            drawSquare(squares[i], jchess, file, rank)
+        }
     }
     return true;
 }
@@ -49,6 +52,7 @@ function newSquare(jchess, file, rank) {
 
 function drawSquare(square, jchess, file, rank) {
     square.dataset.selected = +jchess.isSquareSelected(file, rank);
+    square.dataset.marked = +jchess.isSquareMarked(file, rank);
     square.dataset.piece = +!!jchess.getPieceType(file, rank);
     setClasses(square, jchess, file, rank);
     return true;
@@ -60,6 +64,9 @@ function setClasses(square, jchess, file, rank) {
     square.classList.add('board__square_' + jchess.getSquareColor(file, rank));
     if (square.dataset.selected == 1) {
         square.classList.add('board__square_selected');
+    }
+    if (square.dataset.marked == 1) {
+        square.classList.add('board__square_marked');
     }
     if (square.dataset.piece == 1) {
         square.classList.add('board__square_' + jchess.getPieceType(file, rank) + '_'

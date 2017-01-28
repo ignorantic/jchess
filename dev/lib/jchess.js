@@ -329,10 +329,6 @@ export default class JChess {
         return this._getSquare(board, file, rank) && this._getSquare(board, file, rank).piece.color;
     }
 
-    setUpPieces() {
-        return this._setUpInitial(this.board)
-    }
-
     pickSquare(file, rank) {
         return this._pickSquare(this.board, file, rank);
     }
@@ -342,7 +338,22 @@ export default class JChess {
         if (!square) return null;
         this._resetSelect(board)
         square.selected = true;
+        this._markMoves(board, file, rank);
         return true;
+    }
+
+    _markMoves(board, file, rank) {
+        if (!this._validateSquare(file, rank)) return null;
+        this._resetMarks(board);
+        if (!!this._getPieceType(board, file, rank)) {
+            let moves = this._getMovesPawn(board, file, rank);
+            if (!moves) return null;
+            moves.forEach(
+                (item) => {
+                    board[item.file][item.rank].marked = true;
+                }
+            )
+        }
     }
 
     _resetSelect(board) {
@@ -357,10 +368,36 @@ export default class JChess {
         )
     }
 
+    _resetMarks(board) {
+        board.forEach(
+            (file) => {
+                file.forEach(
+                    (square) => {
+                        square.marked = false;
+                    }
+                )
+            }
+        )
+    }
+
     isSquareSelected(file, rank) {
-        let square = this._getSquare(this.board, file, rank);
+        return this._isSquareSelected(this.board, file, rank);
+    }
+
+    _isSquareSelected(board, file, rank) {
+        let square = this._getSquare(board, file, rank);
         if (!square) return null;
         return square.selected;
+    }
+
+    isSquareMarked(file, rank) {
+        return this._isSquareMarked(this.board, file, rank);
+    }
+
+    _isSquareMarked(board, file, rank) {
+        let square = this._getSquare(board, file, rank);
+        if (!square) return null;
+        return square.marked;
     }
 
     setUpInitial() {
@@ -387,15 +424,10 @@ export default class JChess {
         if (!this._validateSquare(file, rank)) return null;
         board[file][rank].piece = {
             type: type,
-            color: color
+            color: color,
+            getMoves: this._getMovesPawn
         }
         return true;
-    }
-
-    isSquareMarked(file, rank) {
-        let square = this._getSquare(this.board, file, rank);
-        if (!square) return null;
-        return square.marked;
     }
 
     _getMovesPawn(board, file, rank) {

@@ -250,6 +250,104 @@ describe('jChess', () => {
 
         before(() => {
             jchess = new JChess;
+            jchess.setUpPosition([
+                {
+                    file: 0,
+                    rank: 1,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 1,
+                    rank: 1,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 4,
+                    rank: 1,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 5,
+                    rank: 3,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 6,
+                    rank: 2,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 7,
+                    rank: 1,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 3,
+                    rank: 4,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 3,
+                    rank: 5,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 2,
+                    rank: 4,
+                    piece: {
+                        type: 'pawn',
+                        color: 'black'
+                    }
+                },
+                {
+                    file: 7,
+                    rank: 3,
+                    piece: {
+                        type: 'pawn',
+                        color: 'black'
+                    }
+                },
+                {
+                    file: 2,
+                    rank: 2,
+                    piece: {
+                        type: 'knight',
+                        color: 'black'
+                    }
+                },
+                {
+                    file: 5,
+                    rank: 4,
+                    piece: {
+                        type: 'knight',
+                        color: 'black'
+                    }
+                }
+            ]);
         })
 
         it('return null if arguments aren\'t correct', () => {
@@ -268,11 +366,166 @@ describe('jChess', () => {
 
         it('check selected square', () => {
             jchess.pickSquare(1, 5);
-            jchess.board[1][5].selected.should.be.equal(true);
-            jchess.board[7][7].selected.should.be.equal(false);
+            jchess.isSquareSelected(1, 5).should.be.true;
+            jchess.isSquareSelected(7, 7).should.be.false;
             jchess.pickSquare(6, 7);
-            jchess.board[1][5].selected.should.be.equal(false);
-            jchess.board[6][7].selected.should.be.equal(true);
+            jchess.isSquareSelected(5, 1).should.be.false;
+            jchess.isSquareSelected(6, 7).should.be.true;
+        })
+
+        it('check marked square', () => {
+            jchess.pickSquare(0, 1);
+            jchess.isSquareMarked(0, 1).should.be.false;
+            jchess.isSquareMarked(0, 2).should.be.true;
+            jchess.isSquareMarked(0, 3).should.be.true;
+            jchess.isSquareMarked(0, 4).should.be.false;
+            jchess.isSquareMarked(1, 2).should.be.false;
+        })
+    })
+
+    describe('_markMoves', () => {
+
+        let jchess;
+
+        before(() => {
+            jchess = new JChess;
+            jchess.setUpPosition([
+                {
+                    file: 0,
+                    rank: 1,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 1,
+                    rank: 1,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 4,
+                    rank: 1,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 5,
+                    rank: 3,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 6,
+                    rank: 2,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 7,
+                    rank: 1,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 3,
+                    rank: 4,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 3,
+                    rank: 5,
+                    piece: {
+                        type: 'pawn',
+                        color: 'white'
+                    }
+                },
+                {
+                    file: 2,
+                    rank: 4,
+                    piece: {
+                        type: 'pawn',
+                        color: 'black'
+                    }
+                },
+                {
+                    file: 7,
+                    rank: 3,
+                    piece: {
+                        type: 'pawn',
+                        color: 'black'
+                    }
+                },
+                {
+                    file: 2,
+                    rank: 2,
+                    piece: {
+                        type: 'knight',
+                        color: 'black'
+                    }
+                },
+                {
+                    file: 5,
+                    rank: 4,
+                    piece: {
+                        type: 'knight',
+                        color: 'black'
+                    }
+                }
+            ]);
+        })
+
+        it('return null if arguments aren\'t correct', () => {
+            expect(jchess._markMoves(0, 8)).to.be.null;
+            expect(jchess._markMoves(8, 0)).to.be.null;
+            expect(jchess._markMoves(-1, 0)).to.be.null;
+            expect(jchess._markMoves(0, -1)).to.be.null;
+        })
+
+        it('mark two squares for pawn a2', () => {
+            jchess._markMoves(jchess.board, 0, 1);
+            expect(jchess.isSquareMarked(0, 2)).to.be.true;
+            expect(jchess.isSquareMarked(0, 3)).to.be.true;
+            expect(jchess.isSquareMarked(0, 4)).to.be.false;
+            expect(jchess.isSquareMarked(1, 2)).to.be.false;
+        })
+
+        it('mark only square for pawn c5', () => {
+            jchess._markMoves(jchess.board, 2, 4);
+            expect(jchess.isSquareMarked(2, 3)).to.be.true;
+            expect(jchess.isSquareMarked(2, 2)).to.be.false;
+            expect(jchess.isSquareMarked(3, 3)).to.be.false;
+            expect(jchess.isSquareMarked(1, 3)).to.be.false;
+        })
+
+        it('mark no square for pawn d5', () => {
+            jchess._markMoves(jchess.board, 3, 4);
+            expect(jchess.isSquareMarked(3, 5)).to.be.false;
+            expect(jchess.isSquareMarked(3, 6)).to.be.false;
+            expect(jchess.isSquareMarked(2, 5)).to.be.false;
+            expect(jchess.isSquareMarked(4, 5)).to.be.false;
+        })
+
+        it('mark no square for pawn f4', () => {
+            jchess._markMoves(jchess.board, 5, 3);
+            expect(jchess.isSquareMarked(5, 4)).to.be.false;
+            expect(jchess.isSquareMarked(5, 5)).to.be.false;
+            expect(jchess.isSquareMarked(4, 4)).to.be.false;
+            expect(jchess.isSquareMarked(6, 4)).to.be.false;
         })
     })
 
