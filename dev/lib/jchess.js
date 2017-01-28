@@ -7,13 +7,6 @@
 
 export default class JChess {
 
-    constructor() {
-
-        this.board = [];
-        this._initBoard(this.board);
-        this._paintBoard(this.board);
-    }
-
     static INITIAL_POSITION = [
         {
             file: 0,
@@ -274,6 +267,17 @@ export default class JChess {
         }
     ];
 
+    /*
+     *   INITIALIZATION
+     */
+
+    constructor() {
+
+        this.board = [];
+        this._initBoard(this.board);
+        this._paintBoard(this.board);
+    }
+
     _initBoard(board) {
         for (let i = 0; i < 8; i++) {
             board[i] = [];
@@ -300,105 +304,9 @@ export default class JChess {
         }
     }
 
-    getSquare(file, rank) {
-        return this._getSquare(this.board, file, rank);
-    }
-
-    _getSquare(board, file, rank) {
-        if (!this._validateSquare(file, rank)) return null;
-        return board[file][rank];
-    }
-
-    getSquareColor(file, rank) {
-        return this._getSquare(this.board, file, rank) && this._getSquare(this.board, file, rank).color;
-    }
-
-    getPieceType(file, rank) {
-        return this._getPieceType(this.board, file, rank);
-    }
-
-    _getPieceType(board, file, rank) {
-        return this._getSquare(board, file, rank) && this._getSquare(board, file, rank).piece.type;
-    }
-
-    getPieceColor(file, rank) {
-        return this._getPieceColor(this.board, file, rank);
-    }
-
-    _getPieceColor(board, file, rank) {
-        return this._getSquare(board, file, rank) && this._getSquare(board, file, rank).piece.color;
-    }
-
-    pickSquare(file, rank) {
-        return this._pickSquare(this.board, file, rank);
-    }
-
-    _pickSquare(board, file, rank) {
-        let square = this._getSquare(board, file, rank);
-        if (!square) return null;
-        this._resetSelect(board)
-        square.selected = true;
-        this._markMoves(board, file, rank);
-        return true;
-    }
-
-    _markMoves(board, file, rank) {
-        if (!this._validateSquare(file, rank)) return null;
-        this._resetMarks(board);
-        if (!!this._getPieceType(board, file, rank)) {
-            let moves = this._getMovesPawn(board, file, rank);
-            if (!moves) return null;
-            moves.forEach(
-                (item) => {
-                    board[item.file][item.rank].marked = true;
-                }
-            )
-        }
-    }
-
-    _resetSelect(board) {
-        board.forEach(
-            (file) => {
-                file.forEach(
-                    (square) => {
-                        square.selected = false;
-                    }
-                )
-            }
-        )
-    }
-
-    _resetMarks(board) {
-        board.forEach(
-            (file) => {
-                file.forEach(
-                    (square) => {
-                        square.marked = false;
-                    }
-                )
-            }
-        )
-    }
-
-    isSquareSelected(file, rank) {
-        return this._isSquareSelected(this.board, file, rank);
-    }
-
-    _isSquareSelected(board, file, rank) {
-        let square = this._getSquare(board, file, rank);
-        if (!square) return null;
-        return square.selected;
-    }
-
-    isSquareMarked(file, rank) {
-        return this._isSquareMarked(this.board, file, rank);
-    }
-
-    _isSquareMarked(board, file, rank) {
-        let square = this._getSquare(board, file, rank);
-        if (!square) return null;
-        return square.marked;
-    }
+    /*
+     *   SETUP
+     */
 
     setUpInitial() {
         this._setUpInitial(this.board);
@@ -430,6 +338,126 @@ export default class JChess {
         return true;
     }
 
+    /*
+     *   GETTER
+     */
+
+    getSquare(file, rank) {
+        return this._getSquare(this.board, file, rank);
+    }
+
+    _getSquare(board, file, rank) {
+        if (!this._validateSquare(file, rank)) return null;
+        return board[file][rank];
+    }
+
+    getSquareColor(file, rank) {
+        return this._getSquare(this.board, file, rank) && this._getSquare(this.board, file, rank).color;
+    }
+
+    getPieceType(file, rank) {
+        return this._getPieceType(this.board, file, rank);
+    }
+
+    _getPieceType(board, file, rank) {
+        return this._getSquare(board, file, rank) && this._getSquare(board, file, rank).piece.type;
+    }
+
+    getPieceColor(file, rank) {
+        return this._getPieceColor(this.board, file, rank);
+    }
+
+    _getPieceColor(board, file, rank) {
+        return this._getSquare(board, file, rank) && this._getSquare(board, file, rank).piece.color;
+    }
+
+    /*
+     *   PICK
+     */
+
+    pickSquare(file, rank) {
+        return this._pickSquare(this.board, file, rank);
+    }
+
+    _pickSquare(board, file, rank) {
+        let square = this._getSquare(board, file, rank);
+        if (!square) return null;
+        this._resetSelect(board)
+        square.selected = true;
+        this._markMoves(board, file, rank);
+        return true;
+    }
+
+    /*
+     *   SELECT
+     */
+
+    _resetSelect(board) {
+        board.forEach(
+            (file) => {
+                file.forEach(
+                    (square) => {
+                        square.selected = false;
+                    }
+                )
+            }
+        )
+    }
+
+    isSquareSelected(file, rank) {
+        return this._isSquareSelected(this.board, file, rank);
+    }
+
+    _isSquareSelected(board, file, rank) {
+        let square = this._getSquare(board, file, rank);
+        if (!square) return null;
+        return square.selected;
+    }
+
+    /*
+     *   MARK
+     */
+
+    _resetMarks(board) {
+        board.forEach(
+            (file) => {
+                file.forEach(
+                    (square) => {
+                        square.marked = false;
+                    }
+                )
+            }
+        )
+    }
+
+    isSquareMarked(file, rank) {
+        return this._isSquareMarked(this.board, file, rank);
+    }
+
+    _isSquareMarked(board, file, rank) {
+        let square = this._getSquare(board, file, rank);
+        if (!square) return null;
+        return square.marked;
+    }
+
+    /*
+     *   MARK FOR MOVE
+     */
+
+    _markMoves(board, file, rank) {
+        if (!this._validateSquare(file, rank)) return null;
+        this._resetMarks(board);
+        if (!!this._getPieceType(board, file, rank)) {
+            let moves = this._getMovesPawn(board, file, rank);
+            if (!moves) return null;
+            moves.forEach(
+                (item) => {
+                    board[item.file][item.rank].marked = true;
+                }
+            )
+        }
+    }
+
     _getMovesPawn(board, file, rank) {
         if (!this._validateSquare(file, rank)) return null;
         if (!(this._getPieceType(board, file, rank) === 'pawn')) return null;
@@ -440,18 +468,15 @@ export default class JChess {
         let targetRank = rank + moveDirection;
 
         if (this._validateSquare(targetFile, targetRank)) {
+
             if (!this._getPieceType(board, targetFile, targetRank)) {
                 pushMove(targetFile, targetRank);
+
                 if ((moveDirection * rank === 1) || (moveDirection * rank === -6)) {
 
                     targetRank = rank + 2 * moveDirection;
-
                     if (!this._getPieceType(board, targetFile, targetRank)) {
                         pushMove(targetFile, targetRank);
-
-                        /*
-                         *           ДОБАВИТЬ РЕКУРСИЮ
-                         */
                     }
                 }
             }
@@ -487,6 +512,18 @@ export default class JChess {
             result.push(move);
         }
     }
+
+    /*
+     *   MOVE
+     */
+
+    _doMove(startSquare, finishSquare) {
+
+    }
+
+    /*
+     *   VALIDATORS
+     */
 
     _validateSquare(file, rank) {
         return (file >= 0 && file <= 7 && rank >= 0 && rank <= 7);

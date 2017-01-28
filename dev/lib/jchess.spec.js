@@ -8,6 +8,110 @@ import JChess from './jchess';
 import {describe, it, before} from 'mocha';
 
 describe('jChess', () => {
+
+    let INITIAL_POSITION = [
+        {
+            file: 0,
+            rank: 1,
+            piece: {
+                type: 'pawn',
+                color: 'white'
+            }
+        },
+        {
+            file: 1,
+            rank: 1,
+            piece: {
+                type: 'pawn',
+                color: 'white'
+            }
+        },
+        {
+            file: 4,
+            rank: 1,
+            piece: {
+                type: 'pawn',
+                color: 'white'
+            }
+        },
+        {
+            file: 5,
+            rank: 3,
+            piece: {
+                type: 'pawn',
+                color: 'white'
+            }
+        },
+        {
+            file: 6,
+            rank: 2,
+            piece: {
+                type: 'pawn',
+                color: 'white'
+            }
+        },
+        {
+            file: 7,
+            rank: 1,
+            piece: {
+                type: 'pawn',
+                color: 'white'
+            }
+        },
+        {
+            file: 3,
+            rank: 4,
+            piece: {
+                type: 'pawn',
+                color: 'white'
+            }
+        },
+        {
+            file: 3,
+            rank: 5,
+            piece: {
+                type: 'pawn',
+                color: 'white'
+            }
+        },
+        {
+            file: 2,
+            rank: 4,
+            piece: {
+                type: 'pawn',
+                color: 'black'
+            }
+        },
+        {
+            file: 7,
+            rank: 3,
+            piece: {
+                type: 'pawn',
+                color: 'black'
+            }
+        },
+        {
+            file: 2,
+            rank: 2,
+            piece: {
+                type: 'knight',
+                color: 'black'
+            }
+        },
+        {
+            file: 5,
+            rank: 4,
+            piece: {
+                type: 'knight',
+                color: 'black'
+            }
+        }
+    ];
+
+    /*
+     *   INITIALIZATION
+     */
+
     describe('constructor', () => {
 
         let jchess;
@@ -30,102 +134,9 @@ describe('jChess', () => {
         })
     })
 
-    describe('getSquareColor', () => {
-
-        let jchess;
-
-        before(() => {
-            jchess = new JChess;
-        })
-
-        it('return null if arguments aren\'t correct' , () => {
-            expect(jchess.getSquareColor(0, 8)).to.be.null;
-            expect(jchess.getSquareColor(8, 0)).to.be.null;
-            expect(jchess.getSquareColor(-1, 0)).to.be.null;
-            expect(jchess.getSquareColor(0, -1)).to.be.null;
-        })
-
-        it('return "black" for (0, 0), etc' , () => {
-            jchess.getSquareColor(0, 0).should.be.equal('black');
-            jchess.getSquareColor(0, 2).should.be.equal('black');
-            jchess.getSquareColor(1, 1).should.be.equal('black');
-            jchess.getSquareColor(7, 7).should.be.equal('black');
-            jchess.getSquareColor(5, 7).should.be.equal('black');
-            jchess.getSquareColor(3, 7).should.be.equal('black');
-        })
-
-        it('return "white" for (0, 1), etc' , () => {
-            jchess.getSquareColor(0, 1).should.be.equal('white');
-            jchess.getSquareColor(0, 3).should.be.equal('white');
-            jchess.getSquareColor(1, 2).should.be.equal('white');
-            jchess.getSquareColor(0, 7).should.be.equal('white');
-            jchess.getSquareColor(2, 7).should.be.equal('white');
-            jchess.getSquareColor(6, 7).should.be.equal('white');
-        })
-    })
-
-    describe('getPieceType', () => {
-
-        let jchess;
-
-        before(() => {
-            jchess = new JChess;
-            jchess.setUpInitial();
-        })
-
-        it('return null if arguments aren\'t correct', () => {
-            expect(jchess.getPieceType(0, 8)).to.be.null;
-            expect(jchess.getPieceType(8, 0)).to.be.null;
-            expect(jchess.getPieceType(-1, 0)).to.be.null;
-            expect(jchess.getPieceType(0, -1)).to.be.null;
-        })
-
-        it('return piece type for (0, 0), etc', () => {
-            expect(jchess.getPieceType(0, 2)).to.be.null;
-            expect(jchess.getPieceType(4, 4)).to.be.null;
-            jchess.getPieceType(0, 0).should.be.equal('rook');
-            jchess.getPieceType(7, 7).should.be.equal('rook');
-            jchess.getPieceType(1, 0).should.be.equal('knight');
-            jchess.getPieceType(6, 7).should.be.equal('knight');
-            jchess.getPieceType(5, 7).should.be.equal('bishop');
-            jchess.getPieceType(1, 1).should.be.equal('pawn');
-            jchess.getPieceType(6, 6).should.be.equal('pawn');
-            jchess.getPieceType(3, 0).should.be.equal('queen');
-            jchess.getPieceType(4, 7).should.be.equal('king');
-        })
-    })
-
-    describe('getPieceColor', () => {
-
-        let jchess;
-
-        before(() => {
-            jchess = new JChess;
-            jchess.setUpInitial();
-        })
-
-        it('return null if arguments aren\'t correct', () => {
-            expect(jchess.getPieceColor(0, 8)).to.be.null;
-            expect(jchess.getPieceColor(8, 0)).to.be.null;
-            expect(jchess.getPieceColor(-1, 0)).to.be.null;
-            expect(jchess.getPieceColor(0, -1)).to.be.null;
-        })
-
-        it('return piece color for (0, 0), etc', () => {
-            expect(jchess.getPieceType(1, 2)).to.be.null;
-            expect(jchess.getPieceType(3, 5)).to.be.null;
-            jchess.getPieceColor(0, 1).should.be.equal('white');
-            jchess.getPieceColor(1, 0).should.be.equal('white');
-            jchess.getPieceColor(2, 0).should.be.equal('white');
-            jchess.getPieceColor(2, 7).should.be.equal('black');
-            jchess.getPieceColor(3, 0).should.be.equal('white');
-            jchess.getPieceColor(3, 7).should.be.equal('black');
-            jchess.getPieceColor(4, 1).should.be.equal('white');
-            jchess.getPieceColor(5, 6).should.be.equal('black');
-            jchess.getPieceColor(6, 7).should.be.equal('black');
-            jchess.getPieceColor(7, 6).should.be.equal('black');
-        })
-    })
+    /*
+     *   SETUP
+     */
 
     describe('setUpInitial', () => {
 
@@ -244,110 +255,118 @@ describe('jChess', () => {
         })
     })
 
+    /*
+     *   GETTER
+     */
+
+    describe('getSquareColor', () => {
+
+        let jchess;
+
+        before(() => {
+            jchess = new JChess;
+        })
+
+        it('return null if arguments aren\'t correct' , () => {
+            expect(jchess.getSquareColor(0, 8)).to.be.null;
+            expect(jchess.getSquareColor(8, 0)).to.be.null;
+            expect(jchess.getSquareColor(-1, 0)).to.be.null;
+            expect(jchess.getSquareColor(0, -1)).to.be.null;
+        })
+
+        it('return "black" for (0, 0), etc' , () => {
+            jchess.getSquareColor(0, 0).should.be.equal('black');
+            jchess.getSquareColor(0, 2).should.be.equal('black');
+            jchess.getSquareColor(1, 1).should.be.equal('black');
+            jchess.getSquareColor(7, 7).should.be.equal('black');
+            jchess.getSquareColor(5, 7).should.be.equal('black');
+            jchess.getSquareColor(3, 7).should.be.equal('black');
+        })
+
+        it('return "white" for (0, 1), etc' , () => {
+            jchess.getSquareColor(0, 1).should.be.equal('white');
+            jchess.getSquareColor(0, 3).should.be.equal('white');
+            jchess.getSquareColor(1, 2).should.be.equal('white');
+            jchess.getSquareColor(0, 7).should.be.equal('white');
+            jchess.getSquareColor(2, 7).should.be.equal('white');
+            jchess.getSquareColor(6, 7).should.be.equal('white');
+        })
+    })
+
+    describe('getPieceType', () => {
+
+        let jchess;
+
+        before(() => {
+            jchess = new JChess;
+            jchess.setUpInitial();
+        })
+
+        it('return null if arguments aren\'t correct', () => {
+            expect(jchess.getPieceType(0, 8)).to.be.null;
+            expect(jchess.getPieceType(8, 0)).to.be.null;
+            expect(jchess.getPieceType(-1, 0)).to.be.null;
+            expect(jchess.getPieceType(0, -1)).to.be.null;
+        })
+
+        it('return piece type for (0, 0), etc', () => {
+            expect(jchess.getPieceType(0, 2)).to.be.null;
+            expect(jchess.getPieceType(4, 4)).to.be.null;
+            jchess.getPieceType(0, 0).should.be.equal('rook');
+            jchess.getPieceType(7, 7).should.be.equal('rook');
+            jchess.getPieceType(1, 0).should.be.equal('knight');
+            jchess.getPieceType(6, 7).should.be.equal('knight');
+            jchess.getPieceType(5, 7).should.be.equal('bishop');
+            jchess.getPieceType(1, 1).should.be.equal('pawn');
+            jchess.getPieceType(6, 6).should.be.equal('pawn');
+            jchess.getPieceType(3, 0).should.be.equal('queen');
+            jchess.getPieceType(4, 7).should.be.equal('king');
+        })
+    })
+
+    describe('getPieceColor', () => {
+
+        let jchess;
+
+        before(() => {
+            jchess = new JChess;
+            jchess.setUpInitial();
+        })
+
+        it('return null if arguments aren\'t correct', () => {
+            expect(jchess.getPieceColor(0, 8)).to.be.null;
+            expect(jchess.getPieceColor(8, 0)).to.be.null;
+            expect(jchess.getPieceColor(-1, 0)).to.be.null;
+            expect(jchess.getPieceColor(0, -1)).to.be.null;
+        })
+
+        it('return piece color for (0, 0), etc', () => {
+            expect(jchess.getPieceType(1, 2)).to.be.null;
+            expect(jchess.getPieceType(3, 5)).to.be.null;
+            jchess.getPieceColor(0, 1).should.be.equal('white');
+            jchess.getPieceColor(1, 0).should.be.equal('white');
+            jchess.getPieceColor(2, 0).should.be.equal('white');
+            jchess.getPieceColor(2, 7).should.be.equal('black');
+            jchess.getPieceColor(3, 0).should.be.equal('white');
+            jchess.getPieceColor(3, 7).should.be.equal('black');
+            jchess.getPieceColor(4, 1).should.be.equal('white');
+            jchess.getPieceColor(5, 6).should.be.equal('black');
+            jchess.getPieceColor(6, 7).should.be.equal('black');
+            jchess.getPieceColor(7, 6).should.be.equal('black');
+        })
+    })
+
+    /*
+     *   PICK
+     */
+
     describe('pickSquare', () => {
 
         let jchess;
 
         before(() => {
             jchess = new JChess;
-            jchess.setUpPosition([
-                {
-                    file: 0,
-                    rank: 1,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 1,
-                    rank: 1,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 4,
-                    rank: 1,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 5,
-                    rank: 3,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 6,
-                    rank: 2,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 7,
-                    rank: 1,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 3,
-                    rank: 4,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 3,
-                    rank: 5,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 2,
-                    rank: 4,
-                    piece: {
-                        type: 'pawn',
-                        color: 'black'
-                    }
-                },
-                {
-                    file: 7,
-                    rank: 3,
-                    piece: {
-                        type: 'pawn',
-                        color: 'black'
-                    }
-                },
-                {
-                    file: 2,
-                    rank: 2,
-                    piece: {
-                        type: 'knight',
-                        color: 'black'
-                    }
-                },
-                {
-                    file: 5,
-                    rank: 4,
-                    piece: {
-                        type: 'knight',
-                        color: 'black'
-                    }
-                }
-            ]);
+            jchess.setUpPosition(INITIAL_POSITION);
         })
 
         it('return null if arguments aren\'t correct', () => {
@@ -383,110 +402,64 @@ describe('jChess', () => {
         })
     })
 
-    describe('_markMoves', () => {
+    /*
+     *   SELECT
+     */
+
+    describe('_resetSelect', () => {
 
         let jchess;
 
         before(() => {
             jchess = new JChess;
-            jchess.setUpPosition([
-                {
-                    file: 0,
-                    rank: 1,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 1,
-                    rank: 1,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 4,
-                    rank: 1,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 5,
-                    rank: 3,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 6,
-                    rank: 2,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 7,
-                    rank: 1,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 3,
-                    rank: 4,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 3,
-                    rank: 5,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 2,
-                    rank: 4,
-                    piece: {
-                        type: 'pawn',
-                        color: 'black'
-                    }
-                },
-                {
-                    file: 7,
-                    rank: 3,
-                    piece: {
-                        type: 'pawn',
-                        color: 'black'
-                    }
-                },
-                {
-                    file: 2,
-                    rank: 2,
-                    piece: {
-                        type: 'knight',
-                        color: 'black'
-                    }
-                },
-                {
-                    file: 5,
-                    rank: 4,
-                    piece: {
-                        type: 'knight',
-                        color: 'black'
-                    }
-                }
-            ]);
+            jchess.pickSquare(4, 4);
+        })
+
+        it('reset selected square', () => {
+            expect(jchess.isSquareSelected(4, 4)).to.be.true;
+            expect(jchess.isSquareSelected(4, 5)).to.be.false;
+            jchess._resetSelect(jchess.board);
+            expect(jchess.isSquareSelected(4, 4)).to.be.false;
+            expect(jchess.isSquareSelected(4, 5)).to.be.false;
+        })
+    })
+
+    describe('isSquareSelected', () => {
+
+        let jchess;
+
+        before(() => {
+            jchess = new JChess;
+        })
+
+        it('return null if arguments aren\'t correct', () => {
+            expect(jchess.isSquareSelected(0, 8)).to.be.null;
+            expect(jchess.isSquareSelected(8, 0)).to.be.null;
+            expect(jchess.isSquareSelected(-1, 0)).to.be.null;
+            expect(jchess.isSquareSelected(0, -1)).to.be.null;
+        })
+
+        it('return true or false if arguments are correct', () => {
+            jchess.pickSquare(1, 5);
+            expect(jchess.isSquareSelected(0, 0)).to.be.false;
+            expect(jchess.isSquareSelected(1, 5)).to.be.true;
+            jchess.pickSquare(7, 7);
+            expect(jchess.isSquareSelected(1, 5)).to.be.false;
+            expect(jchess.isSquareSelected(7, 7)).to.be.true;
+        })
+    })
+
+    /*
+     *   MARK
+     */
+
+    describe('_markMoves and isSquareMarked', () => {
+
+        let jchess;
+
+        before(() => {
+            jchess = new JChess;
+            jchess.setUpPosition(INITIAL_POSITION);
         })
 
         it('return null if arguments aren\'t correct', () => {
@@ -529,46 +502,9 @@ describe('jChess', () => {
         })
     })
 
-    describe('_resetSelect', () => {
-
-        let jchess;
-
-        before(() => {
-            jchess = new JChess;
-            jchess.pickSquare(4, 4);
-        })
-
-        it('reset selected square', () => {
-            expect(jchess.isSquareSelected(4, 4)).to.be.true;
-            expect(jchess.isSquareSelected(4, 5)).to.be.false;
-            jchess._resetSelect(jchess.board);
-            expect(jchess.isSquareSelected(4, 4)).to.be.false;
-            expect(jchess.isSquareSelected(4, 5)).to.be.false;
-        })
-    })
-
-    describe('isSquareMarked', () => {
-
-        let jchess;
-
-        before(() => {
-            jchess = new JChess;
-        })
-
-        it('return null if arguments aren\'t correct', () => {
-            expect(jchess.isSquareMarked(0, 8)).to.be.null;
-            expect(jchess.isSquareMarked(8, 0)).to.be.null;
-            expect(jchess.isSquareMarked(-1, 0)).to.be.null;
-            expect(jchess.isSquareMarked(0, -1)).to.be.null;
-        })
-
-        it('return true or false if arguments are correct', () => {
-            // expect(jchess.isSquareMarked(0, 0)).to.be.false;
-            // expect(jchess.isSquareMarked(1, 5)).to.be.true;
-            // expect(jchess.isSquareMarked(5, 6)).to.be.false;
-            // expect(jchess.isSquareMarked(7, 7)).to.be.true;
-        })
-    })
+    /*
+     *   MARK FOR MOVE
+     */
 
     describe('_getMovesPawn', () => {
 
@@ -576,104 +512,7 @@ describe('jChess', () => {
 
         before(() => {
             jchess = new JChess;
-            jchess.setUpPosition([
-                {
-                    file: 0,
-                    rank: 1,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 1,
-                    rank: 1,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 4,
-                    rank: 1,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 5,
-                    rank: 3,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 6,
-                    rank: 2,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 7,
-                    rank: 1,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 3,
-                    rank: 4,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 3,
-                    rank: 5,
-                    piece: {
-                        type: 'pawn',
-                        color: 'white'
-                    }
-                },
-                {
-                    file: 2,
-                    rank: 4,
-                    piece: {
-                        type: 'pawn',
-                        color: 'black'
-                    }
-                },
-                {
-                    file: 7,
-                    rank: 3,
-                    piece: {
-                        type: 'pawn',
-                        color: 'black'
-                    }
-                },
-                {
-                    file: 2,
-                    rank: 2,
-                    piece: {
-                        type: 'knight',
-                        color: 'black'
-                    }
-                },
-                {
-                    file: 5,
-                    rank: 4,
-                    piece: {
-                        type: 'knight',
-                        color: 'black'
-                    }
-                }
-            ]);
+            jchess.setUpPosition(INITIAL_POSITION);
         })
 
         it('return null if arguments aren\'t correct', () => {
@@ -756,7 +595,11 @@ describe('jChess', () => {
         })
     })
 
-    describe('isSquareSelected', () => {
+    /*
+     *   MOVE
+     */
+
+    describe('_doMove', () => {
 
         let jchess;
 
@@ -764,22 +607,14 @@ describe('jChess', () => {
             jchess = new JChess;
         })
 
-        it('return null if arguments aren\'t correct', () => {
-            expect(jchess.isSquareSelected(0, 8)).to.be.null;
-            expect(jchess.isSquareSelected(8, 0)).to.be.null;
-            expect(jchess.isSquareSelected(-1, 0)).to.be.null;
-            expect(jchess.isSquareSelected(0, -1)).to.be.null;
-        })
+        it('return false if square isn\'t correct', () => {
 
-        it('return true or false if arguments are correct', () => {
-            jchess.pickSquare(1, 5);
-            expect(jchess.isSquareSelected(0, 0)).to.be.false;
-            expect(jchess.isSquareSelected(1, 5)).to.be.true;
-            jchess.pickSquare(7, 7);
-            expect(jchess.isSquareSelected(1, 5)).to.be.false;
-            expect(jchess.isSquareSelected(7, 7)).to.be.true;
         })
     })
+
+    /*
+     *   VALIDATORS
+     */
 
     describe('_validateSquare', () => {
 
