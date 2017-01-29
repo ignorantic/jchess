@@ -3,7 +3,6 @@ import initBoard from '../components/board/board';
 
 document.addEventListener('DOMContentLoaded', () => {
     let jchess = new JChess;
-    // jchess.setUpInitial();
     jchess.setUpPosition([
         {
             file: 0,
@@ -46,16 +45,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
         {
-            file: 5,
-            rank: 0,
+            file: 7,
+            rank: 4,
             piece: {
                 type: 'bishop',
                 color: 'white'
             }
         },
         {
-            file: 6,
-            rank: 0,
+            file: 5,
+            rank: 2,
             piece: {
                 type: 'knight',
                 color: 'white'
@@ -86,8 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
         {
-            file: 2,
-            rank: 7,
+            file: 0,
+            rank: 5,
             piece: {
                 type: 'bishop',
                 color: 'black'
@@ -95,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             file: 3,
-            rank: 7,
+            rank: 3,
             piece: {
                 type: 'queen',
                 color: 'black'
@@ -110,8 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
         {
-            file: 5,
-            rank: 7,
+            file: 0,
+            rank: 4,
             piece: {
                 type: 'bishop',
                 color: 'black'

@@ -66,7 +66,7 @@ function setClasses(square, jchess, file, rank) {
         square.classList.add('board__square_selected');
     }
     if (square.dataset.marked == 1) {
-        square.classList.add('board__square_marked');
+        square.classList.add('board__square_marked_' + jchess.getSquareColor(file, rank));
     }
     if (square.dataset.piece == 1) {
         square.classList.add('board__square_' + jchess.getPieceType(file, rank) + '_'

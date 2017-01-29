@@ -269,6 +269,110 @@ export default class JBoard {
             }
         }
     ];
+    static KNIGHT_MOVES = [
+        {
+            file: 1,
+            rank: 2
+        },
+        {
+            file: 2,
+            rank: 1
+        },
+        {
+            file: 2,
+            rank: -1
+        },
+        {
+            file: 1,
+            rank: -2
+        },
+        {
+            file: -1,
+            rank: -2
+        },
+        {
+            file: -2,
+            rank: -1
+        },
+        {
+            file: -2,
+            rank: 1
+        },
+        {
+            file: -1,
+            rank: 2
+        }
+    ];
+    static KING_MOVES = [
+        {
+            file: 0,
+            rank: 1
+        },
+        {
+            file: 1,
+            rank: 1
+        },
+        {
+            file: 1,
+            rank: 0
+        },
+        {
+            file: 1,
+            rank: -1
+        },
+        {
+            file: 0,
+            rank: -1
+        },
+        {
+            file: -1,
+            rank: -1
+        },
+        {
+            file: -1,
+            rank: 0
+        },
+        {
+            file: -1,
+            rank: 1
+        }
+    ];
+    static ROOK_MOVES = [
+        {
+            file: 0,
+            rank: 1
+        },
+        {
+            file: 1,
+            rank: 0
+        },
+        {
+            file: 0,
+            rank: -1
+        },
+        {
+            file: -1,
+            rank: 0
+        }
+    ];
+    static BISHOP_MOVES = [
+        {
+            file: 1,
+            rank: 1
+        },
+        {
+            file: 1,
+            rank: -1
+        },
+        {
+            file: -1,
+            rank: -1
+        },
+        {
+            file: -1,
+            rank: 1
+        }
+    ];
 
     /*
      *   CONSTRUCTOR
@@ -460,7 +564,7 @@ export default class JBoard {
     }
 
     /*
-     *   MARK FOR MOVE
+     *   MARK MOVES
      */
 
     _markMoves(file, rank) {
@@ -477,73 +581,37 @@ export default class JBoard {
         }
     }
 
+    /*
+     *   GET MOVES
+     */
+
     _getMoves(file, rank) {
         switch (this.getPieceType(file, rank)) {
             case 'pawn':
                 return this._getMovesPawn(file, rank);
+                break;
+            case 'knight':
+                return this._getMovesKnight(file, rank);
+                break;
+            case 'king':
+                return this._getMovesKing(file, rank);
+                break;
+            case 'rook':
+                return this._getMovesRook(file, rank);
+                break;
+            case 'bishop':
+                return this._getMovesBishop(file, rank);
+                break;
+            case 'queen':
+                return this._getMovesQueen(file, rank);
                 break;
             default:
                 return null;
         }
     }
 
-    _getMovesPawn(file, rank) {
-        if (!this._validateSquare(file, rank)) return null;
-        if (!(this.getPieceType(file, rank) === 'pawn')) return null;
-        let result = [];
-        let moveDirection = (this.getPieceColor(file, rank) === 'white') ? 1 : -1
-
-        let targetFile = file;
-        let targetRank = rank + moveDirection;
-
-        if (this._validateSquare(targetFile, targetRank)) {
-
-            if (!this.getPieceType(targetFile, targetRank)) {
-                pushMove(targetFile, targetRank);
-
-                if ((moveDirection * rank == 1) || (moveDirection * rank == -6)) {
-
-                    targetRank = rank + 2 * moveDirection;
-                    if (!this.getPieceType(targetFile, targetRank)) {
-                        pushMove(targetFile, targetRank);
-                    }
-                }
-            }
-        }
-
-        targetRank = rank + moveDirection;
-        targetFile = file - 1;
-        checkCapture(this, targetFile, targetRank)
-        targetFile = file + 1;
-        checkCapture(this, targetFile, targetRank)
-
-        if (result.length) return result;
-        return null;
-
-        function checkCapture(self, file, rank) {
-            if (self._validateSquare(file, rank)) {
-                if (isCapture(self, file, rank)) {
-                    pushMove(file, rank);
-                }
-            }
-        }
-
-        function isCapture(self, file, rank) {
-            return (self.getPieceColor(file, rank) == 'black' && moveDirection == 1) ||
-                (self.getPieceColor(file, rank) == 'white' && moveDirection == -1);
-        }
-
-        function pushMove(file, rank) {
-            let move = {
-                file: file,
-                rank: rank
-            };
-            result.push(move);
-        }
-    }
-
     /*
-     *   MOVE
+     *   DO MOVE
      */
 
     _doMove(startFile, startRank, stopFile, stopRank) {
@@ -564,10 +632,167 @@ export default class JBoard {
     }
 
     /*
+     *   PAWN MOVES
+     */
+
+    _getMovesPawn(file, rank) {
+        if (!this._validateSquare(file, rank)) return null;
+        if (!(this.getPieceType(file, rank) === 'pawn')) return null;
+
+        let result = [];
+        let pawnColor = this.getPieceColor(file, rank);
+        let moveDirection = (pawnColor == 'white') ? 1 : -1
+
+        let targetFile = file;
+        let targetRank = rank + moveDirection;
+
+        if (this._validateSquare(targetFile, targetRank)) {
+
+            if (!this.getPieceType(targetFile, targetRank)) {
+                this._pushMove(result, targetFile, targetRank);
+
+                if ((pawnColor == 'white' && rank == 1) || (pawnColor == 'black' && rank == 6)) {
+
+                    targetRank = rank + 2 * moveDirection;
+                    if (!this.getPieceType(targetFile, targetRank)) {
+                        this._pushMove(result, targetFile, targetRank);
+                    }
+                }
+            }
+        }
+
+        targetRank = rank + moveDirection;
+
+        targetFile = file - 1;
+        if (this._isFoe(pawnColor, targetFile, targetRank)) {
+            this._pushMove(result, targetFile, targetRank);
+        }
+
+        targetFile = file + 1;
+        if (this._isFoe(pawnColor, targetFile, targetRank)) {
+            this._pushMove(result, targetFile, targetRank);
+        }
+
+        if (result.length) return result;
+        return null;
+
+    }
+
+    /*
+     *   KNIGHT MOVES
+     */
+
+    _getMovesKnight(file, rank) {
+        if (!this._validateSquare(file, rank)) return null;
+        if (!(this.getPieceType(file, rank) === 'knight')) return null;
+
+        return this._getMovesPiece(file, rank, JBoard.KNIGHT_MOVES, 1);
+    }
+
+    /*
+     *   KING MOVES
+     */
+
+    _getMovesKing(file, rank) {
+        if (!this._validateSquare(file, rank)) return null;
+        if (!(this.getPieceType(file, rank) === 'king')) return null;
+
+        return this._getMovesPiece(file, rank, JBoard.KING_MOVES, 1);
+    }
+
+    /*
+     *   ROOK MOVES
+     */
+
+    _getMovesRook(file, rank) {
+        if (!this._validateSquare(file, rank)) return null;
+        if (!(this.getPieceType(file, rank) === 'rook')) return null;
+
+        return this._getMovesPiece(file, rank, JBoard.ROOK_MOVES, 7);
+    }
+
+    /*
+     *   BISHOP MOVES
+     */
+
+    _getMovesBishop(file, rank) {
+        if (!this._validateSquare(file, rank)) return null;
+        if (!(this.getPieceType(file, rank) === 'bishop')) return null;
+
+        return this._getMovesPiece(file, rank, JBoard.BISHOP_MOVES, 7);
+    }
+
+    /*
+     *   QUEEN MOVES
+     */
+
+    _getMovesQueen(file, rank) {
+        if (!this._validateSquare(file, rank)) return null;
+        if (!(this.getPieceType(file, rank) === 'queen')) return null;
+
+        return this._getMovesPiece(file, rank, JBoard.KING_MOVES, 7);
+    }
+
+    /*
+     *   PiECE MOVES
+     */
+
+    _getMovesPiece(file, rank, pattern, count) {
+        let result = [];
+        let pieceColor = this.getPieceColor(file, rank);
+
+        pattern.forEach((item) => {
+            let i = 0;
+            while (i < count) {
+                i++;
+                let targetFile = file + i * item.file;
+                let targetRank = rank + i * item.rank;
+                if (this._validateSquare(targetFile, targetRank)) {
+                    if (!this._isFriend(pieceColor, targetFile, targetRank)) {
+                        this._pushMove(result, targetFile, targetRank)
+                    } else {
+                        break;
+                    }
+                } else {
+                    break;
+                }
+                if (this._isFoe(pieceColor, targetFile, targetRank)) break;
+            }
+        })
+
+        if (result.length > 0) return result;
+        return null;
+    }
+
+    /*
      *   VALIDATORS
      */
 
     _validateSquare(file, rank) {
         return (file >= 0 && file <= 7 && rank >= 0 && rank <= 7);
+    }
+
+    /*
+     *   SERVICES
+     */
+
+     _pushMove(result, file, rank) {
+        let move = {
+            file: file,
+            rank: rank
+        };
+        result.push(move);
+    }
+
+     _isFriend(color, file, rank) {
+         if (!this._validateSquare(file, rank)) return null;
+         if (!this.getPieceType(file, rank)) return false;
+         return (color === this.getPieceColor(file, rank));
+    }
+
+     _isFoe(color, file, rank) {
+         if (!this._validateSquare(file, rank)) return null;
+         if (!this.getPieceType(file, rank)) return false;
+         return (color != this.getPieceColor(file, rank));
     }
 }

@@ -51,16 +51,16 @@ describe('jBoard', () => {
             }
         },
         {
-            file: 5,
-            rank: 0,
+            file: 7,
+            rank: 4,
             piece: {
                 type: 'bishop',
                 color: 'white'
             }
         },
         {
-            file: 6,
-            rank: 0,
+            file: 5,
+            rank: 2,
             piece: {
                 type: 'knight',
                 color: 'white'
@@ -91,8 +91,8 @@ describe('jBoard', () => {
             }
         },
         {
-            file: 2,
-            rank: 7,
+            file: 0,
+            rank: 5,
             piece: {
                 type: 'bishop',
                 color: 'black'
@@ -100,7 +100,7 @@ describe('jBoard', () => {
         },
         {
             file: 3,
-            rank: 7,
+            rank: 3,
             piece: {
                 type: 'queen',
                 color: 'black'
@@ -115,8 +115,8 @@ describe('jBoard', () => {
             }
         },
         {
-            file: 5,
-            rank: 7,
+            file: 0,
+            rank: 4,
             piece: {
                 type: 'bishop',
                 color: 'black'
@@ -733,7 +733,85 @@ describe('jBoard', () => {
     })
 
     /*
-     *   MARK FOR MOVE
+     *   MOVE
+     */
+
+    describe('_doMove', () => {
+
+        let jboard;
+
+        before(() => {
+            jboard = new JBoard;
+
+        })
+
+        beforeEach(() => {
+            jboard.setUpPosition(TEST_POSITION);
+        })
+
+        it('return null if arguments aren\'t correct', () => {
+            expect(jboard._doMove(0, 5, 8, 7)).to.be.null;
+            expect(jboard._doMove(0, -1, 7, 7)).to.be.null;
+            expect(jboard._doMove(0, 0, 6, 9)).to.be.null;
+            expect(jboard._doMove(10, 8, 18, 8)).to.be.null;
+        })
+
+        it('return null if there is no piece on start square', () => {
+            expect(jboard._doMove(0, 2, 4, 3)).to.be.null;
+            expect(jboard._doMove(3, 2, 7, 7)).to.be.null;
+            expect(jboard._doMove(6, 7, 4, 6)).to.be.null;
+            expect(jboard._doMove(5, 5, 2, 0)).to.be.null;
+        })
+
+        it('return null if start piece color equal stop piece color', () => {
+            expect(jboard._doMove(7, 1, 6, 2)).to.be.null;
+            expect(jboard._doMove(2, 0, 1, 1)).to.be.null;
+            expect(jboard._doMove(3, 7, 4, 7)).to.be.null;
+            expect(jboard._doMove(5, 4, 6, 6)).to.be.null;
+        })
+
+        it('return true if move was successful', () => {
+            expect(jboard._doMove(4, 1, 4, 3)).to.be.true;
+            expect(jboard._doMove(2, 4, 2, 3)).to.be.true;
+            expect(jboard._doMove(6, 6, 6, 5)).to.be.true;
+            expect(jboard._doMove(0, 1, 0, 3)).to.be.true;
+        })
+
+        it('check stop square if move was successful', () => {
+            let color = jboard.getPieceColor(0, 1);
+            let type = jboard.getPieceType(0, 1);
+
+            jboard._doMove(0, 1, 0, 3);
+
+            expect(jboard.getPieceColor(0, 3) === color).to.be.true;
+            expect(jboard.getPieceType(0, 3) === type).to.be.true;
+
+            color = jboard.getPieceColor(7, 3);
+            type = jboard.getPieceType(7, 3);
+
+            jboard._doMove(7, 3, 6, 2);
+
+            expect(jboard.getPieceColor(6, 2) === color).to.be.true;
+            expect(jboard.getPieceType(6, 2) === type).to.be.true;
+        })
+
+        it('check start square if move was successful', () => {
+            expect(jboard.getPieceColor(0, 1)).to.be.equal('white');
+            expect(jboard.getPieceType(0, 1)).to.be.equal('pawn');
+            jboard._doMove(0, 1, 0, 3);
+            expect(jboard.getPieceColor(0, 1)).to.be.null;
+            expect(jboard.getPieceType(0, 1)).to.be.null;
+
+            expect(jboard.getPieceColor(7, 3)).to.be.equal('black');
+            expect(jboard.getPieceType(7, 3)).to.be.equal('pawn');
+            jboard._doMove(7, 3, 6, 2);
+            expect(jboard.getPieceColor(7, 3)).to.be.null;
+            expect(jboard.getPieceType(7, 3)).to.be.null;
+        })
+    })
+
+    /*
+     *   PAWN MOVES
      */
 
     describe('_getMovesPawn', () => {
@@ -831,80 +909,209 @@ describe('jBoard', () => {
     })
 
     /*
-     *   MOVE
+     *   KNIGHT MOVES
      */
 
-    describe('_doMove', () => {
+    describe('_getMovesKnight', () => {
 
         let jboard;
 
         before(() => {
             jboard = new JBoard;
-
-        })
-
-        beforeEach(() => {
             jboard.setUpPosition(TEST_POSITION);
         })
 
         it('return null if arguments aren\'t correct', () => {
-            expect(jboard._doMove(0, 5, 8, 7)).to.be.null;
-            expect(jboard._doMove(0, -1, 7, 7)).to.be.null;
-            expect(jboard._doMove(0, 0, 6, 9)).to.be.null;
-            expect(jboard._doMove(10, 8, 18, 8)).to.be.null;
+            expect(jboard._getMovesKnight(0, 8)).to.be.null;
+            expect(jboard._getMovesKnight(8, 0)).to.be.null;
+            expect(jboard._getMovesKnight(-1, 0)).to.be.null;
+            expect(jboard._getMovesKnight(0, -1)).to.be.null;
         })
 
-        it('return null if there is no piece on start square', () => {
-            expect(jboard._doMove(0, 2, 4, 3)).to.be.null;
-            expect(jboard._doMove(3, 2, 7, 7)).to.be.null;
-            expect(jboard._doMove(6, 7, 4, 6)).to.be.null;
-            expect(jboard._doMove(5, 5, 2, 0)).to.be.null;
+        it('return object if piece is knight', () => {
+            expect(typeof jboard._getMovesKnight(1, 0)).to.be.equal('object');
+            expect(typeof jboard._getMovesKnight(2, 2)).to.be.equal('object');
         })
 
-        it('return null if start piece color equal stop piece color', () => {
-            expect(jboard._doMove(7, 1, 6, 2)).to.be.null;
-            expect(jboard._doMove(2, 0, 1, 1)).to.be.null;
-            expect(jboard._doMove(3, 7, 4, 7)).to.be.null;
-            expect(jboard._doMove(5, 4, 6, 6)).to.be.null;
+        it('return null if piece isn\'t knight', () => {
+            expect(jboard._getMovesKnight(0, 1)).to.be.null;
+            expect(jboard._getMovesKnight(3, 3)).to.be.null;
         })
 
-        it('return true if move was successful', () => {
-            expect(jboard._doMove(4, 1, 4, 3)).to.be.true;
-            expect(jboard._doMove(2, 4, 2, 3)).to.be.true;
-            expect(jboard._doMove(6, 6, 6, 5)).to.be.true;
-            expect(jboard._doMove(0, 1, 0, 3)).to.be.true;
+        it('return two squares for knight c3', () => {
+            let moves = jboard._getMovesKnight(2, 2);
+
+            expect(moves[0].file).to.be.equal(3);
+            expect(moves[0].rank).to.be.equal(4);
+            expect(moves[1].file).to.be.equal(4);
+            expect(moves[1].rank).to.be.equal(3);
+            expect(moves[2].file).to.be.equal(4);
+            expect(moves[2].rank).to.be.equal(1);
+            expect(moves[3].file).to.be.equal(3);
+            expect(moves[3].rank).to.be.equal(0);
+            expect(moves[4].file).to.be.equal(1);
+            expect(moves[4].rank).to.be.equal(0);
+            expect(moves[5].file).to.be.equal(0);
+            expect(moves[5].rank).to.be.equal(1);
+            expect(moves[6].file).to.be.equal(0);
+            expect(moves[6].rank).to.be.equal(3);
+            expect(moves[7].file).to.be.equal(1);
+            expect(moves[7].rank).to.be.equal(4);
+
+            expect(moves[8]).to.be.undefined;
         })
 
-        it('check stop square if move was successful', () => {
-            let color = jboard.getPieceColor(0, 1);
-            let type = jboard.getPieceType(0, 1);
+        it('return two squares for knight f5', () => {
+            let moves = jboard._getMovesKnight(5, 4);
 
-            jboard._doMove(0, 1, 0, 3);
+            expect(moves[0].file).to.be.equal(7);
+            expect(moves[0].rank).to.be.equal(5);
+            expect(moves[1].file).to.be.equal(6);
+            expect(moves[1].rank).to.be.equal(2);
+            expect(moves[2].file).to.be.equal(4);
+            expect(moves[2].rank).to.be.equal(2);
+            expect(moves[3].file).to.be.equal(3);
+            expect(moves[3].rank).to.be.equal(5);
+            expect(moves[4].file).to.be.equal(4);
+            expect(moves[4].rank).to.be.equal(6);
 
-            expect(jboard.getPieceColor(0, 3) === color).to.be.true;
-            expect(jboard.getPieceType(0, 3) === type).to.be.true;
+            expect(moves[5]).to.be.undefined;
+        })
+    })
 
-            color = jboard.getPieceColor(7, 3);
-            type = jboard.getPieceType(7, 3);
+    /*
+     *   KING MOVES
+     */
 
-            jboard._doMove(7, 3, 6, 2);
+    describe('_getMovesKing', () => {
 
-            expect(jboard.getPieceColor(6, 2) === color).to.be.true;
-            expect(jboard.getPieceType(6, 2) === type).to.be.true;
+        let jboard;
+
+        before(() => {
+            jboard = new JBoard;
+            jboard.setUpPosition(TEST_POSITION);
         })
 
-        it('check start square if move was successful', () => {
-            expect(jboard.getPieceColor(0, 1)).to.be.equal('white');
-            expect(jboard.getPieceType(0, 1)).to.be.equal('pawn');
-            jboard._doMove(0, 1, 0, 3);
-            expect(jboard.getPieceColor(0, 1)).to.be.null;
-            expect(jboard.getPieceType(0, 1)).to.be.null;
+        it('return null if arguments aren\'t correct', () => {
+            expect(jboard._getMovesKing(0, 8)).to.be.null;
+            expect(jboard._getMovesKing(8, 0)).to.be.null;
+            expect(jboard._getMovesKing(-1, 0)).to.be.null;
+            expect(jboard._getMovesKing(0, -1)).to.be.null;
+        })
 
-            expect(jboard.getPieceColor(7, 3)).to.be.equal('black');
-            expect(jboard.getPieceType(7, 3)).to.be.equal('pawn');
-            jboard._doMove(7, 3, 6, 2);
-            expect(jboard.getPieceColor(7, 3)).to.be.null;
-            expect(jboard.getPieceType(7, 3)).to.be.null;
+        it('return object if piece is king', () => {
+            expect(typeof jboard._getMovesKing(1, 0)).to.be.equal('object');
+            expect(typeof jboard._getMovesKing(2, 2)).to.be.equal('object');
+        })
+
+        it('return null if piece isn\'t king', () => {
+            expect(jboard._getMovesKing(0, 1)).to.be.null;
+            expect(jboard._getMovesKing(3, 3)).to.be.null;
+        })
+
+        it('return two squares for white king', () => {
+            let moves = jboard._getMovesKing(4, 0);
+
+            expect(moves[0].file).to.be.equal(5);
+            expect(moves[0].rank).to.be.equal(1);
+            expect(moves[1].file).to.be.equal(5);
+            expect(moves[1].rank).to.be.equal(0);
+            expect(moves[2].file).to.be.equal(3);
+            expect(moves[2].rank).to.be.equal(1);
+
+            expect(moves[3]).to.be.undefined;
+        })
+    })
+
+    /*
+     *   ROOK MOVES
+     */
+
+    describe('_getMovesRook', () => {
+
+        let jboard;
+
+        before(() => {
+            jboard = new JBoard;
+            jboard.setUpPosition(TEST_POSITION);
+        })
+
+        it('return null if arguments aren\'t correct', () => {
+            expect(jboard._getMovesRook(0, 8)).to.be.null;
+            expect(jboard._getMovesRook(8, 0)).to.be.null;
+            expect(jboard._getMovesRook(-1, 0)).to.be.null;
+            expect(jboard._getMovesRook(0, -1)).to.be.null;
+        })
+
+        it('return object if piece is rook', () => {
+            expect(typeof jboard._getMovesRook(1, 0)).to.be.equal('object');
+            expect(typeof jboard._getMovesRook(2, 2)).to.be.equal('object');
+        })
+
+        it('return null if piece isn\'t rook', () => {
+            expect(jboard._getMovesRook(0, 1)).to.be.null;
+            expect(jboard._getMovesRook(3, 3)).to.be.null;
+        })
+
+        it('return two squares for rook h8', () => {
+            let moves = jboard._getMovesRook(7, 7);
+
+            expect(moves[0].file).to.be.equal(7);
+            expect(moves[0].rank).to.be.equal(6);
+            expect(moves[1].file).to.be.equal(7);
+            expect(moves[1].rank).to.be.equal(5);
+            expect(moves[2].file).to.be.equal(7);
+            expect(moves[2].rank).to.be.equal(4);
+            expect(moves[3].file).to.be.equal(6);
+            expect(moves[3].rank).to.be.equal(7);
+            expect(moves[4].file).to.be.equal(5);
+            expect(moves[4].rank).to.be.equal(7);
+
+            expect(moves[5]).to.be.undefined;
+        })
+    })
+
+    /*
+     *   BISHOP MOVES
+     */
+
+    describe('_getMovesBishop', () => {
+
+        let jboard;
+
+        before(() => {
+            jboard = new JBoard;
+            jboard.setUpPosition(TEST_POSITION);
+        })
+
+        it('return null if arguments aren\'t correct', () => {
+            expect(jboard._getMovesBishop(0, 8)).to.be.null;
+            expect(jboard._getMovesBishop(8, 0)).to.be.null;
+            expect(jboard._getMovesBishop(-1, 0)).to.be.null;
+            expect(jboard._getMovesBishop(0, -1)).to.be.null;
+        })
+
+        it('return object if piece is bishop', () => {
+            expect(typeof jboard._getMovesBishop(1, 0)).to.be.equal('object');
+            expect(typeof jboard._getMovesBishop(2, 2)).to.be.equal('object');
+        })
+
+        it('return null if piece isn\'t bishop', () => {
+            expect(jboard._getMovesBishop(0, 1)).to.be.null;
+            expect(jboard._getMovesBishop(3, 3)).to.be.null;
+        })
+
+        it('return two squares for bishop h5', () => {
+            let moves = jboard._getMovesBishop(7, 4);
+
+            expect(moves[0].file).to.be.equal(6);
+            expect(moves[0].rank).to.be.equal(3);
+            expect(moves[1].file).to.be.equal(6);
+            expect(moves[1].rank).to.be.equal(5);
+            expect(moves[2].file).to.be.equal(5);
+            expect(moves[2].rank).to.be.equal(6);
+
+            expect(moves[3]).to.be.undefined;
         })
     })
 
