@@ -29,7 +29,7 @@ export default class JChess {
     }
 
     /*
-     *   GETTER
+     *   GETTERS
      */
 
     getSquare(file, rank) {

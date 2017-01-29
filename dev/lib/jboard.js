@@ -278,6 +278,8 @@ export default class JBoard {
         this.board = [];
         this._initBoard();
         this._paintBoard();
+        this.selectFile = null;
+        this.selectRank = null;
     }
 
     /*
@@ -319,9 +321,22 @@ export default class JBoard {
     }
 
     setUpPosition(pieceSet) {
+        this.resetPosition();
         pieceSet.forEach(
             (item) => {
                 this._setUpPiece(item.file, item.rank, item.piece.type, item.piece.color);
+            }
+        )
+    }
+
+    resetPosition() {
+        this.board.forEach(
+            (item, file) => {
+                item.forEach(
+                    (square, rank) => {
+                        this._setUpPiece(file, rank, null, null);
+                    }
+                )
             }
         )
     }
@@ -330,14 +345,13 @@ export default class JBoard {
         if (!this._validateSquare(file, rank)) return null;
         this.board[file][rank].piece = {
             type: type,
-            color: color,
-            getMoves: this._getMovesPawn
+            color: color
         }
         return true;
     }
 
     /*
-     *   GETTER
+     *   GETTERS
      */
 
     getSquare(file, rank) {
@@ -358,15 +372,46 @@ export default class JBoard {
     }
 
     /*
+     *   SETTERS
+     */
+
+    setPieceType(file, rank, type) {
+        if (!this._validateSquare(file, rank)) return null;
+        this.board[file][rank].piece.type = type;
+        return true;
+    }
+
+    setPieceColor(file, rank, color) {
+        if (!this._validateSquare(file, rank)) return null;
+        this.board[file][rank].piece.color = color;
+        return true;
+    }
+
+    /*
      *   PICK
      */
 
     pickSquare(file, rank) {
         let square = this.getSquare(file, rank);
         if (!square) return null;
+
+        if (this.isSquareMarked(file, rank)) {
+
+            this._doMove(this.selectFile, this.selectRank, file, rank);
+
+            this.selectFile = null;
+            this.selectRank = null;
+            this._resetMarks();
+            this._resetSelect();
+            return true;
+        }
+
         this._resetSelect()
         square.selected = true;
+        this.selectFile = file;
+        this.selectRank = rank;
         this._markMoves(file, rank);
+
         return true;
     }
 
@@ -422,13 +467,23 @@ export default class JBoard {
         if (!this._validateSquare(file, rank)) return null;
         this._resetMarks();
         if (!!this.getPieceType(file, rank)) {
-            let moves = this._getMovesPawn(file, rank);
+            let moves = this._getMoves(file, rank);
             if (!moves) return null;
             moves.forEach(
                 (item) => {
                     this.board[item.file][item.rank].marked = true;
                 }
             )
+        }
+    }
+
+    _getMoves(file, rank) {
+        switch (this.getPieceType(file, rank)) {
+            case 'pawn':
+                return this._getMovesPawn(file, rank);
+                break;
+            default:
+                return null;
         }
     }
 
@@ -485,6 +540,27 @@ export default class JBoard {
             };
             result.push(move);
         }
+    }
+
+    /*
+     *   MOVE
+     */
+
+    _doMove(startFile, startRank, stopFile, stopRank) {
+        if (!this._validateSquare(startFile, startRank)) return null;
+        if (!this._validateSquare(stopFile, stopRank)) return null;
+        if (!this.getPieceType(startFile, startRank)) return null;
+        if (this.getPieceColor(startFile, startRank) === this.getPieceColor(stopFile, stopRank)) return null;
+
+        let type = this.getPieceType(startFile, startRank);
+        let color = this.getPieceColor(startFile, startRank);
+
+        this.setPieceType(stopFile, stopRank, type);
+        this.setPieceColor(stopFile, stopRank, color);
+        this.setPieceType(startFile, startRank, null);
+        this.setPieceColor(startFile, startRank, null);
+
+        return true;
     }
 
     /*

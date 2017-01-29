@@ -5,11 +5,139 @@
  */
 
 import JBoard from './jboard';
-import {describe, it, before} from 'mocha';
+import {describe, it, before, beforeEach} from 'mocha';
 
 describe('jBoard', () => {
 
     let TEST_POSITION = [
+        {
+            file: 0,
+            rank: 0,
+            piece: {
+                type: 'rook',
+                color: 'white'
+            }
+        },
+        {
+            file: 1,
+            rank: 0,
+            piece: {
+                type: 'knight',
+                color: 'white'
+            }
+        },
+        {
+            file: 2,
+            rank: 0,
+            piece: {
+                type: 'bishop',
+                color: 'white'
+            }
+        },
+        {
+            file: 3,
+            rank: 0,
+            piece: {
+                type: 'queen',
+                color: 'white'
+            }
+        },
+        {
+            file: 4,
+            rank: 0,
+            piece: {
+                type: 'king',
+                color: 'white'
+            }
+        },
+        {
+            file: 5,
+            rank: 0,
+            piece: {
+                type: 'bishop',
+                color: 'white'
+            }
+        },
+        {
+            file: 6,
+            rank: 0,
+            piece: {
+                type: 'knight',
+                color: 'white'
+            }
+        },
+        {
+            file: 7,
+            rank: 0,
+            piece: {
+                type: 'rook',
+                color: 'white'
+            }
+        },
+        {
+            file: 0,
+            rank: 7,
+            piece: {
+                type: 'rook',
+                color: 'black'
+            }
+        },
+        {
+            file: 2,
+            rank: 2,
+            piece: {
+                type: 'knight',
+                color: 'black'
+            }
+        },
+        {
+            file: 2,
+            rank: 7,
+            piece: {
+                type: 'bishop',
+                color: 'black'
+            }
+        },
+        {
+            file: 3,
+            rank: 7,
+            piece: {
+                type: 'queen',
+                color: 'black'
+            }
+        },
+        {
+            file: 4,
+            rank: 7,
+            piece: {
+                type: 'king',
+                color: 'black'
+            }
+        },
+        {
+            file: 5,
+            rank: 7,
+            piece: {
+                type: 'bishop',
+                color: 'black'
+            }
+        },
+        {
+            file: 5,
+            rank: 4,
+            piece: {
+                type: 'knight',
+                color: 'black'
+            }
+        },
+        {
+            file: 7,
+            rank: 7,
+            piece: {
+                type: 'rook',
+                color: 'black'
+            }
+        },
         {
             file: 0,
             rank: 1,
@@ -91,18 +219,34 @@ describe('jBoard', () => {
             }
         },
         {
-            file: 2,
-            rank: 2,
+            file: 0,
+            rank: 6,
             piece: {
-                type: 'knight',
+                type: 'pawn',
+                color: 'black'
+            }
+        },
+        {
+            file: 1,
+            rank: 6,
+            piece: {
+                type: 'pawn',
                 color: 'black'
             }
         },
         {
             file: 5,
-            rank: 4,
+            rank: 6,
             piece: {
-                type: 'knight',
+                type: 'pawn',
+                color: 'black'
+            }
+        },
+        {
+            file: 6,
+            rank: 6,
+            piece: {
+                type: 'pawn',
                 color: 'black'
             }
         }
@@ -256,7 +400,7 @@ describe('jBoard', () => {
     })
     
     /*
-     *   GETTER
+     *   GETTERS
      */
 
     describe('getSquareColor', () => {
@@ -353,6 +497,92 @@ describe('jBoard', () => {
             jboard.getPieceColor(5, 6).should.be.equal('black');
             jboard.getPieceColor(6, 7).should.be.equal('black');
             jboard.getPieceColor(7, 6).should.be.equal('black');
+        })
+    })
+
+    /*
+     *   SETTERS
+     */
+
+    describe('setPieceType', () => {
+
+        let jboard;
+
+        before(() => {
+            jboard = new JBoard;
+        })
+
+        it('return null if arguments aren\'t correct', () => {
+            expect(jboard.setPieceType(0, 8, 'pawn')).to.be.null;
+            expect(jboard.setPieceType(8, 0, 'king')).to.be.null;
+            expect(jboard.setPieceType(-5, 5, 'bishop')).to.be.null;
+            expect(jboard.setPieceType(0, -1, 'queen')).to.be.null;
+        })
+
+        it('return true if setting was successful', () => {
+            expect(jboard.setPieceType(0, 0, 'pawn')).to.be.true;
+            expect(jboard.setPieceType(1, 1, 'knight')).to.be.true;
+            expect(jboard.setPieceType(7, 6, null)).to.be.true;
+            expect(jboard.setPieceType(5, 4, 'bishop')).to.be.true;
+        })
+
+        it('set piece type and check', () => {
+            expect(jboard.getPieceType(1, 2)).to.be.null;
+            jboard.setPieceType(1, 2, 'pawn');
+            expect(jboard.getPieceType(1, 2)).to.be.equal('pawn');
+
+            expect(jboard.getPieceType(2, 4)).to.be.null;
+            jboard.setPieceType(2, 4, 'queen');
+            expect(jboard.getPieceType(2, 4)).to.be.equal('queen');
+
+            expect(jboard.getPieceType(1, 1)).to.be.equal('knight');
+            jboard.setPieceType(1, 1, 'bishop');
+            expect(jboard.getPieceType(1, 1)).to.be.equal('bishop');
+
+            expect(jboard.getPieceType(2, 4)).to.be.equal('queen');
+            jboard.setPieceType(2, 4, 'king');
+            expect(jboard.getPieceType(2, 4)).to.be.equal('king');
+        })
+    })
+
+    describe('setPieceColor', () => {
+
+        let jboard;
+
+        before(() => {
+            jboard = new JBoard;
+        })
+
+        it('return null if arguments aren\'t correct', () => {
+            expect(jboard.setPieceColor(0, 8, 'white')).to.be.null;
+            expect(jboard.setPieceColor(8, 0, 'white')).to.be.null;
+            expect(jboard.setPieceColor(-3, 0, 'black')).to.be.null;
+            expect(jboard.setPieceColor(0, -1, 'black')).to.be.null;
+        })
+
+        it('return true if setting was successful', () => {
+            expect(jboard.setPieceColor(0, 0, 'white')).to.be.true;
+            expect(jboard.setPieceColor(1, 1, 'white')).to.be.true;
+            expect(jboard.setPieceColor(7, 6, null)).to.be.true;
+            expect(jboard.setPieceColor(5, 4, 'black')).to.be.true;
+        })
+
+        it('set piece type and check', () => {
+            expect(jboard.getPieceColor(1, 2)).to.be.null;
+            jboard.setPieceColor(1, 2, 'black');
+            expect(jboard.getPieceColor(1, 2)).to.be.equal('black');
+
+            expect(jboard.getPieceColor(2, 4)).to.be.null;
+            jboard.setPieceColor(2, 4, 'white');
+            expect(jboard.getPieceColor(2, 4)).to.be.equal('white');
+
+            expect(jboard.getPieceColor(1, 1)).to.be.equal('white');
+            jboard.setPieceColor(1, 1, 'black');
+            expect(jboard.getPieceColor(1, 1)).to.be.equal('black');
+
+            expect(jboard.getPieceColor(5, 4)).to.be.equal('black');
+            jboard.setPieceColor(5, 4, 'white');
+            expect(jboard.getPieceColor(5, 4)).to.be.equal('white');
         })
     })
     
@@ -543,6 +773,7 @@ describe('jBoard', () => {
 
         it('return two squares for pawn e2', () => {
             let moves = jboard._getMovesPawn(4, 1);
+
             expect(moves[0].file).to.be.equal(4);
             expect(moves[0].rank).to.be.equal(2);
             expect(moves[1].file).to.be.equal(4);
@@ -552,6 +783,7 @@ describe('jBoard', () => {
 
         it('return only square for pawn c5', () => {
             let moves = jboard._getMovesPawn(2, 4);
+
             expect(moves[0].file).to.be.equal(2);
             expect(moves[0].rank).to.be.equal(3);
             expect(moves[1]).to.be.undefined;
@@ -569,6 +801,7 @@ describe('jBoard', () => {
 
         it('return three squares for pawn b2', () => {
             let moves = jboard._getMovesPawn(1, 1);
+
             expect(moves[0].file).to.be.equal(1);
             expect(moves[0].rank).to.be.equal(2);
             expect(moves[1].file).to.be.equal(1);
@@ -580,6 +813,7 @@ describe('jBoard', () => {
 
         it('return only square for pawn h2', () => {
             let moves = jboard._getMovesPawn(7, 1);
+
             expect(moves[0].file).to.be.equal(7);
             expect(moves[0].rank).to.be.equal(2);
             expect(moves[1]).to.be.undefined;
@@ -587,11 +821,90 @@ describe('jBoard', () => {
 
         it('return two squares for pawn h4', () => {
             let moves = jboard._getMovesPawn(7, 3);
+
             expect(moves[0].file).to.be.equal(7);
             expect(moves[0].rank).to.be.equal(2);
             expect(moves[1].file).to.be.equal(6);
             expect(moves[1].rank).to.be.equal(2);
             expect(moves[2]).to.be.undefined;
+        })
+    })
+
+    /*
+     *   MOVE
+     */
+
+    describe('_doMove', () => {
+
+        let jboard;
+
+        before(() => {
+            jboard = new JBoard;
+
+        })
+
+        beforeEach(() => {
+            jboard.setUpPosition(TEST_POSITION);
+        })
+
+        it('return null if arguments aren\'t correct', () => {
+            expect(jboard._doMove(0, 5, 8, 7)).to.be.null;
+            expect(jboard._doMove(0, -1, 7, 7)).to.be.null;
+            expect(jboard._doMove(0, 0, 6, 9)).to.be.null;
+            expect(jboard._doMove(10, 8, 18, 8)).to.be.null;
+        })
+
+        it('return null if there is no piece on start square', () => {
+            expect(jboard._doMove(0, 2, 4, 3)).to.be.null;
+            expect(jboard._doMove(3, 2, 7, 7)).to.be.null;
+            expect(jboard._doMove(6, 7, 4, 6)).to.be.null;
+            expect(jboard._doMove(5, 5, 2, 0)).to.be.null;
+        })
+
+        it('return null if start piece color equal stop piece color', () => {
+            expect(jboard._doMove(7, 1, 6, 2)).to.be.null;
+            expect(jboard._doMove(2, 0, 1, 1)).to.be.null;
+            expect(jboard._doMove(3, 7, 4, 7)).to.be.null;
+            expect(jboard._doMove(5, 4, 6, 6)).to.be.null;
+        })
+
+        it('return true if move was successful', () => {
+            expect(jboard._doMove(4, 1, 4, 3)).to.be.true;
+            expect(jboard._doMove(2, 4, 2, 3)).to.be.true;
+            expect(jboard._doMove(6, 6, 6, 5)).to.be.true;
+            expect(jboard._doMove(0, 1, 0, 3)).to.be.true;
+        })
+
+        it('check stop square if move was successful', () => {
+            let color = jboard.getPieceColor(0, 1);
+            let type = jboard.getPieceType(0, 1);
+
+            jboard._doMove(0, 1, 0, 3);
+
+            expect(jboard.getPieceColor(0, 3) === color).to.be.true;
+            expect(jboard.getPieceType(0, 3) === type).to.be.true;
+
+            color = jboard.getPieceColor(7, 3);
+            type = jboard.getPieceType(7, 3);
+
+            jboard._doMove(7, 3, 6, 2);
+
+            expect(jboard.getPieceColor(6, 2) === color).to.be.true;
+            expect(jboard.getPieceType(6, 2) === type).to.be.true;
+        })
+
+        it('check start square if move was successful', () => {
+            expect(jboard.getPieceColor(0, 1)).to.be.equal('white');
+            expect(jboard.getPieceType(0, 1)).to.be.equal('pawn');
+            jboard._doMove(0, 1, 0, 3);
+            expect(jboard.getPieceColor(0, 1)).to.be.null;
+            expect(jboard.getPieceType(0, 1)).to.be.null;
+
+            expect(jboard.getPieceColor(7, 3)).to.be.equal('black');
+            expect(jboard.getPieceType(7, 3)).to.be.equal('pawn');
+            jboard._doMove(7, 3, 6, 2);
+            expect(jboard.getPieceColor(7, 3)).to.be.null;
+            expect(jboard.getPieceType(7, 3)).to.be.null;
         })
     })
 
