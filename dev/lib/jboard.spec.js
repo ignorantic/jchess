@@ -446,13 +446,6 @@ describe('jBoard', () => {
             jboard.setUpInitial();
         })
 
-        it('return null if arguments aren\'t correct', () => {
-            expect(jboard.getPieceType(0, 8)).to.be.null;
-            expect(jboard.getPieceType(8, 0)).to.be.null;
-            expect(jboard.getPieceType(-1, 0)).to.be.null;
-            expect(jboard.getPieceType(0, -1)).to.be.null;
-        })
-
         it('return piece type for (0, 0), etc', () => {
             expect(jboard.getPieceType(0, 2)).to.be.null;
             expect(jboard.getPieceType(4, 4)).to.be.null;
@@ -823,21 +816,9 @@ describe('jBoard', () => {
             jboard.setUpPosition(TEST_POSITION);
         })
 
-        it('return null if arguments aren\'t correct', () => {
-            expect(jboard._getMovesPawn(0, 8)).to.be.null;
-            expect(jboard._getMovesPawn(8, 0)).to.be.null;
-            expect(jboard._getMovesPawn(-1, 0)).to.be.null;
-            expect(jboard._getMovesPawn(0, -1)).to.be.null;
-        })
-
         it('return object if piece is pawn', () => {
             expect(typeof jboard._getMovesPawn(1, 1)).to.be.equal('object');
             expect(typeof jboard._getMovesPawn(3, 4)).to.be.equal('object');
-        })
-
-        it('return null if piece isn\'t pawn', () => {
-            expect(jboard._getMovesPawn(2, 2)).to.be.null;
-            expect(jboard._getMovesPawn(5, 4)).to.be.null;
         })
 
         it('return two squares for pawn a2', () => {
@@ -921,21 +902,9 @@ describe('jBoard', () => {
             jboard.setUpPosition(TEST_POSITION);
         })
 
-        it('return null if arguments aren\'t correct', () => {
-            expect(jboard._getMovesKnight(0, 8)).to.be.null;
-            expect(jboard._getMovesKnight(8, 0)).to.be.null;
-            expect(jboard._getMovesKnight(-1, 0)).to.be.null;
-            expect(jboard._getMovesKnight(0, -1)).to.be.null;
-        })
-
         it('return object if piece is knight', () => {
             expect(typeof jboard._getMovesKnight(1, 0)).to.be.equal('object');
             expect(typeof jboard._getMovesKnight(2, 2)).to.be.equal('object');
-        })
-
-        it('return null if piece isn\'t knight', () => {
-            expect(jboard._getMovesKnight(0, 1)).to.be.null;
-            expect(jboard._getMovesKnight(3, 3)).to.be.null;
         })
 
         it('return two squares for knight c3', () => {
@@ -992,21 +961,9 @@ describe('jBoard', () => {
             jboard.setUpPosition(TEST_POSITION);
         })
 
-        it('return null if arguments aren\'t correct', () => {
-            expect(jboard._getMovesKing(0, 8)).to.be.null;
-            expect(jboard._getMovesKing(8, 0)).to.be.null;
-            expect(jboard._getMovesKing(-1, 0)).to.be.null;
-            expect(jboard._getMovesKing(0, -1)).to.be.null;
-        })
-
         it('return object if piece is king', () => {
             expect(typeof jboard._getMovesKing(1, 0)).to.be.equal('object');
             expect(typeof jboard._getMovesKing(2, 2)).to.be.equal('object');
-        })
-
-        it('return null if piece isn\'t king', () => {
-            expect(jboard._getMovesKing(0, 1)).to.be.null;
-            expect(jboard._getMovesKing(3, 3)).to.be.null;
         })
 
         it('return two squares for white king', () => {
@@ -1036,21 +993,9 @@ describe('jBoard', () => {
             jboard.setUpPosition(TEST_POSITION);
         })
 
-        it('return null if arguments aren\'t correct', () => {
-            expect(jboard._getMovesRook(0, 8)).to.be.null;
-            expect(jboard._getMovesRook(8, 0)).to.be.null;
-            expect(jboard._getMovesRook(-1, 0)).to.be.null;
-            expect(jboard._getMovesRook(0, -1)).to.be.null;
-        })
-
         it('return object if piece is rook', () => {
             expect(typeof jboard._getMovesRook(1, 0)).to.be.equal('object');
             expect(typeof jboard._getMovesRook(2, 2)).to.be.equal('object');
-        })
-
-        it('return null if piece isn\'t rook', () => {
-            expect(jboard._getMovesRook(0, 1)).to.be.null;
-            expect(jboard._getMovesRook(3, 3)).to.be.null;
         })
 
         it('return two squares for rook h8', () => {
@@ -1084,21 +1029,9 @@ describe('jBoard', () => {
             jboard.setUpPosition(TEST_POSITION);
         })
 
-        it('return null if arguments aren\'t correct', () => {
-            expect(jboard._getMovesBishop(0, 8)).to.be.null;
-            expect(jboard._getMovesBishop(8, 0)).to.be.null;
-            expect(jboard._getMovesBishop(-1, 0)).to.be.null;
-            expect(jboard._getMovesBishop(0, -1)).to.be.null;
-        })
-
         it('return object if piece is bishop', () => {
             expect(typeof jboard._getMovesBishop(1, 0)).to.be.equal('object');
             expect(typeof jboard._getMovesBishop(2, 2)).to.be.equal('object');
-        })
-
-        it('return null if piece isn\'t bishop', () => {
-            expect(jboard._getMovesBishop(0, 1)).to.be.null;
-            expect(jboard._getMovesBishop(3, 3)).to.be.null;
         })
 
         it('return two squares for bishop h5', () => {
