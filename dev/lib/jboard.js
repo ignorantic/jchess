@@ -397,6 +397,7 @@ export default class JBoard {
                 this.board[i][j] = {
                     selected: false,
                     marked: false,
+                    enPassant: false,
                     piece: {
                         type: null,
                         color: null
@@ -475,6 +476,10 @@ export default class JBoard {
         return this.getSquare(file, rank) && this.getSquare(file, rank).piece.color;
     }
 
+    _getEnPassant(file, rank) {
+        return this.getSquare(file, rank) && this.getSquare(file, rank).enPassant;
+    }
+
     /*
      *   SETTERS
      */
@@ -491,6 +496,12 @@ export default class JBoard {
         return true;
     }
 
+    _setEnPassant(file, rank, value) {
+        if (!this._validateSquare(file, rank)) return null;
+        this.board[file][rank].enPassant = value;
+        return true;
+    }
+
     /*
      *   PICK
      */
@@ -501,20 +512,35 @@ export default class JBoard {
 
         if (this.isSquareMarked(file, rank)) {
 
+            if (this._getEnPassant(file, rank)) {
+                this.setPieceType(file, this.selectRank, null);
+                this.setPieceColor(file, this.selectRank, null);
+            }
+
+            this._resetEnPassant();
+
+            if ((this.getPieceType(this.selectFile, this.selectRank) == 'pawn') &&
+                (Math.abs(rank - this.selectRank) == 2)) {
+                let passRank = (rank + this.selectRank) / 2;
+                this._setEnPassant(file,  passRank,  true);
+            }
+
             this._doMove(this.selectFile, this.selectRank, file, rank);
 
             this.selectFile = null;
             this.selectRank = null;
             this._resetMarks();
             this._resetSelect();
-            return true;
-        }
 
-        this._resetSelect()
-        square.selected = true;
-        this.selectFile = file;
-        this.selectRank = rank;
-        this._markMoves(file, rank);
+        } else {
+
+            this._resetSelect()
+            square.selected = true;
+            this.selectFile = file;
+            this.selectRank = rank;
+            this._markMoves(file, rank);
+
+        }
 
         return true;
     }
@@ -551,6 +577,18 @@ export default class JBoard {
                 file.forEach(
                     (square) => {
                         square.marked = false;
+                    }
+                )
+            }
+        )
+    }
+
+    _resetEnPassant() {
+        this.board.forEach(
+            (file) => {
+                file.forEach(
+                    (square) => {
+                        square.enPassant = false;
                     }
                 )
             }
@@ -632,7 +670,7 @@ export default class JBoard {
     }
 
     /*
-     *   PAWN MOVES
+     *   GET PAWN MOVES
      */
 
     _getMovesPawn(file, rank) {
@@ -664,12 +702,12 @@ export default class JBoard {
         targetRank = rank + moveDirection;
 
         targetFile = file - 1;
-        if (this._isFoe(pawnColor, targetFile, targetRank)) {
+        if (this._isFoe(pawnColor, targetFile, targetRank) || (this._isEnPassant(targetFile, targetRank))) {
             this._pushMove(result, targetFile, targetRank);
         }
 
         targetFile = file + 1;
-        if (this._isFoe(pawnColor, targetFile, targetRank)) {
+        if (this._isFoe(pawnColor, targetFile, targetRank) || (this._isEnPassant(targetFile, targetRank))) {
             this._pushMove(result, targetFile, targetRank);
         }
 
@@ -679,7 +717,7 @@ export default class JBoard {
     }
 
     /*
-     *   KNIGHT MOVES
+     *   GET KNIGHT MOVES
      */
 
     _getMovesKnight(file, rank) {
@@ -690,7 +728,7 @@ export default class JBoard {
     }
 
     /*
-     *   KING MOVES
+     *   GET KING MOVES
      */
 
     _getMovesKing(file, rank) {
@@ -701,7 +739,7 @@ export default class JBoard {
     }
 
     /*
-     *   ROOK MOVES
+     *   GET ROOK MOVES
      */
 
     _getMovesRook(file, rank) {
@@ -712,7 +750,7 @@ export default class JBoard {
     }
 
     /*
-     *   BISHOP MOVES
+     *   GET BISHOP MOVES
      */
 
     _getMovesBishop(file, rank) {
@@ -723,7 +761,7 @@ export default class JBoard {
     }
 
     /*
-     *   QUEEN MOVES
+     *   GET QUEEN MOVES
      */
 
     _getMovesQueen(file, rank) {
@@ -734,7 +772,7 @@ export default class JBoard {
     }
 
     /*
-     *   PiECE MOVES
+     *   GET PIECE MOVES
      */
 
     _getMovesPiece(file, rank, pattern, count) {
@@ -794,5 +832,10 @@ export default class JBoard {
          if (!this._validateSquare(file, rank)) return null;
          if (!this.getPieceType(file, rank)) return false;
          return (color != this.getPieceColor(file, rank));
+    }
+
+     _isEnPassant(file, rank) {
+         if (!this._validateSquare(file, rank)) return null;
+         return (this._getEnPassant(file, rank));
     }
 }

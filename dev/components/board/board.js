@@ -38,6 +38,9 @@ function drawBoard(jchess) {
         if (squares[i].dataset.marked != jchess.isSquareMarked(file, rank)) {
             drawSquare(squares[i], jchess, file, rank)
         }
+        if (squares[i].dataset.piece != jchess.getPieceType(file, rank)) {
+            drawSquare(squares[i], jchess, file, rank)
+        }
     }
     return true;
 }

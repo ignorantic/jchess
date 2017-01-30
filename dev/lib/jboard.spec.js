@@ -630,6 +630,15 @@ describe('jBoard', () => {
             jboard.isSquareMarked(0, 4).should.be.false;
             jboard.isSquareMarked(1, 2).should.be.false;
         })
+
+        it('check en passant rule', () => {
+            jboard.getPieceType(1, 6).should.be.equal('pawn');
+            expect(jboard._getEnPassant(1, 5)).to.be.false;
+            jboard.pickSquare(1, 6);
+            jboard.pickSquare(1, 4);
+            expect(jboard.getPieceType(1, 6)).to.be.null;
+            expect(jboard._getEnPassant(1, 5)).to.be.true;
+        })
     })
 
     /*
