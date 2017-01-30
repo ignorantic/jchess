@@ -269,110 +269,112 @@ export default class JBoard {
             }
         }
     ];
-    static KNIGHT_MOVES = [
-        {
-            file: 1,
-            rank: 2
-        },
-        {
-            file: 2,
-            rank: 1
-        },
-        {
-            file: 2,
-            rank: -1
-        },
-        {
-            file: 1,
-            rank: -2
-        },
-        {
-            file: -1,
-            rank: -2
-        },
-        {
-            file: -2,
-            rank: -1
-        },
-        {
-            file: -2,
-            rank: 1
-        },
-        {
-            file: -1,
-            rank: 2
-        }
-    ];
-    static KING_MOVES = [
-        {
-            file: 0,
-            rank: 1
-        },
-        {
-            file: 1,
-            rank: 1
-        },
-        {
-            file: 1,
-            rank: 0
-        },
-        {
-            file: 1,
-            rank: -1
-        },
-        {
-            file: 0,
-            rank: -1
-        },
-        {
-            file: -1,
-            rank: -1
-        },
-        {
-            file: -1,
-            rank: 0
-        },
-        {
-            file: -1,
-            rank: 1
-        }
-    ];
-    static ROOK_MOVES = [
-        {
-            file: 0,
-            rank: 1
-        },
-        {
-            file: 1,
-            rank: 0
-        },
-        {
-            file: 0,
-            rank: -1
-        },
-        {
-            file: -1,
-            rank: 0
-        }
-    ];
-    static BISHOP_MOVES = [
-        {
-            file: 1,
-            rank: 1
-        },
-        {
-            file: 1,
-            rank: -1
-        },
-        {
-            file: -1,
-            rank: -1
-        },
-        {
-            file: -1,
-            rank: 1
-        }
-    ];
+    static MOVES = {
+        knight: [
+            {
+                file: 1,
+                rank: 2
+            },
+            {
+                file: 2,
+                rank: 1
+            },
+            {
+                file: 2,
+                rank: -1
+            },
+            {
+                file: 1,
+                rank: -2
+            },
+            {
+                file: -1,
+                rank: -2
+            },
+            {
+                file: -2,
+                rank: -1
+            },
+            {
+                file: -2,
+                rank: 1
+            },
+            {
+                file: -1,
+                rank: 2
+            }
+        ],
+        rook: [
+            {
+                file: 0,
+                rank: 1
+            },
+            {
+                file: 1,
+                rank: 0
+            },
+            {
+                file: 0,
+                rank: -1
+            },
+            {
+                file: -1,
+                rank: 0
+            }
+        ],
+        bishop: [
+            {
+                file: 1,
+                rank: 1
+            },
+            {
+                file: 1,
+                rank: -1
+            },
+            {
+                file: -1,
+                rank: -1
+            },
+            {
+                file: -1,
+                rank: 1
+            }
+        ],
+        king: [
+            {
+                file: 0,
+                rank: 1
+            },
+            {
+                file: 1,
+                rank: 1
+            },
+            {
+                file: 1,
+                rank: 0
+            },
+            {
+                file: 1,
+                rank: -1
+            },
+            {
+                file: 0,
+                rank: -1
+            },
+            {
+                file: -1,
+                rank: -1
+            },
+            {
+                file: -1,
+                rank: 0
+            },
+            {
+                file: -1,
+                rank: 1
+            }
+        ]
+    }
 
     /*
      *   CONSTRUCTOR
@@ -397,7 +399,6 @@ export default class JBoard {
                 this.board[i][j] = {
                     selected: false,
                     marked: false,
-                    enPassant: false,
                     piece: {
                         type: null,
                         color: null
@@ -477,7 +478,7 @@ export default class JBoard {
     }
 
     _getEnPassant(file, rank) {
-        return this.getSquare(file, rank) && this.getSquare(file, rank).enPassant;
+        return this.getSquare(file, rank) && this.getSquare(file, rank).piece.enPassant;
     }
 
     /*
@@ -498,7 +499,7 @@ export default class JBoard {
 
     _setEnPassant(file, rank, value) {
         if (!this._validateSquare(file, rank)) return null;
-        this.board[file][rank].enPassant = value;
+        this.board[file][rank].piece.enPassant = value;
         return true;
     }
 
@@ -588,7 +589,7 @@ export default class JBoard {
             (file) => {
                 file.forEach(
                     (square) => {
-                        square.enPassant = false;
+                        square.piece.enPassant == true && delete(square.piece.enPassant);
                     }
                 )
             }
@@ -724,7 +725,7 @@ export default class JBoard {
         if (!this._validateSquare(file, rank)) return null;
         if (!(this.getPieceType(file, rank) === 'knight')) return null;
 
-        return this._getMovesPiece(file, rank, JBoard.KNIGHT_MOVES, 1);
+        return this._getMovesPiece(file, rank, JBoard.MOVES.knight, 1);
     }
 
     /*
@@ -735,7 +736,7 @@ export default class JBoard {
         if (!this._validateSquare(file, rank)) return null;
         if (!(this.getPieceType(file, rank) === 'king')) return null;
 
-        return this._getMovesPiece(file, rank, JBoard.KING_MOVES, 1);
+        return this._getMovesPiece(file, rank, JBoard.MOVES.king, 1);
     }
 
     /*
@@ -746,7 +747,7 @@ export default class JBoard {
         if (!this._validateSquare(file, rank)) return null;
         if (!(this.getPieceType(file, rank) === 'rook')) return null;
 
-        return this._getMovesPiece(file, rank, JBoard.ROOK_MOVES, 7);
+        return this._getMovesPiece(file, rank, JBoard.MOVES.rook, 7);
     }
 
     /*
@@ -757,7 +758,7 @@ export default class JBoard {
         if (!this._validateSquare(file, rank)) return null;
         if (!(this.getPieceType(file, rank) === 'bishop')) return null;
 
-        return this._getMovesPiece(file, rank, JBoard.BISHOP_MOVES, 7);
+        return this._getMovesPiece(file, rank, JBoard.MOVES.bishop, 7);
     }
 
     /*
@@ -768,7 +769,7 @@ export default class JBoard {
         if (!this._validateSquare(file, rank)) return null;
         if (!(this.getPieceType(file, rank) === 'queen')) return null;
 
-        return this._getMovesPiece(file, rank, JBoard.KING_MOVES, 7);
+        return this._getMovesPiece(file, rank, JBoard.MOVES.king, 7);
     }
 
     /*
