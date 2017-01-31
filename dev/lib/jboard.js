@@ -679,7 +679,7 @@ export default class JBoard {
     }
 
     /*
-     *   MARK
+     *   MARK MOVES
      */
 
     _resetMarks() {
@@ -705,10 +705,6 @@ export default class JBoard {
         return square.marked;
 
     }
-
-    /*
-     *   MARK MOVES
-     */
 
     _markMoves(file, rank) {
 
@@ -842,7 +838,17 @@ export default class JBoard {
      */
 
     _getMovesKing(file, rank) {
-        return this._getMovesPiece(file, rank);
+
+        let moves = this._getMovesPiece(file, rank);
+        let color = this.getPieceColor(file, rank);
+
+        return moves.filter(
+
+            (item) => {
+                return !(this._isSquareAttacked(color, item.file, item.rank));
+            }
+
+        )
     }
 
     /*
@@ -875,34 +881,50 @@ export default class JBoard {
 
     _getMovesPiece(file, rank) {
 
-        let pieceType = this.getPieceType(file, rank);
-        let pieceColor = this.getPieceColor(file, rank);
-        let moves = JBoard.MOVES[pieceType];
-        let count = (pieceType == 'king' || pieceType == 'knight') ? 1 : 7;
+        let piece = this.getPieceType(file, rank);
+        let color = this.getPieceColor(file, rank);
+
+        return this._getAttackedSquares(piece, color, file, rank);
+
+    }
+
+    _getAttackedSquares(piece, color, file, rank) {
+
+        let moves = JBoard.MOVES[piece];
+        let count = (piece == 'king' || piece == 'knight') ? 1 : 7;
         let result = [];
 
         moves.forEach((item) => {
             let i = 0;
             while (i < count) {
+
                 i++;
                 let targetFile = file + i * item.file;
                 let targetRank = rank + i * item.rank;
+
                 if (this._validateSquare(targetFile, targetRank)) {
-                    if (!this._isFriend(pieceColor, targetFile, targetRank)) {
-                        this._pushMove(result, targetFile, targetRank)
-                    } else {
+
+                    if (this._isFriend(color, targetFile, targetRank)) {
+
                         break;
+
+                    } else {
+
+                        this._pushMove(result, targetFile, targetRank)
                     }
+
                 } else {
+
                     break;
+
                 }
-                if (this._isFoe(pieceColor, targetFile, targetRank)) break;
+
+                if (this._isFoe(color, targetFile, targetRank)) break;
             }
         })
 
         if (result.length > 0) return result;
         return null;
-
     }
 
     /*
@@ -940,6 +962,92 @@ export default class JBoard {
          if (!this._validateSquare(file, rank)) return null;
          if (!this.getPieceType(file, rank)) return false;
          return (color != this.getPieceColor(file, rank));
+
+    }
+
+    _isSquareAttacked(color, file, rank) {
+
+        if (!this._validateSquare(file, rank)) return null;
+
+        let result = false;
+
+        if (this._isSquareAttackedByPawn(color, file, rank)) {
+
+            result = true;
+
+        } else {
+
+            let pieces = ['rook', 'knight', 'bishop', 'queen', 'king'];
+
+            pieces.forEach((type) => {
+
+                let squares = this._getAttackedSquares(type, color, file, rank);
+
+                squares && squares.forEach(
+                    (item) => {
+
+                        if (this.getPieceType(item.file, item.rank) == type) result = true;
+
+                    }
+                )
+
+            })
+
+        }
+
+        return result;
+
+    }
+
+    _isSquareAttackedByPawn(color, file, rank) {
+
+        if (!this._validateSquare(file, rank)) return null;
+
+        let targetRank = (color == 'white') ? rank + 1 : rank - 1;
+        let targetFile = [file - 1, file + 1];
+
+        let result = targetFile.filter(
+            (item) => this.getPieceType(item, targetRank) == 'pawn' && this._isFoe(color, item, targetRank)
+
+        )
+
+        return result.length > 0;
+
+    }
+
+    _isCheck(color) {
+
+        switch (color) {
+
+            case 'white':
+                return false;
+                break;
+
+            case 'black':
+                return false;
+                break;
+
+            default:
+                return null
+
+        }
+
+    }
+
+    _getKing(color) {
+
+        if (color != 'white' && color != 'black') return null;
+
+        for (let file = 0; file < 8; file++) {
+            for (let rank = 0; rank < 8; rank++) {
+                if (this.getPieceType(file, rank) == 'king' && this.getPieceColor(file, rank) == color) {
+                    return {
+                        file: file,
+                        rank: rank
+                    }
+                }
+            }
+        }
 
     }
 

@@ -13,27 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
         {
-            file: 1,
-            rank: 0,
-            piece: {
-                type: 'knight',
-                color: 'white'
-            }
-        },
-        {
-            file: 2,
-            rank: 0,
-            piece: {
-                type: 'bishop',
-                color: 'white'
-            }
-        },
-        {
             file: 3,
             rank: 0,
             piece: {
-                type: 'queen',
-                color: 'white'
+                type: 'knight',
+                color: 'black'
             }
         },
         {
@@ -41,22 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
             rank: 0,
             piece: {
                 type: 'king',
-                color: 'white'
-            }
-        },
-        {
-            file: 7,
-            rank: 4,
-            piece: {
-                type: 'bishop',
-                color: 'white'
-            }
-        },
-        {
-            file: 5,
-            rank: 2,
-            piece: {
-                type: 'knight',
                 color: 'white'
             }
         },
@@ -77,51 +45,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
         {
-            file: 2,
-            rank: 2,
+            file: 4,
+            rank: 7,
             piece: {
-                type: 'knight',
+                type: 'king',
                 color: 'black'
             }
         },
         {
-            file: 0,
+            file: 3,
             rank: 5,
             piece: {
                 type: 'bishop',
-                color: 'black'
-            }
-        },
-        {
-            file: 3,
-            rank: 3,
-            piece: {
-                type: 'queen',
-                color: 'black'
-            }
-        },
-        {
-            file: 4,
-            rank: 7,
-            piece: {
-                type: 'king',
-                color: 'black'
-            }
-        },
-        {
-            file: 0,
-            rank: 4,
-            piece: {
-                type: 'bishop',
-                color: 'black'
-            }
-        },
-        {
-            file: 5,
-            rank: 4,
-            piece: {
-                type: 'knight',
-                color: 'black'
+                color: 'white'
             }
         },
         {
@@ -132,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 color: 'black'
             }
         },
+
         {
             file: 0,
             rank: 1,
@@ -149,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
         {
-            file: 4,
+            file: 2,
             rank: 1,
             piece: {
                 type: 'pawn',
@@ -158,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             file: 5,
-            rank: 3,
+            rank: 1,
             piece: {
                 type: 'pawn',
                 color: 'white'
@@ -166,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             file: 6,
-            rank: 2,
+            rank: 1,
             piece: {
                 type: 'pawn',
                 color: 'white'
@@ -178,38 +115,6 @@ document.addEventListener('DOMContentLoaded', () => {
             piece: {
                 type: 'pawn',
                 color: 'white'
-            }
-        },
-        {
-            file: 3,
-            rank: 4,
-            piece: {
-                type: 'pawn',
-                color: 'white'
-            }
-        },
-        {
-            file: 3,
-            rank: 5,
-            piece: {
-                type: 'pawn',
-                color: 'white'
-            }
-        },
-        {
-            file: 2,
-            rank: 4,
-            piece: {
-                type: 'pawn',
-                color: 'black'
-            }
-        },
-        {
-            file: 7,
-            rank: 3,
-            piece: {
-                type: 'pawn',
-                color: 'black'
             }
         },
         {
@@ -238,6 +143,14 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             file: 6,
+            rank: 6,
+            piece: {
+                type: 'pawn',
+                color: 'black'
+            }
+        },
+        {
+            file: 7,
             rank: 6,
             piece: {
                 type: 'pawn',
