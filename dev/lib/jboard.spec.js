@@ -1202,7 +1202,7 @@ describe('jBoard', () => {
     })
 
     /*
-     *   MOVE
+     *   DO MOVE
      */
 
     describe('_doMove', () => {
@@ -1287,6 +1287,57 @@ describe('jBoard', () => {
             jboard._doMove(7, 3, 6, 2);
             expect(jboard.getPieceColor(7, 3)).to.be.null;
             expect(jboard.getPieceType(7, 3)).to.be.null;
+
+        })
+    })
+
+    /*
+     *   CHECK MOVE
+     */
+
+    describe('_checkMove', () => {
+
+        let jboard;
+
+        before(() => {
+            jboard = new JBoard;
+
+        })
+
+        beforeEach(() => {
+            jboard.setUpPosition(TEST_POSITION);
+        })
+
+        it('return false if arguments aren\'t correct', () => {
+
+            expect(jboard._checkMove(0, 5, 8, 7)).to.be.null;
+            expect(jboard._checkMove(0, -1, 7, 7)).to.be.null;
+            expect(jboard._checkMove(0, 0, 6, 9)).to.be.null;
+            expect(jboard._checkMove(10, 8, 18, 8)).to.be.null;
+
+        })
+
+        it('return false if there is no piece on start square', () => {
+
+            expect(jboard._checkMove(0, 2, 4, 3)).to.be.null;
+            expect(jboard._checkMove(3, 2, 7, 7)).to.be.null;
+            expect(jboard._checkMove(6, 7, 4, 6)).to.be.null;
+            expect(jboard._checkMove(5, 5, 2, 0)).to.be.null;
+
+        })
+
+        it('return true if move is legal', () => {
+
+            expect(jboard._checkMove(4, 1, 4, 3)).to.be.true;
+            expect(jboard._checkMove(2, 4, 2, 3)).to.be.true;
+            expect(jboard._checkMove(6, 6, 6, 5)).to.be.true;
+            expect(jboard._checkMove(0, 1, 0, 3)).to.be.true;
+
+        })
+
+        it('return false if move is illegal', () => {
+
+            expect(jboard._checkMove(5, 6, 5, 5)).to.be.false;
 
         })
     })
@@ -1497,19 +1548,6 @@ describe('jBoard', () => {
 
         })
 
-        it('return two squares for black king', () => {
-
-            let moves = jboard._getMovesKing(4, 7);
-
-            expect(moves[0].file).to.be.equal(3);
-            expect(moves[0].rank).to.be.equal(6);
-
-            expect(moves[1].file).to.be.equal(3);
-            expect(moves[1].rank).to.be.equal(7);
-
-            expect(moves[2]).to.be.undefined;
-
-        })
     })
 
     /*
@@ -1803,13 +1841,44 @@ describe('jBoard', () => {
 
         before(() => {
             jboard = new JBoard;
-            jboard.setUpPosition(CASTLING_POSITION);
+        })
+
+        beforeEach(() => {
+            jboard.setUpPosition(TEST_POSITION);
         })
 
         it('return false if square isn\'t correct', () => {
 
             expect(jboard._isCheck('red')).to.be.null;
             expect(jboard._isCheck('green')).to.be.null;
+
+        })
+
+        it('both kings are not in check', () => {
+
+            expect(jboard._isCheck('white')).to.be.false;
+            expect(jboard._isCheck('black')).to.be.false;
+
+        })
+
+        it('white king is in check by queen', () => {
+
+            jboard._doMove(3, 3, 5, 1);
+            expect(jboard._isCheck('white')).to.be.true;
+
+        })
+
+        it('white king is in discovered check by bishop', () => {
+
+            jboard._doMove(2, 2, 3, 5);
+            expect(jboard._isCheck('white')).to.be.true;
+
+        })
+
+        it('black king is in check by pawn', () => {
+
+            jboard._doMove(3, 5, 3, 6);
+            expect(jboard._isCheck('black')).to.be.true;
 
         })
 
@@ -1834,7 +1903,6 @@ describe('jBoard', () => {
         it('return white king position', () => {
 
             let square = jboard._getKing('white');
-            console.log(square)
 
             expect(square.file).to.be.equal(4);
             expect(square.rank).to.be.equal(0);
@@ -1848,6 +1916,37 @@ describe('jBoard', () => {
             expect(square.file).to.be.equal(4);
             expect(square.rank).to.be.equal(7);
 
+        })
+
+    })
+
+    describe('_cloneBoard', () => {
+
+        let jboard;
+        let newBoard
+
+        before(() => {
+            jboard = new JBoard;
+            jboard.setUpPosition(CASTLING_POSITION);
+            newBoard = jboard._cloneBoard(jboard);
+        })
+
+        it('check white rook position on new board', () => {
+            expect(newBoard.getPieceType(0, 0)).to.be.equal('rook');
+        })
+
+        it('check white rook position on new board after move on source board', () => {
+            expect(jboard.getPieceType(0, 0)).to.be.equal('rook');
+            jboard._doMove(0, 0, 1, 0);
+            expect(jboard.getPieceType(0, 0)).to.be.null;
+            expect(newBoard.getPieceType(0, 0)).to.be.equal('rook');
+        })
+
+        it('check black rook position on source board after move on new board', () => {
+            expect(newBoard.getPieceType(0, 7)).to.be.equal('rook');
+            newBoard._doMove(0, 7, 1, 7);
+            expect(newBoard.getPieceType(0, 7)).to.be.null;
+            expect(jboard.getPieceType(0, 7)).to.be.equal('rook');
         })
 
     })

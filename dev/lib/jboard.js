@@ -449,7 +449,7 @@ export default class JBoard {
                         type: null,
                         color: null
                     }
-                };
+                }
             }
         }
 
@@ -562,13 +562,7 @@ export default class JBoard {
 
         if (piece == 'pawn') {
 
-            if (this._isEnPassant(file, rank)) {
-
-                this.setPieceType(file, this.selectRank, null);
-                this.setPieceColor(file, this.selectRank, null);
-
-            }
-
+            this._isEnPassant(file, rank) && this._removePiece(file, this.selectRank);
             this._setEnPassant(null);
 
             let color = this.getPieceColor(this.selectFile, this.selectRank);
@@ -599,8 +593,10 @@ export default class JBoard {
     _setEnPassant(file, rank) {
 
         if (!this._validateSquare(file, rank) || (rank != 2 && rank != 5)) {
+
             this.enPassant = null;
             return false;
+
         }
 
         this.enPassant = {
@@ -710,7 +706,9 @@ export default class JBoard {
 
         if (!this._validateSquare(file, rank)) return null;
         this._resetMarks();
+
         if (!!this.getPieceType(file, rank)) {
+
             let moves = this._getMoves(file, rank);
             if (!moves) return null;
             moves.forEach(
@@ -718,6 +716,7 @@ export default class JBoard {
                     this.board[item.file][item.rank].marked = true;
                 }
             )
+
         }
 
     }
@@ -730,28 +729,43 @@ export default class JBoard {
 
         if (!this._validateSquare(file, rank)) return null;
 
+        let result;
+
         switch (this.getPieceType(file, rank)) {
+
             case 'pawn':
-                return this._getMovesPawn(file, rank);
+                result = this._getMovesPawn(file, rank);
                 break;
+
             case 'knight':
-                return this._getMovesKnight(file, rank);
+                result = this._getMovesKnight(file, rank);
                 break;
+
             case 'king':
-                return this._getMovesKing(file, rank);
+                result = this._getMovesKing(file, rank);
                 break;
+
             case 'rook':
-                return this._getMovesRook(file, rank);
+                result = this._getMovesRook(file, rank);
                 break;
+
             case 'bishop':
-                return this._getMovesBishop(file, rank);
+                result = this._getMovesBishop(file, rank);
                 break;
+
             case 'queen':
-                return this._getMovesQueen(file, rank);
+                result = this._getMovesQueen(file, rank);
                 break;
-            default:
-                return null;
+
         }
+
+        if (!result) return null;
+
+        return result.filter(
+            (item) => {
+                return this._checkMove(file, rank, item.file, item.rank);
+            }
+        )
 
     }
 
@@ -773,10 +787,29 @@ export default class JBoard {
 
         this.setPieceType(stopFile, stopRank, type);
         this.setPieceColor(stopFile, stopRank, color);
-        this.setPieceType(startFile, startRank, null);
-        this.setPieceColor(startFile, startRank, null);
+        this._removePiece(startFile, startRank);
 
         return true;
+
+    }
+
+    /*
+     *   CHECK MOVE
+     */
+
+    _checkMove(startFile, startRank, stopFile, stopRank) {
+
+        let checkBoard = this._cloneBoard(this);
+
+        if (checkBoard._doMove(startFile, startRank, stopFile, stopRank)) {
+
+            return !checkBoard._isCheck(this.getPieceColor(startFile, startRank));
+
+        } else {
+
+            return null;
+
+        }
 
     }
 
@@ -838,17 +871,7 @@ export default class JBoard {
      */
 
     _getMovesKing(file, rank) {
-
-        let moves = this._getMovesPiece(file, rank);
-        let color = this.getPieceColor(file, rank);
-
-        return moves.filter(
-
-            (item) => {
-                return !(this._isSquareAttacked(color, item.file, item.rank));
-            }
-
-        )
+        return this._getMovesPiece(file, rank);
     }
 
     /*
@@ -885,7 +908,6 @@ export default class JBoard {
         let color = this.getPieceColor(file, rank);
 
         return this._getAttackedSquares(piece, color, file, rank);
-
     }
 
     _getAttackedSquares(piece, color, file, rank) {
@@ -1017,21 +1039,13 @@ export default class JBoard {
 
     _isCheck(color) {
 
-        switch (color) {
+        let king = this._getKing(color);
 
-            case 'white':
-                return false;
-                break;
-
-            case 'black':
-                return false;
-                break;
-
-            default:
-                return null
-
+        if (king) {
+            return this._isSquareAttacked(color, king.file, king.rank)
         }
 
+        return null;
     }
 
     _getKing(color) {
@@ -1048,6 +1062,46 @@ export default class JBoard {
                 }
             }
         }
+
+    }
+
+    _removePiece(file, rank) {
+
+        this.setPieceType(file, rank, null);
+        this.setPieceColor(file, rank, null);
+
+    }
+
+    _cloneBoard(src) {
+
+        let newBoard = new JBoard;
+
+        if (src.enPassant) {
+
+            newBoard.enPassant.file = src.enPassant.file;
+            newBoard.enPassant.rank = src.enPassant.rank;
+
+        } else {
+
+            newBoard.enPassant = null;
+
+        }
+
+        newBoard.castling = {
+            white: src.castling.white,
+            black: src.castling.black
+        }
+
+        for (let file = 0; file < 8; file++) {
+            for (let rank = 0; rank < 8; rank++) {
+
+                newBoard.board[file][rank].piece.type = src.board[file][rank].piece.type;
+                newBoard.board[file][rank].piece.color = src.board[file][rank].piece.color;
+
+            }
+        }
+
+        return newBoard;
 
     }
 
