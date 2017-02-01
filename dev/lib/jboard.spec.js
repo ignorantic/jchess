@@ -1393,14 +1393,14 @@ describe('jBoard', () => {
         it('return null for pawn d5', () => {
 
             let moves = jboard._getMovesPawn(3, 4);
-            expect(moves).to.be.null;
+            expect(moves[0]).to.be.undefined;
 
         })
 
         it('return null for pawn f4', () => {
 
             let moves = jboard._getMovesPawn(5, 3);
-            expect(moves).to.be.null;
+            expect(moves[0]).to.be.undefined;
 
         })
 
@@ -1447,75 +1447,6 @@ describe('jBoard', () => {
     })
 
     /*
-     *   GET KNIGHT MOVES
-     */
-
-    describe('_getMovesKnight', () => {
-
-        let jboard;
-
-        before(() => {
-            jboard = new JBoard;
-            jboard.setUpPosition(TEST_POSITION);
-        })
-
-        it('return two squares for knight c3', () => {
-
-            let moves = jboard._getMovesKnight(2, 2);
-
-            expect(moves[0].file).to.be.equal(3);
-            expect(moves[0].rank).to.be.equal(4);
-
-            expect(moves[1].file).to.be.equal(4);
-            expect(moves[1].rank).to.be.equal(3);
-
-            expect(moves[2].file).to.be.equal(4);
-            expect(moves[2].rank).to.be.equal(1);
-
-            expect(moves[3].file).to.be.equal(3);
-            expect(moves[3].rank).to.be.equal(0);
-
-            expect(moves[4].file).to.be.equal(1);
-            expect(moves[4].rank).to.be.equal(0);
-
-            expect(moves[5].file).to.be.equal(0);
-            expect(moves[5].rank).to.be.equal(1);
-
-            expect(moves[6].file).to.be.equal(0);
-            expect(moves[6].rank).to.be.equal(3);
-
-            expect(moves[7].file).to.be.equal(1);
-            expect(moves[7].rank).to.be.equal(4);
-
-            expect(moves[8]).to.be.undefined;
-
-        })
-
-        it('return two squares for knight f5', () => {
-
-            let moves = jboard._getMovesKnight(5, 4);
-
-            expect(moves[0].file).to.be.equal(7);
-            expect(moves[0].rank).to.be.equal(5);
-
-            expect(moves[1].file).to.be.equal(6);
-            expect(moves[1].rank).to.be.equal(2);
-
-            expect(moves[2].file).to.be.equal(4);
-            expect(moves[2].rank).to.be.equal(2);
-
-            expect(moves[3].file).to.be.equal(3);
-            expect(moves[3].rank).to.be.equal(5);
-
-            expect(moves[4].file).to.be.equal(4);
-            expect(moves[4].rank).to.be.equal(6);
-
-            expect(moves[5]).to.be.undefined;
-
-        })
-    })
-
-    /*
      *   GET KING MOVES
      */
 
@@ -1551,10 +1482,10 @@ describe('jBoard', () => {
     })
 
     /*
-     *   GET ROOK MOVES
+     *   GET PIECE MOVES
      */
 
-    describe('_getMovesRook', () => {
+    describe('_getMovesPiece', () => {
 
         let jboard;
 
@@ -1563,9 +1494,64 @@ describe('jBoard', () => {
             jboard.setUpPosition(TEST_POSITION);
         })
 
+        it('return two squares for knight c3', () => {
+
+            let moves = jboard._getMovesPiece(2, 2);
+
+            expect(moves[0].file).to.be.equal(3);
+            expect(moves[0].rank).to.be.equal(4);
+
+            expect(moves[1].file).to.be.equal(4);
+            expect(moves[1].rank).to.be.equal(3);
+
+            expect(moves[2].file).to.be.equal(4);
+            expect(moves[2].rank).to.be.equal(1);
+
+            expect(moves[3].file).to.be.equal(3);
+            expect(moves[3].rank).to.be.equal(0);
+
+            expect(moves[4].file).to.be.equal(1);
+            expect(moves[4].rank).to.be.equal(0);
+
+            expect(moves[5].file).to.be.equal(0);
+            expect(moves[5].rank).to.be.equal(1);
+
+            expect(moves[6].file).to.be.equal(0);
+            expect(moves[6].rank).to.be.equal(3);
+
+            expect(moves[7].file).to.be.equal(1);
+            expect(moves[7].rank).to.be.equal(4);
+
+            expect(moves[8]).to.be.undefined;
+
+        })
+
+        it('return two squares for knight f5', () => {
+
+            let moves = jboard._getMovesPiece(5, 4);
+
+            expect(moves[0].file).to.be.equal(7);
+            expect(moves[0].rank).to.be.equal(5);
+
+            expect(moves[1].file).to.be.equal(6);
+            expect(moves[1].rank).to.be.equal(2);
+
+            expect(moves[2].file).to.be.equal(4);
+            expect(moves[2].rank).to.be.equal(2);
+
+            expect(moves[3].file).to.be.equal(3);
+            expect(moves[3].rank).to.be.equal(5);
+
+            expect(moves[4].file).to.be.equal(4);
+            expect(moves[4].rank).to.be.equal(6);
+
+            expect(moves[5]).to.be.undefined;
+
+        })
+
         it('return two squares for rook h8', () => {
 
-            let moves = jboard._getMovesRook(7, 7);
+            let moves = jboard._getMovesPiece(7, 7);
 
             expect(moves[0].file).to.be.equal(7);
             expect(moves[0].rank).to.be.equal(6);
@@ -1585,24 +1571,10 @@ describe('jBoard', () => {
             expect(moves[5]).to.be.undefined;
 
         })
-    })
-
-    /*
-     *   GET BISHOP MOVES
-     */
-
-    describe('_getMovesBishop', () => {
-
-        let jboard;
-
-        before(() => {
-            jboard = new JBoard;
-            jboard.setUpPosition(TEST_POSITION);
-        })
 
         it('return two squares for bishop h5', () => {
 
-            let moves = jboard._getMovesBishop(7, 4);
+            let moves = jboard._getMovesPiece(7, 4);
 
             expect(moves[0].file).to.be.equal(6);
             expect(moves[0].rank).to.be.equal(3);
@@ -1616,28 +1588,6 @@ describe('jBoard', () => {
             expect(moves[3]).to.be.undefined;
 
         })
-    })
-
-    /*
-     *   GET PIECE MOVES
-     */
-
-    describe('_getMovesPiece', () => {
-
-        let jboard;
-
-        before(() => {
-            jboard = new JBoard;
-        })
-
-        it('return null if arguments aren\'t correct', () => {
-
-            /*
-             *   !!! ADD SOMETHING !!!
-             */
-
-        })
-
     })
 
     describe('_getAttackedSquares', () => {
