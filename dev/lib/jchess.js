@@ -53,7 +53,7 @@ export default class JChess {
      */
 
     pickSquare(file, rank) {
-        this.mainBoard.pickSquare(file, rank)
+        this.mainBoard.pickSquare(file, rank);
     }
 
     /*

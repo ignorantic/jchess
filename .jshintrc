@@ -1,0 +1,17 @@
+{
+  "indent"        : 4,
+  "white"         : true,
+  "node"          : true,
+  "undef"         : true,
+  "unused"        : true,
+  "-W058"         : true,
+  "-W014"         : true,
+  "expr"          : true,
+  "strict"        : true,
+  "esversion"     : 6,
+
+  "browser"       : true,
+  "mocha"         : true,
+  "browserify"    : true,
+  "phantom"       : true
+}

@@ -2,6 +2,9 @@ import JChess from '../lib/jchess';
 import initBoard from '../components/board/board';
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    'use strict';
+
     let jchess = new JChess;
     jchess.setUpPosition([
         {
@@ -246,4 +249,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ]);
     initBoard(jchess);
-})
+});

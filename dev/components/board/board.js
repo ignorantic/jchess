@@ -6,6 +6,7 @@
  */
 
 export default function initBoard(jchess) {
+
     'use strict';
 
     let wrap = document.querySelector('.board-wrap'),
@@ -14,23 +15,24 @@ export default function initBoard(jchess) {
     board.classList.add('board');
     for (let file = 0; file < 8; file++) {
         for (let rank = 0; rank < 8; rank++) {
-
             let square = newSquare(jchess, file, rank);
-            square.addEventListener('click',
-                (e) => {
-                    jchess.pickSquare(+e.target.dataset.file, +e.target.dataset.rank);
-                    drawBoard(jchess);
-                }
-            );
+            square.addEventListener('click', handlerClick);
             board.appendChild(square);
-
         }
     }
+
     wrap.appendChild(board);
     return true;
+
+    function handlerClick(e) {
+        jchess.pickSquare(+e.target.dataset.file, +e.target.dataset.rank);
+        drawBoard(jchess);
+    }
 }
 
 function drawBoard(jchess) {
+
+    'use strict';
 
     let squares = document.getElementsByClassName('board__square');
 
@@ -40,15 +42,15 @@ function drawBoard(jchess) {
             rank = squares[i].dataset.rank;
 
         if (squares[i].dataset.selected != jchess.isSquareSelected(file, rank)) {
-            drawSquare(squares[i], jchess, file, rank)
+            drawSquare(squares[i], jchess, file, rank);
         }
 
         if (squares[i].dataset.marked != jchess.isSquareMarked(file, rank)) {
-            drawSquare(squares[i], jchess, file, rank)
+            drawSquare(squares[i], jchess, file, rank);
         }
 
         if (squares[i].dataset.piece != jchess.getPieceType(file, rank)) {
-            drawSquare(squares[i], jchess, file, rank)
+            drawSquare(squares[i], jchess, file, rank);
         }
 
     }
@@ -58,6 +60,8 @@ function drawBoard(jchess) {
 }
 
 function newSquare(jchess, file, rank) {
+
+    'use strict';
 
     let square = document.createElement('div');
     square.dataset.file = file;
@@ -69,6 +73,8 @@ function newSquare(jchess, file, rank) {
 
 function drawSquare(square, jchess, file, rank) {
 
+    'use strict';
+
     square.dataset.selected = +jchess.isSquareSelected(file, rank);
     square.dataset.marked = +jchess.isSquareMarked(file, rank);
     square.dataset.piece = +!!jchess.getPieceType(file, rank);
@@ -78,6 +84,8 @@ function drawSquare(square, jchess, file, rank) {
 }
 
 function setClasses(square, jchess, file, rank) {
+
+    'use strict';
 
     square.removeAttribute('class');
     square.classList.add('board__square');

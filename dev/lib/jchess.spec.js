@@ -13,16 +13,18 @@ describe('jChess', () => {
      *   MOVE
      */
 
-    describe('_doMove', () => {
+    'use strict';
+
+    describe('nothing', () => {
 
         let jchess;
 
         before(() => {
             jchess = new JChess;
-        })
+        });
 
-        it('return false if square isn\'t correct', () => {
+        it('nothing', () => {
 
-        })
-    })
-})
+        });
+    });
+});

@@ -18,6 +18,7 @@ const rename        = require('gulp-rename');
 const imagemin      = require('gulp-imagemin');
 const babel         = require('gulp-babel');
 const streamify     = require('gulp-streamify');
+const jshint        = require('gulp-jshint');
 const uglify        = require('gulp-uglify');
 const cached        = require('gulp-cached');
 const gulpif        = require('gulp-if');
@@ -135,6 +136,16 @@ gulp.task('build:js', function (done) {
 });
 
 /*
+ *      LINT
+ */
+
+gulp.task('lint:js', function() {
+    return gulp.src(paths.watch.js)
+        .pipe(jshint())
+        .pipe(jshint.reporter('jshint-stylish'));
+});
+
+/*
  *      FONTS
  */
 
@@ -186,11 +197,6 @@ gulp.task('build:sprite', function (done) {
 gulp.task('build:svgSprite', function () {
     return gulp.src(paths.src.sprite)
         .pipe(svgSprite({
-            shape: {
-                spacing: {
-                    // padding: 5
-                }
-            },
             mode: {
                 css: {
                     dest: './',
@@ -255,7 +261,7 @@ gulp.task('watch', function(done) {
     gulp.watch(paths.watch.img, gulp.series('build:img'));
     gulp.watch(paths.watch.sass, gulp.series('build:sass'));
     gulp.watch(paths.watch.fonts, gulp.series('build:fonts'));
-    gulp.watch(paths.watch.js, gulp.series('build:js'));
+    gulp.watch(paths.watch.js, gulp.series('lint:js', 'build:js'));
     done();
 });
 
@@ -265,4 +271,4 @@ gulp.task('watch', function(done) {
 
 gulp.task('build', gulp.series('clean', 'build:pages', 'build:sprite', 'build:sass', 'build:js', 'build:img', 'build:fonts'));
 gulp.task('default', gulp.series('build'));
-gulp.task('run', gulp.series(gulp.parallel('build:pages', 'build:sass', 'build:js'), gulp.parallel('watch', 'server')));
+gulp.task('run', gulp.series(gulp.parallel('build:pages', 'build:sass', 'lint:js', 'build:js'), gulp.parallel('watch', 'server')));

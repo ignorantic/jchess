@@ -7,410 +7,6 @@
 export default class JBoard {
 
     /*
-     *   CONSTANTS
-     */
-
-    static INITIAL_POSITION = [
-        {
-            file: 0,
-            rank: 0,
-            piece: {
-                type: 'rook',
-                color: 'white'
-            }
-        },
-        {
-            file: 1,
-            rank: 0,
-            piece: {
-                type: 'knight',
-                color: 'white'
-            }
-        },
-        {
-            file: 2,
-            rank: 0,
-            piece: {
-                type: 'bishop',
-                color: 'white'
-            }
-        },
-        {
-            file: 3,
-            rank: 0,
-            piece: {
-                type: 'queen',
-                color: 'white'
-            }
-        },
-        {
-            file: 4,
-            rank: 0,
-            piece: {
-                type: 'king',
-                color: 'white'
-            }
-        },
-        {
-            file: 5,
-            rank: 0,
-            piece: {
-                type: 'bishop',
-                color: 'white'
-            }
-        },
-        {
-            file: 6,
-            rank: 0,
-            piece: {
-                type: 'knight',
-                color: 'white'
-            }
-        },
-        {
-            file: 7,
-            rank: 0,
-            piece: {
-                type: 'rook',
-                color: 'white'
-            }
-        },
-        {
-            file: 0,
-            rank: 7,
-            piece: {
-                type: 'rook',
-                color: 'black'
-            }
-        },
-        {
-            file: 1,
-            rank: 7,
-            piece: {
-                type: 'knight',
-                color: 'black'
-            }
-        },
-        {
-            file: 2,
-            rank: 7,
-            piece: {
-                type: 'bishop',
-                color: 'black'
-            }
-        },
-        {
-            file: 3,
-            rank: 7,
-            piece: {
-                type: 'queen',
-                color: 'black'
-            }
-        },
-        {
-            file: 4,
-            rank: 7,
-            piece: {
-                type: 'king',
-                color: 'black'
-            }
-        },
-        {
-            file: 5,
-            rank: 7,
-            piece: {
-                type: 'bishop',
-                color: 'black'
-            }
-        },
-        {
-            file: 6,
-            rank: 7,
-            piece: {
-                type: 'knight',
-                color: 'black'
-            }
-        },
-        {
-            file: 7,
-            rank: 7,
-            piece: {
-                type: 'rook',
-                color: 'black'
-            }
-        },
-
-        {
-            file: 0,
-            rank: 1,
-            piece: {
-                type: 'pawn',
-                color: 'white'
-            }
-        },
-        {
-            file: 1,
-            rank: 1,
-            piece: {
-                type: 'pawn',
-                color: 'white'
-            }
-        },
-        {
-            file: 2,
-            rank: 1,
-            piece: {
-                type: 'pawn',
-                color: 'white'
-            }
-        },
-        {
-            file: 3,
-            rank: 1,
-            piece: {
-                type: 'pawn',
-                color: 'white'
-            }
-        },
-        {
-            file: 4,
-            rank: 1,
-            piece: {
-                type: 'pawn',
-                color: 'white'
-            }
-        },
-        {
-            file: 5,
-            rank: 1,
-            piece: {
-                type: 'pawn',
-                color: 'white'
-            }
-        },
-        {
-            file: 6,
-            rank: 1,
-            piece: {
-                type: 'pawn',
-                color: 'white'
-            }
-        },
-        {
-            file: 7,
-            rank: 1,
-            piece: {
-                type: 'pawn',
-                color: 'white'
-            }
-        },
-        {
-            file: 0,
-            rank: 6,
-            piece: {
-                type: 'pawn',
-                color: 'black'
-            }
-        },
-        {
-            file: 1,
-            rank: 6,
-            piece: {
-                type: 'pawn',
-                color: 'black'
-            }
-        },
-        {
-            file: 2,
-            rank: 6,
-            piece: {
-                type: 'pawn',
-                color: 'black'
-            }
-        },
-        {
-            file: 3,
-            rank: 6,
-            piece: {
-                type: 'pawn',
-                color: 'black'
-            }
-        },
-        {
-            file: 4,
-            rank: 6,
-            piece: {
-                type: 'pawn',
-                color: 'black'
-            }
-        },
-        {
-            file: 5,
-            rank: 6,
-            piece: {
-                type: 'pawn',
-                color: 'black'
-            }
-        },
-        {
-            file: 6,
-            rank: 6,
-            piece: {
-                type: 'pawn',
-                color: 'black'
-            }
-        },
-        {
-            file: 7,
-            rank: 6,
-            piece: {
-                type: 'pawn',
-                color: 'black'
-            }
-        }
-    ];
-    static MOVES = {
-        rook: [
-            {
-                file: 0,
-                rank: 1
-            },
-            {
-                file: 1,
-                rank: 0
-            },
-            {
-                file: 0,
-                rank: -1
-            },
-            {
-                file: -1,
-                rank: 0
-            }
-        ],
-        knight: [
-            {
-                file: 1,
-                rank: 2
-            },
-            {
-                file: 2,
-                rank: 1
-            },
-            {
-                file: 2,
-                rank: -1
-            },
-            {
-                file: 1,
-                rank: -2
-            },
-            {
-                file: -1,
-                rank: -2
-            },
-            {
-                file: -2,
-                rank: -1
-            },
-            {
-                file: -2,
-                rank: 1
-            },
-            {
-                file: -1,
-                rank: 2
-            }
-        ],
-        bishop: [
-            {
-                file: 1,
-                rank: 1
-            },
-            {
-                file: 1,
-                rank: -1
-            },
-            {
-                file: -1,
-                rank: -1
-            },
-            {
-                file: -1,
-                rank: 1
-            }
-        ],
-        queen: [
-            {
-                file: 0,
-                rank: 1
-            },
-            {
-                file: 1,
-                rank: 1
-            },
-            {
-                file: 1,
-                rank: 0
-            },
-            {
-                file: 1,
-                rank: -1
-            },
-            {
-                file: 0,
-                rank: -1
-            },
-            {
-                file: -1,
-                rank: -1
-            },
-            {
-                file: -1,
-                rank: 0
-            },
-            {
-                file: -1,
-                rank: 1
-            }
-        ],
-        king: [
-            {
-                file: 0,
-                rank: 1
-            },
-            {
-                file: 1,
-                rank: 1
-            },
-            {
-                file: 1,
-                rank: 0
-            },
-            {
-                file: 1,
-                rank: -1
-            },
-            {
-                file: 0,
-                rank: -1
-            },
-            {
-                file: -1,
-                rank: -1
-            },
-            {
-                file: -1,
-                rank: 0
-            },
-            {
-                file: -1,
-                rank: 1
-            }
-        ]
-    }
-
-    /*
      *   CONSTRUCTOR
      */
 
@@ -421,6 +17,8 @@ export default class JBoard {
         this._initBoard();
         this._paintBoard();
 
+        this.turn = 'white';
+
         this.selectFile = null;
         this.selectRank = null;
 
@@ -429,6 +27,406 @@ export default class JBoard {
         this.castling = {
             white: 3,
             black: 3
+        };
+
+        this.INITIAL_POSITION = [
+            {
+                file: 0,
+                rank: 0,
+                piece: {
+                    type: 'rook',
+                    color: 'white'
+                }
+            },
+            {
+                file: 1,
+                rank: 0,
+                piece: {
+                    type: 'knight',
+                    color: 'white'
+                }
+            },
+            {
+                file: 2,
+                rank: 0,
+                piece: {
+                    type: 'bishop',
+                    color: 'white'
+                }
+            },
+            {
+                file: 3,
+                rank: 0,
+                piece: {
+                    type: 'queen',
+                    color: 'white'
+                }
+            },
+            {
+                file: 4,
+                rank: 0,
+                piece: {
+                    type: 'king',
+                    color: 'white'
+                }
+            },
+            {
+                file: 5,
+                rank: 0,
+                piece: {
+                    type: 'bishop',
+                    color: 'white'
+                }
+            },
+            {
+                file: 6,
+                rank: 0,
+                piece: {
+                    type: 'knight',
+                    color: 'white'
+                }
+            },
+            {
+                file: 7,
+                rank: 0,
+                piece: {
+                    type: 'rook',
+                    color: 'white'
+                }
+            },
+            {
+                file: 0,
+                rank: 7,
+                piece: {
+                    type: 'rook',
+                    color: 'black'
+                }
+            },
+            {
+                file: 1,
+                rank: 7,
+                piece: {
+                    type: 'knight',
+                    color: 'black'
+                }
+            },
+            {
+                file: 2,
+                rank: 7,
+                piece: {
+                    type: 'bishop',
+                    color: 'black'
+                }
+            },
+            {
+                file: 3,
+                rank: 7,
+                piece: {
+                    type: 'queen',
+                    color: 'black'
+                }
+            },
+            {
+                file: 4,
+                rank: 7,
+                piece: {
+                    type: 'king',
+                    color: 'black'
+                }
+            },
+            {
+                file: 5,
+                rank: 7,
+                piece: {
+                    type: 'bishop',
+                    color: 'black'
+                }
+            },
+            {
+                file: 6,
+                rank: 7,
+                piece: {
+                    type: 'knight',
+                    color: 'black'
+                }
+            },
+            {
+                file: 7,
+                rank: 7,
+                piece: {
+                    type: 'rook',
+                    color: 'black'
+                }
+            },
+
+            {
+                file: 0,
+                rank: 1,
+                piece: {
+                    type: 'pawn',
+                    color: 'white'
+                }
+            },
+            {
+                file: 1,
+                rank: 1,
+                piece: {
+                    type: 'pawn',
+                    color: 'white'
+                }
+            },
+            {
+                file: 2,
+                rank: 1,
+                piece: {
+                    type: 'pawn',
+                    color: 'white'
+                }
+            },
+            {
+                file: 3,
+                rank: 1,
+                piece: {
+                    type: 'pawn',
+                    color: 'white'
+                }
+            },
+            {
+                file: 4,
+                rank: 1,
+                piece: {
+                    type: 'pawn',
+                    color: 'white'
+                }
+            },
+            {
+                file: 5,
+                rank: 1,
+                piece: {
+                    type: 'pawn',
+                    color: 'white'
+                }
+            },
+            {
+                file: 6,
+                rank: 1,
+                piece: {
+                    type: 'pawn',
+                    color: 'white'
+                }
+            },
+            {
+                file: 7,
+                rank: 1,
+                piece: {
+                    type: 'pawn',
+                    color: 'white'
+                }
+            },
+            {
+                file: 0,
+                rank: 6,
+                piece: {
+                    type: 'pawn',
+                    color: 'black'
+                }
+            },
+            {
+                file: 1,
+                rank: 6,
+                piece: {
+                    type: 'pawn',
+                    color: 'black'
+                }
+            },
+            {
+                file: 2,
+                rank: 6,
+                piece: {
+                    type: 'pawn',
+                    color: 'black'
+                }
+            },
+            {
+                file: 3,
+                rank: 6,
+                piece: {
+                    type: 'pawn',
+                    color: 'black'
+                }
+            },
+            {
+                file: 4,
+                rank: 6,
+                piece: {
+                    type: 'pawn',
+                    color: 'black'
+                }
+            },
+            {
+                file: 5,
+                rank: 6,
+                piece: {
+                    type: 'pawn',
+                    color: 'black'
+                }
+            },
+            {
+                file: 6,
+                rank: 6,
+                piece: {
+                    type: 'pawn',
+                    color: 'black'
+                }
+            },
+            {
+                file: 7,
+                rank: 6,
+                piece: {
+                    type: 'pawn',
+                    color: 'black'
+                }
+            }
+        ];
+        this.MOVES = {
+            rook: [
+                {
+                    file: 0,
+                    rank: 1
+                },
+                {
+                    file: 1,
+                    rank: 0
+                },
+                {
+                    file: 0,
+                    rank: -1
+                },
+                {
+                    file: -1,
+                    rank: 0
+                }
+            ],
+            knight: [
+                {
+                    file: 1,
+                    rank: 2
+                },
+                {
+                    file: 2,
+                    rank: 1
+                },
+                {
+                    file: 2,
+                    rank: -1
+                },
+                {
+                    file: 1,
+                    rank: -2
+                },
+                {
+                    file: -1,
+                    rank: -2
+                },
+                {
+                    file: -2,
+                    rank: -1
+                },
+                {
+                    file: -2,
+                    rank: 1
+                },
+                {
+                    file: -1,
+                    rank: 2
+                }
+            ],
+            bishop: [
+                {
+                    file: 1,
+                    rank: 1
+                },
+                {
+                    file: 1,
+                    rank: -1
+                },
+                {
+                    file: -1,
+                    rank: -1
+                },
+                {
+                    file: -1,
+                    rank: 1
+                }
+            ],
+            queen: [
+                {
+                    file: 0,
+                    rank: 1
+                },
+                {
+                    file: 1,
+                    rank: 1
+                },
+                {
+                    file: 1,
+                    rank: 0
+                },
+                {
+                    file: 1,
+                    rank: -1
+                },
+                {
+                    file: 0,
+                    rank: -1
+                },
+                {
+                    file: -1,
+                    rank: -1
+                },
+                {
+                    file: -1,
+                    rank: 0
+                },
+                {
+                    file: -1,
+                    rank: 1
+                }
+            ],
+            king: [
+                {
+                    file: 0,
+                    rank: 1
+                },
+                {
+                    file: 1,
+                    rank: 1
+                },
+                {
+                    file: 1,
+                    rank: 0
+                },
+                {
+                    file: 1,
+                    rank: -1
+                },
+                {
+                    file: 0,
+                    rank: -1
+                },
+                {
+                    file: -1,
+                    rank: -1
+                },
+                {
+                    file: -1,
+                    rank: 0
+                },
+                {
+                    file: -1,
+                    rank: 1
+                }
+            ]
         };
 
     }
@@ -449,7 +447,7 @@ export default class JBoard {
                         type: null,
                         color: null
                     }
-                }
+                };
             }
         }
 
@@ -459,7 +457,7 @@ export default class JBoard {
 
         let countSquare = 0;
         for (let i = 0; i < 8; i++) {
-            countSquare++
+            countSquare++;
             for (let j = 0; j < 8; j++) {
                 this.board[i][j].color = (countSquare++ % 2) ? 'black' : 'white';
             }
@@ -472,7 +470,7 @@ export default class JBoard {
      */
 
     setUpInitial() {
-        this.setUpPosition(JBoard.INITIAL_POSITION);
+        this.setUpPosition(this.INITIAL_POSITION);
     }
 
     setUpPosition(pieceSet) {
@@ -482,7 +480,7 @@ export default class JBoard {
             (item) => {
                 this._setUpPiece(item.file, item.rank, item.piece.type, item.piece.color);
             }
-        )
+        );
 
     }
 
@@ -494,9 +492,9 @@ export default class JBoard {
                     (square, rank) => {
                         this._setUpPiece(file, rank, null, null);
                     }
-                )
+                );
             }
-        )
+        );
 
     }
 
@@ -506,7 +504,7 @@ export default class JBoard {
         this.board[file][rank].piece = {
             type: type,
             color: color
-        }
+        };
         return true;
 
     }
@@ -548,6 +546,15 @@ export default class JBoard {
 
         if (!this._validateSquare(file, rank)) return null;
         this.board[file][rank].piece.color = color;
+        return true;
+
+    }
+
+    setPiece(file, rank, type, color) {
+
+        if (!this._validateSquare(file, rank)) return null;
+        this.board[file][rank].piece.color = color;
+        this.board[file][rank].piece.type = type;
         return true;
 
     }
@@ -602,7 +609,7 @@ export default class JBoard {
         this.enPassant = {
             file: file,
             rank: rank
-        }
+        };
 
         return true;
     }
@@ -635,7 +642,7 @@ export default class JBoard {
 
         } else {
 
-            this._resetSelect()
+            this._resetSelect();
             square.selected = true;
             this.selectFile = file;
             this.selectRank = rank;
@@ -644,6 +651,16 @@ export default class JBoard {
         }
 
         return true;
+    }
+
+    _passTurn() {
+
+        if (this.turn === 'white') {
+            this.turn = 'black';
+        } else {
+            this.turn = 'white';
+        }
+
     }
 
     /*
@@ -659,10 +676,10 @@ export default class JBoard {
                     (square) => {
                         square.selected = false;
                     }
-                )
+                );
 
             }
-        )
+        );
 
     }
 
@@ -687,10 +704,10 @@ export default class JBoard {
                     (square) => {
                         square.marked = false;
                     }
-                )
+                );
 
             }
-        )
+        );
 
     }
 
@@ -707,6 +724,8 @@ export default class JBoard {
         if (!this._validateSquare(file, rank)) return null;
         this._resetMarks();
 
+        if (this.getPieceColor(file, rank) !== this.turn) return null;
+
         if (!!this.getPieceType(file, rank)) {
 
             let moves = this._getMoves(file, rank);
@@ -715,7 +734,7 @@ export default class JBoard {
                 (item) => {
                     this.board[item.file][item.rank].marked = true;
                 }
-            )
+            );
 
         }
 
@@ -752,17 +771,30 @@ export default class JBoard {
 
         this._checkEnPassant(stopFile, stopRank);
 
-        if (!this._validateSquare(startFile, startRank)) return null;
-        if (!this._validateSquare(stopFile, stopRank)) return null;
-        if (!this.getPieceType(startFile, startRank)) return null;
-        if (this.getPieceColor(startFile, startRank) === this.getPieceColor(stopFile, stopRank)) return null;
-
         let type = this.getPieceType(startFile, startRank);
         let color = this.getPieceColor(startFile, startRank);
 
-        this.setPieceType(stopFile, stopRank, type);
-        this.setPieceColor(stopFile, stopRank, color);
-        this._removePiece(startFile, startRank);
+        if (!this._validateSquare(startFile, startRank)) return null;
+        if (!this._validateSquare(stopFile, stopRank)) return null;
+        if (!this.getPieceType(startFile, startRank)) return null;
+        if (this._isFriend(color, stopFile, stopRank)) return null;
+
+        if (type == 'king' && Math.abs(startFile - stopFile) === 2) {
+
+            this._doCastling(color, stopFile);
+
+        } else {
+
+            this.setPiece(stopFile, stopRank, type, color);
+            this._removePiece(startFile, startRank);
+
+        }
+
+        if (type == 'king' || type == 'rook') {
+            this._checkCastling(color, type, startFile);
+        }
+
+        this._passTurn();
 
         return true;
 
@@ -777,13 +809,9 @@ export default class JBoard {
         let checkBoard = this._cloneBoard(this);
 
         if (checkBoard._doMove(startFile, startRank, stopFile, stopRank)) {
-
             return !checkBoard._isCheck(this.getPieceColor(startFile, startRank));
-
         } else {
-
             return null;
-
         }
 
     }
@@ -796,7 +824,7 @@ export default class JBoard {
 
         let moves = [];
         let pawnColor = this.getPieceColor(file, rank);
-        let moveDirection = (pawnColor == 'white') ? 1 : -1
+        let moveDirection = (pawnColor == 'white') ? 1 : -1;
 
         let targetFile = file;
         let targetRank = rank + moveDirection;
@@ -807,10 +835,8 @@ export default class JBoard {
                 this._pushMove(moves, targetFile, targetRank);
 
                 if ((pawnColor == 'white' && rank == 1) || (pawnColor == 'black' && rank == 6)) {
-
                     targetRank = rank + 2 * moveDirection;
                     this.getPieceType(targetFile, targetRank) || this._pushMove(moves, targetFile, targetRank);
-
                 }
             }
 
@@ -839,8 +865,77 @@ export default class JBoard {
     _getMovesKing(file, rank) {
 
         let moves =  this._getMovesPiece(file, rank);
+        let castling = this._getCastlingMove(file, rank);
+
+        castling && castling.forEach((item) => moves.push(item));
 
         return this._filterMoves(moves, file, rank);
+
+    }
+
+    _getCastlingMove(file, rank) {
+
+        if ( !(file === 4 && (rank === 0 || rank === 7))) return null;
+        let color = (rank === 0) ? 'white' : 'black';
+        if (this.castling[color] === 0) return null;
+        if (this._isCheck(color)) return null;
+        let result = [];
+
+        if (this.castling[color] > 1 && !this._isSquareAttacked(color, file - 1, rank) &&
+            (this._isEmpty(file - 1, rank)) && (this._isEmpty(file - 2, rank)) && (this._isEmpty(file - 3, rank))) {
+            this._pushMove(result, 2, rank);
+        }
+
+        if (this.castling[color] % 2 === 1 && !this._isSquareAttacked(color, file + 1, rank) &&
+            (this._isEmpty(file + 1, rank)) && (this._isEmpty(file + 2, rank))) {
+            this._pushMove(result, 6, rank);
+        }
+
+        return result;
+
+    }
+
+    _checkCastling(color, type, file) {
+
+        if (this.castling[color] > 0) {
+            if (type == 'king') this.castling[color] = 0;
+            if (type == 'rook') {
+                if (file === 0 && this.castling[color] > 1) this.castling[color] -= 2;
+                if (file === 7 && this.castling[color] % 2 == 1) this.castling[color] -= 1;
+            }
+        }
+
+    }
+
+    _doCastling(color, file) {
+
+        if (color === 'white') {
+
+            this.setPiece(file, 0, 'king', 'white');
+            this._removePiece(4, 0);
+
+            if (file === 2) {
+                this.setPiece(3, 0, 'rook', 'white');
+                this._removePiece(0, 0);
+            } else {
+                this.setPiece(5, 0, 'rook', 'white');
+                this._removePiece(7, 0);
+            }
+
+        } else {
+
+            this.setPiece(file, 7, 'king', 'black');
+            this._removePiece(4, 7);
+
+            if (file === 2) {
+                this.setPiece(3, 7, 'rook', 'black');
+                this._removePiece(0, 7);
+            } else {
+                this.setPiece(5, 7, 'rook', 'black');
+                this._removePiece(7, 7);
+            }
+
+        }
 
     }
 
@@ -867,13 +962,13 @@ export default class JBoard {
             (item) => {
                 return this._checkMove(file, rank, item.file, item.rank);
             }
-        )
+        );
 
     }
 
     _getAttackedSquares(piece, color, file, rank) {
 
-        let moves = JBoard.MOVES[piece];
+        let moves = this.MOVES[piece];
         let count = (piece == 'king' || piece == 'knight') ? 1 : 7;
         let result = [];
 
@@ -888,23 +983,18 @@ export default class JBoard {
                 if (this._validateSquare(targetFile, targetRank)) {
 
                     if (this._isFriend(color, targetFile, targetRank)) {
-
                         break;
-
                     } else {
-
-                        this._pushMove(result, targetFile, targetRank)
+                        this._pushMove(result, targetFile, targetRank);
                     }
 
                 } else {
-
                     break;
-
                 }
 
                 if (this._isFoe(color, targetFile, targetRank)) break;
             }
-        })
+        });
 
         if (result.length > 0) return result;
         return null;
@@ -944,7 +1034,14 @@ export default class JBoard {
 
          if (!this._validateSquare(file, rank)) return null;
          if (!this.getPieceType(file, rank)) return false;
-         return (color != this.getPieceColor(file, rank));
+         return (color !== this.getPieceColor(file, rank));
+
+    }
+
+     _isEmpty(file, rank) {
+
+         if (!this._validateSquare(file, rank)) return null;
+         return this.getPieceType(file, rank) === null;
 
     }
 
@@ -962,19 +1059,19 @@ export default class JBoard {
 
             let pieces = ['rook', 'knight', 'bishop', 'queen', 'king'];
 
-            pieces.forEach((type) => {
+            pieces.forEach(
+                (type) => {
+                    let squares = this._getAttackedSquares(type, color, file, rank);
 
-                let squares = this._getAttackedSquares(type, color, file, rank);
+                    squares && squares.forEach(
+                        (item) => {
 
-                squares && squares.forEach(
-                    (item) => {
+                            if (this.getPieceType(item.file, item.rank) == type) result = true;
 
-                        if (this.getPieceType(item.file, item.rank) == type) result = true;
-
-                    }
-                )
-
-            })
+                        }
+                    );
+                }
+            );
 
         }
 
@@ -991,8 +1088,7 @@ export default class JBoard {
 
         let result = targetFile.filter(
             (item) => this.getPieceType(item, targetRank) == 'pawn' && this._isFoe(color, item, targetRank)
-
-        )
+        );
 
         return result.length > 0;
 
@@ -1003,7 +1099,7 @@ export default class JBoard {
         let king = this._getKing(color);
 
         if (king) {
-            return this._isSquareAttacked(color, king.file, king.rank)
+            return this._isSquareAttacked(color, king.file, king.rank);
         }
 
         return null;
@@ -1019,7 +1115,7 @@ export default class JBoard {
                     return {
                         file: file,
                         rank: rank
-                    }
+                    };
                 }
             }
         }
@@ -1042,7 +1138,7 @@ export default class JBoard {
             newBoard.enPassant = {
                 file: src.enPassant.file,
                 rank: src.enPassant.rank
-            }
+            };
 
         } else {
 
@@ -1053,7 +1149,7 @@ export default class JBoard {
         newBoard.castling = {
             white: src.castling.white,
             black: src.castling.black
-        }
+        };
 
         for (let file = 0; file < 8; file++) {
             for (let rank = 0; rank < 8; rank++) {
@@ -1065,6 +1161,114 @@ export default class JBoard {
         }
 
         return newBoard;
+
+    }
+
+    /*
+     *   FEN
+     */
+
+    _getFEN() {
+
+        return this._getFENBoard() + ' ' +
+        this._getFENTurn() + ' ' +
+        this._getFENCastling() + ' ';
+
+    }
+
+    _getFENPiece(file, rank) {
+
+        if (!this._validateSquare(file, rank)) return null;
+        let piece = this.getPieceType(file,  rank);
+        if (!piece) return null;
+        let FEN;
+        switch (piece) {
+
+            case 'pawn':
+                FEN = 'p';
+                break;
+
+            case 'rook':
+                FEN = 'r';
+                break;
+
+            case 'knight':
+                FEN = 'n';
+                break;
+
+            case 'bishop':
+                FEN = 'b';
+                break;
+
+            case 'queen':
+                FEN = 'q';
+                break;
+
+            case 'king':
+                FEN = 'k';
+                break;
+
+         }
+
+         if (this.getPieceColor(file, rank) === 'white') return FEN.toUpperCase();
+         return FEN;
+
+    }
+
+    _getFENBoard() {
+
+        let result = '';
+
+        for (let rank = 7; rank >= 0; rank--) {
+            let vacancy = 0;
+            for (let file = 0; file < 8; file++) {
+                if (this._getFENPiece(file, rank) !== null) {
+                    if (vacancy !== 0) {
+                        result += vacancy;
+                        vacancy = 0;
+                    }
+                    result += this._getFENPiece(file, rank);
+                } else {
+                    vacancy++;
+                }
+            }
+            if (vacancy !== 0) result += vacancy;
+            if (rank > 0) result += '/';
+        }
+
+        return result;
+
+    }
+
+    _getFENTurn() {
+
+        if (this.turn === 'white') {
+            return 'w';
+        } else {
+            return 'b';
+        }
+
+    }
+
+    _getFENCastling() {
+
+        let result = '';
+
+        if (this.castling.white % 2 == 1) result += 'K';
+        if (this.castling.white > 1) result += 'Q';
+        if (this.castling.black % 2 == 1) result += 'k';
+        if (this.castling.black > 1) result += 'q';
+
+        if (result) return result;
+        return '-';
+
+    }
+
+    _getFENEnPassant() {
+
+        let enPassant = this.enPassant;
+        if (!this.enPassant) return '-';
+        return String.fromCharCode(enPassant.file + 97) + (enPassant.rank + 1);
 
     }
 

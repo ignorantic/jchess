@@ -6,8 +6,11 @@
 
 import JBoard from './jboard';
 import {describe, it, before, beforeEach} from 'mocha';
+import {expect} from 'chai';
 
 describe('jBoard', () => {
+
+    'use strict';
 
     let TEST_POSITION = [
         {
@@ -417,7 +420,7 @@ describe('jBoard', () => {
 
         before(() => {
             jboard = new JBoard;
-        })
+        });
 
         it('check size of board', () => {
 
@@ -425,7 +428,7 @@ describe('jBoard', () => {
             jboard.board[0].length.should.be.equal(8);
             jboard.board[7].length.should.be.equal(8);
 
-        })
+        });
 
         it('check property\'s value', () => {
 
@@ -435,7 +438,7 @@ describe('jBoard', () => {
             jboard.castling.white.should.be.equal(3);
             jboard.castling.black.should.be.equal(3);
 
-        })
+        });
 
         it('check square colors', () => {
 
@@ -444,10 +447,9 @@ describe('jBoard', () => {
             jboard.board[7][0].color.should.be.equal('white');
             jboard.board[7][7].color.should.be.equal('black');
 
-        })
+        });
 
-
-    })
+    });
 
     /*
      *   SETUP
@@ -462,7 +464,7 @@ describe('jBoard', () => {
             jboard = new JBoard;
             jboard.setUpInitial();
 
-        })
+        });
 
         it('check rooks', () => {
 
@@ -478,7 +480,7 @@ describe('jBoard', () => {
             jboard.board[7][7].piece.type.should.be.equal('rook');
             jboard.board[7][7].piece.color.should.be.equal('black');
 
-        })
+        });
 
         it('check knights', () => {
 
@@ -494,7 +496,7 @@ describe('jBoard', () => {
             jboard.board[6][7].piece.type.should.be.equal('knight');
             jboard.board[6][7].piece.color.should.be.equal('black');
 
-        })
+        });
 
         it('check bishops', () => {
 
@@ -510,7 +512,7 @@ describe('jBoard', () => {
             jboard.board[5][7].piece.type.should.be.equal('bishop');
             jboard.board[5][7].piece.color.should.be.equal('black');
 
-        })
+        });
 
         it('check queens', () => {
 
@@ -519,7 +521,7 @@ describe('jBoard', () => {
             jboard.board[3][7].piece.type.should.be.equal('queen');
             jboard.board[3][7].piece.color.should.be.equal('black');
 
-        })
+        });
 
         it('check kings', () => {
 
@@ -528,22 +530,22 @@ describe('jBoard', () => {
             jboard.board[4][7].piece.type.should.be.equal('king');
             jboard.board[4][7].piece.color.should.be.equal('black');
 
-        })
+        });
 
         it('check white pawns', () => {
 
             jboard.board[0][1].piece.type.should.be.equal('pawn');
             jboard.board[7][1].piece.color.should.be.equal('white');
 
-        })
+        });
 
         it('check black pawns', () => {
 
             jboard.board[0][6].piece.type.should.be.equal('pawn');
             jboard.board[7][6].piece.color.should.be.equal('black');
 
-        })
-    })
+        });
+    });
 
     describe('setUpPosition', () => {
 
@@ -579,29 +581,29 @@ describe('jBoard', () => {
                 }
             ]);
 
-        })
+        });
 
         it('check pawn', () => {
 
             jboard.board[0][1].piece.type.should.be.equal('pawn');
             jboard.board[0][1].piece.color.should.be.equal('white');
 
-        })
+        });
 
         it('check knight', () => {
 
             jboard.board[1][2].piece.type.should.be.equal('knight');
             jboard.board[1][2].piece.color.should.be.equal('black');
 
-        })
+        });
 
         it('check queen', () => {
 
             jboard.board[5][7].piece.type.should.be.equal('queen');
             jboard.board[5][7].piece.color.should.be.equal('black');
 
-        })
-    })
+        });
+    });
 
     describe('resetPosition', () => {
 
@@ -612,28 +614,28 @@ describe('jBoard', () => {
             jboard = new JBoard;
             jboard.setUpInitial();
 
-        })
+        });
 
         it('check pawn a2 before reset', () => {
 
             jboard.board[0][1].piece.type.should.be.equal('pawn');
             jboard.board[0][1].piece.color.should.be.equal('white');
 
-        })
+        });
 
         it('check knight b1 before reset', () => {
 
             jboard.board[1][0].piece.type.should.be.equal('knight');
             jboard.board[1][0].piece.color.should.be.equal('white');
 
-        })
+        });
 
         it('check rook h8 before reset', () => {
 
             jboard.board[7][7].piece.type.should.be.equal('rook');
             jboard.board[7][7].piece.color.should.be.equal('black');
 
-        })
+        });
 
         it('check pawn a2 after reset', () => {
 
@@ -642,23 +644,23 @@ describe('jBoard', () => {
             expect(jboard.board[0][1].piece.type).be.null;
             expect(jboard.board[0][1].piece.color).be.null;
 
-        })
+        });
 
         it('check knight b1 after reset', () => {
 
             expect(jboard.board[1][0].piece.type).be.null;
             expect(jboard.board[1][0].piece.color).be.null;
 
-        })
+        });
 
         it('check rook h8 after reset', () => {
 
             expect(jboard.board[7][7].piece.type).be.null;
             expect(jboard.board[7][7].piece.color).be.null;
 
-        })
+        });
 
-    })
+    });
 
     describe('_setUpPiece', () => {
 
@@ -666,28 +668,28 @@ describe('jBoard', () => {
 
         before(() => {
             jboard = new JBoard;
-        })
+        });
 
         it('check square h2 before setup', () => {
 
             expect(jboard.board[7][1].piece.type).be.null;
             expect(jboard.board[7][1].piece.color).be.null;
 
-        })
+        });
 
         it('check square c3 before setup', () => {
 
             expect(jboard.board[2][2].piece.type).be.null;
             expect(jboard.board[2][2].piece.color).be.null;
 
-        })
+        });
 
         it('check square e4 before setup', () => {
 
             expect(jboard.board[4][3].piece.type).be.null;
             expect(jboard.board[4][3].piece.color).be.null;
 
-        })
+        });
 
         it('check square h2 after setup', () => {
 
@@ -695,7 +697,7 @@ describe('jBoard', () => {
             jboard.board[7][1].piece.type.should.be.equal('pawn');
             jboard.board[7][1].piece.color.should.be.equal('white');
 
-        })
+        });
 
         it('check square c3 after setup', () => {
 
@@ -703,7 +705,7 @@ describe('jBoard', () => {
             jboard.board[2][2].piece.type.should.be.equal('knight');
             jboard.board[2][2].piece.color.should.be.equal('white');
 
-        })
+        });
 
         it('check square e4 after setup', () => {
 
@@ -711,9 +713,9 @@ describe('jBoard', () => {
             jboard.board[4][3].piece.type.should.be.equal('rook');
             jboard.board[4][3].piece.color.should.be.equal('black');
 
-        })
+        });
 
-    })
+    });
     
     /*
      *   SQUARE GETTERS
@@ -725,7 +727,7 @@ describe('jBoard', () => {
 
         before(() => {
             jboard = new JBoard;
-        })
+        });
 
         it('return null if arguments aren\'t correct', () => {
 
@@ -734,7 +736,7 @@ describe('jBoard', () => {
             expect(jboard.getSquareColor(-1, 0)).to.be.null;
             expect(jboard.getSquareColor(0, -1)).to.be.null;
 
-        })
+        });
 
         it('return "black" for (0, 0), etc', () => {
 
@@ -747,7 +749,7 @@ describe('jBoard', () => {
             jboard.getSquareColor(5, 7).should.be.equal('black');
             jboard.getSquareColor(3, 7).should.be.equal('black');
 
-        })
+        });
 
         it('return "white" for (0, 1), etc', () => {
 
@@ -760,8 +762,8 @@ describe('jBoard', () => {
             jboard.getSquareColor(2, 7).should.be.equal('white');
             jboard.getSquareColor(6, 7).should.be.equal('white');
 
-        })
-    })
+        });
+    });
 
     describe('getPieceType', () => {
 
@@ -772,7 +774,7 @@ describe('jBoard', () => {
             jboard = new JBoard;
             jboard.setUpInitial();
 
-        })
+        });
 
         it('return piece type for (0, 0), etc', () => {
 
@@ -789,8 +791,8 @@ describe('jBoard', () => {
             jboard.getPieceType(3, 0).should.be.equal('queen');
             jboard.getPieceType(4, 7).should.be.equal('king');
 
-        })
-    })
+        });
+    });
 
     describe('getPieceColor', () => {
 
@@ -801,7 +803,7 @@ describe('jBoard', () => {
             jboard = new JBoard;
             jboard.setUpInitial();
 
-        })
+        });
 
         it('return null if arguments aren\'t correct', () => {
 
@@ -810,7 +812,7 @@ describe('jBoard', () => {
             expect(jboard.getPieceColor(-1, 0)).to.be.null;
             expect(jboard.getPieceColor(0, -1)).to.be.null;
 
-        })
+        });
 
         it('return piece color for (0, 0), etc', () => {
 
@@ -828,8 +830,8 @@ describe('jBoard', () => {
             jboard.getPieceColor(6, 7).should.be.equal('black');
             jboard.getPieceColor(7, 6).should.be.equal('black');
 
-        })
-    })
+        });
+    });
 
     /*
      *   SQUARE SETTERS
@@ -841,7 +843,7 @@ describe('jBoard', () => {
 
         before(() => {
             jboard = new JBoard;
-        })
+        });
 
         it('return null if arguments aren\'t correct', () => {
 
@@ -850,7 +852,7 @@ describe('jBoard', () => {
             expect(jboard.setPieceType(-5, 5, 'bishop')).to.be.null;
             expect(jboard.setPieceType(0, -1, 'queen')).to.be.null;
 
-        })
+        });
 
         it('return true if setting was successful', () => {
 
@@ -859,7 +861,7 @@ describe('jBoard', () => {
             expect(jboard.setPieceType(7, 6, null)).to.be.true;
             expect(jboard.setPieceType(5, 4, 'bishop')).to.be.true;
 
-        })
+        });
 
         it('set piece type and check', () => {
 
@@ -879,8 +881,8 @@ describe('jBoard', () => {
             jboard.setPieceType(2, 4, 'king');
             expect(jboard.getPieceType(2, 4)).to.be.equal('king');
 
-        })
-    })
+        });
+    });
 
     describe('setPieceColor', () => {
 
@@ -888,7 +890,7 @@ describe('jBoard', () => {
 
         before(() => {
             jboard = new JBoard;
-        })
+        });
 
         it('return null if arguments aren\'t correct', () => {
 
@@ -897,7 +899,7 @@ describe('jBoard', () => {
             expect(jboard.setPieceColor(-3, 0, 'black')).to.be.null;
             expect(jboard.setPieceColor(0, -1, 'black')).to.be.null;
 
-        })
+        });
 
         it('return true if setting was successful', () => {
 
@@ -906,7 +908,7 @@ describe('jBoard', () => {
             expect(jboard.setPieceColor(7, 6, null)).to.be.true;
             expect(jboard.setPieceColor(5, 4, 'black')).to.be.true;
 
-        })
+        });
 
         it('set piece type and check', () => {
 
@@ -926,8 +928,8 @@ describe('jBoard', () => {
             jboard.setPieceColor(5, 4, 'white');
             expect(jboard.getPieceColor(5, 4)).to.be.equal('white');
 
-        })
-    })
+        });
+    });
 
     /*
      *   EN PASSANT
@@ -939,7 +941,7 @@ describe('jBoard', () => {
 
         before(() => {
             jboard = new JBoard;
-        })
+        });
 
         it('return null if arguments aren\'t correct', () => {
 
@@ -947,9 +949,9 @@ describe('jBoard', () => {
              *   !!! ADD SOMETHING !!!
              */
 
-        })
+        });
 
-    })
+    });
 
     describe('_getEnPassant', () => {
 
@@ -957,7 +959,7 @@ describe('jBoard', () => {
 
         before(() => {
             jboard = new JBoard;
-        })
+        });
 
         it('return null if arguments aren\'t correct', () => {
 
@@ -965,9 +967,9 @@ describe('jBoard', () => {
              *   !!! ADD SOMETHING !!!
              */
 
-        })
+        });
 
-    })
+    });
 
     describe('_setEnPassant', () => {
 
@@ -975,7 +977,7 @@ describe('jBoard', () => {
 
         before(() => {
             jboard = new JBoard;
-        })
+        });
 
         it('return null if arguments aren\'t correct', () => {
 
@@ -983,9 +985,9 @@ describe('jBoard', () => {
              *   !!! ADD SOMETHING !!!
              */
 
-        })
+        });
 
-    })
+    });
 
     describe('_isEnPassant', () => {
 
@@ -993,7 +995,7 @@ describe('jBoard', () => {
 
         before(() => {
             jboard = new JBoard;
-        })
+        });
 
         it('return null if arguments aren\'t correct', () => {
 
@@ -1001,9 +1003,9 @@ describe('jBoard', () => {
              *   !!! ADD SOMETHING !!!
              */
 
-        })
+        });
 
-    })
+    });
     
     /*
      *   PICK
@@ -1018,7 +1020,7 @@ describe('jBoard', () => {
             jboard = new JBoard;
             jboard.setUpPosition(TEST_POSITION);
 
-        })
+        });
 
         it('return null if arguments aren\'t correct', () => {
 
@@ -1027,7 +1029,7 @@ describe('jBoard', () => {
             expect(jboard.pickSquare(-1, 0)).to.be.null;
             expect(jboard.pickSquare(0, -1)).to.be.null;
 
-        })
+        });
 
         it('return true if arguments are correct', () => {
 
@@ -1036,7 +1038,7 @@ describe('jBoard', () => {
             expect(jboard.pickSquare(5, 6)).to.be.true;
             expect(jboard.pickSquare(7, 7)).to.be.true;
 
-        })
+        });
 
         it('check selected square', () => {
 
@@ -1048,7 +1050,7 @@ describe('jBoard', () => {
             jboard.isSquareSelected(5, 1).should.be.false;
             jboard.isSquareSelected(6, 7).should.be.true;
 
-        })
+        });
 
         it('check marked square', () => {
 
@@ -1060,8 +1062,8 @@ describe('jBoard', () => {
             jboard.isSquareMarked(0, 4).should.be.false;
             jboard.isSquareMarked(1, 2).should.be.false;
 
-        })
-    })
+        });
+    });
 
     /*
      *   SELECT
@@ -1076,7 +1078,7 @@ describe('jBoard', () => {
             jboard = new JBoard;
             jboard.pickSquare(4, 4);
 
-        })
+        });
 
         it('reset selected square', () => {
 
@@ -1086,8 +1088,8 @@ describe('jBoard', () => {
             expect(jboard.isSquareSelected(4, 4)).to.be.false;
             expect(jboard.isSquareSelected(4, 5)).to.be.false;
 
-        })
-    })
+        });
+    });
 
     describe('isSquareSelected', () => {
 
@@ -1095,7 +1097,7 @@ describe('jBoard', () => {
 
         before(() => {
             jboard = new JBoard;
-        })
+        });
 
         it('return null if arguments aren\'t correct', () => {
 
@@ -1104,7 +1106,7 @@ describe('jBoard', () => {
             expect(jboard.isSquareSelected(-1, 0)).to.be.null;
             expect(jboard.isSquareSelected(0, -1)).to.be.null;
 
-        })
+        });
 
         it('return true or false if arguments are correct', () => {
 
@@ -1116,8 +1118,8 @@ describe('jBoard', () => {
             expect(jboard.isSquareSelected(1, 5)).to.be.false;
             expect(jboard.isSquareSelected(7, 7)).to.be.true;
 
-        })
-    })
+        });
+    });
 
     /*
      *   MARK MOVES
@@ -1129,7 +1131,7 @@ describe('jBoard', () => {
 
         before(() => {
             jboard = new JBoard;
-        })
+        });
 
         it('reset marked square', () => {
 
@@ -1137,8 +1139,8 @@ describe('jBoard', () => {
              *   !!! ADD SOMETHING !!!
              */
 
-        })
-    })
+        });
+    });
 
     describe('_markMoves and isSquareMarked', () => {
 
@@ -1149,7 +1151,7 @@ describe('jBoard', () => {
             jboard = new JBoard;
             jboard.setUpPosition(TEST_POSITION);
 
-        })
+        });
 
         it('return null if arguments aren\'t correct', () => {
 
@@ -1158,7 +1160,7 @@ describe('jBoard', () => {
             expect(jboard._markMoves(-1, 0)).to.be.null;
             expect(jboard._markMoves(0, -1)).to.be.null;
 
-        })
+        });
 
         it('mark two squares for pawn a2', () => {
 
@@ -1168,17 +1170,18 @@ describe('jBoard', () => {
             expect(jboard.isSquareMarked(0, 4)).to.be.false;
             expect(jboard.isSquareMarked(1, 2)).to.be.false;
 
-        })
+        });
 
         it('mark only square for pawn c5', () => {
 
+            jboard._passTurn();
             jboard._markMoves(2, 4);
             expect(jboard.isSquareMarked(2, 3)).to.be.true;
             expect(jboard.isSquareMarked(2, 2)).to.be.false;
             expect(jboard.isSquareMarked(3, 3)).to.be.false;
             expect(jboard.isSquareMarked(1, 3)).to.be.false;
 
-        })
+        });
 
         it('mark no square for pawn d5', () => {
 
@@ -1188,7 +1191,7 @@ describe('jBoard', () => {
             expect(jboard.isSquareMarked(2, 5)).to.be.false;
             expect(jboard.isSquareMarked(4, 5)).to.be.false;
 
-        })
+        });
 
         it('mark no square for pawn f4', () => {
 
@@ -1198,8 +1201,8 @@ describe('jBoard', () => {
             expect(jboard.isSquareMarked(4, 4)).to.be.false;
             expect(jboard.isSquareMarked(6, 4)).to.be.false;
 
-        })
-    })
+        });
+    });
 
     /*
      *   DO MOVE
@@ -1212,11 +1215,11 @@ describe('jBoard', () => {
         before(() => {
             jboard = new JBoard;
 
-        })
+        });
 
         beforeEach(() => {
             jboard.setUpPosition(TEST_POSITION);
-        })
+        });
 
         it('return null if arguments aren\'t correct', () => {
 
@@ -1225,7 +1228,7 @@ describe('jBoard', () => {
             expect(jboard._doMove(0, 0, 6, 9)).to.be.null;
             expect(jboard._doMove(10, 8, 18, 8)).to.be.null;
 
-        })
+        });
 
         it('return null if there is no piece on start square', () => {
 
@@ -1234,7 +1237,7 @@ describe('jBoard', () => {
             expect(jboard._doMove(6, 7, 4, 6)).to.be.null;
             expect(jboard._doMove(5, 5, 2, 0)).to.be.null;
 
-        })
+        });
 
         it('return null if start piece color equal stop piece color', () => {
 
@@ -1243,7 +1246,7 @@ describe('jBoard', () => {
             expect(jboard._doMove(3, 7, 4, 7)).to.be.null;
             expect(jboard._doMove(5, 4, 6, 6)).to.be.null;
 
-        })
+        });
 
         it('return true if move was successful', () => {
 
@@ -1252,7 +1255,7 @@ describe('jBoard', () => {
             expect(jboard._doMove(6, 6, 6, 5)).to.be.true;
             expect(jboard._doMove(0, 1, 0, 3)).to.be.true;
 
-        })
+        });
 
         it('check stop square if move was successful', () => {
 
@@ -1272,7 +1275,7 @@ describe('jBoard', () => {
             expect(jboard.getPieceColor(6, 2) === color).to.be.true;
             expect(jboard.getPieceType(6, 2) === type).to.be.true;
 
-        })
+        });
 
         it('check start square if move was successful', () => {
 
@@ -1288,8 +1291,8 @@ describe('jBoard', () => {
             expect(jboard.getPieceColor(7, 3)).to.be.null;
             expect(jboard.getPieceType(7, 3)).to.be.null;
 
-        })
-    })
+        });
+    });
 
     /*
      *   CHECK MOVE
@@ -1302,11 +1305,11 @@ describe('jBoard', () => {
         before(() => {
             jboard = new JBoard;
 
-        })
+        });
 
         beforeEach(() => {
             jboard.setUpPosition(TEST_POSITION);
-        })
+        });
 
         it('return false if arguments aren\'t correct', () => {
 
@@ -1315,7 +1318,7 @@ describe('jBoard', () => {
             expect(jboard._checkMove(0, 0, 6, 9)).to.be.null;
             expect(jboard._checkMove(10, 8, 18, 8)).to.be.null;
 
-        })
+        });
 
         it('return false if there is no piece on start square', () => {
 
@@ -1324,7 +1327,7 @@ describe('jBoard', () => {
             expect(jboard._checkMove(6, 7, 4, 6)).to.be.null;
             expect(jboard._checkMove(5, 5, 2, 0)).to.be.null;
 
-        })
+        });
 
         it('return true if move is legal', () => {
 
@@ -1333,14 +1336,14 @@ describe('jBoard', () => {
             expect(jboard._checkMove(6, 6, 6, 5)).to.be.true;
             expect(jboard._checkMove(0, 1, 0, 3)).to.be.true;
 
-        })
+        });
 
         it('return false if move is illegal', () => {
 
             expect(jboard._checkMove(5, 6, 5, 5)).to.be.false;
 
-        })
-    })
+        });
+    });
 
     /*
      *   GET PAWN MOVES
@@ -1355,7 +1358,7 @@ describe('jBoard', () => {
             jboard = new JBoard;
             jboard.setUpPosition(TEST_POSITION);
 
-        })
+        });
 
         it('return two squares for pawn a2', () => {
 
@@ -1366,7 +1369,7 @@ describe('jBoard', () => {
             expect(moves[1].rank).to.be.equal(3);
             expect(moves[2]).to.be.undefined;
 
-        })
+        });
 
         it('return two squares for pawn e2', () => {
 
@@ -1378,7 +1381,7 @@ describe('jBoard', () => {
             expect(moves[1].rank).to.be.equal(3);
             expect(moves[2]).to.be.undefined;
 
-        })
+        });
 
         it('return only square for pawn c5', () => {
 
@@ -1388,21 +1391,21 @@ describe('jBoard', () => {
             expect(moves[0].rank).to.be.equal(3);
             expect(moves[1]).to.be.undefined;
 
-        })
+        });
 
         it('return null for pawn d5', () => {
 
             let moves = jboard._getMovesPawn(3, 4);
             expect(moves[0]).to.be.undefined;
 
-        })
+        });
 
         it('return null for pawn f4', () => {
 
             let moves = jboard._getMovesPawn(5, 3);
             expect(moves[0]).to.be.undefined;
 
-        })
+        });
 
         it('return three squares for pawn b2', () => {
 
@@ -1419,7 +1422,7 @@ describe('jBoard', () => {
 
             expect(moves[3]).to.be.undefined;
 
-        })
+        });
 
         it('return only square for pawn h2', () => {
 
@@ -1429,7 +1432,7 @@ describe('jBoard', () => {
             expect(moves[0].rank).to.be.equal(2);
             expect(moves[1]).to.be.undefined;
 
-        })
+        });
 
         it('return two squares for pawn h4', () => {
 
@@ -1443,8 +1446,8 @@ describe('jBoard', () => {
 
             expect(moves[2]).to.be.undefined;
 
-        })
-    })
+        });
+    });
 
     /*
      *   GET KING MOVES
@@ -1457,7 +1460,7 @@ describe('jBoard', () => {
         before(() => {
             jboard = new JBoard;
             jboard.setUpPosition(CASTLING_POSITION);
-        })
+        });
 
         it('return two squares for white king', () => {
 
@@ -1475,11 +1478,64 @@ describe('jBoard', () => {
             expect(moves[3].file).to.be.equal(3);
             expect(moves[3].rank).to.be.equal(1);
 
-            expect(moves[4]).to.be.undefined;
+            expect(moves[4].file).to.be.equal(6);
+            expect(moves[4].rank).to.be.equal(0);
 
-        })
+            expect(moves[5]).to.be.undefined;
 
-    })
+        });
+
+        it('return two squares for black king', () => {
+
+            let moves = jboard._getMovesKing(4, 7);
+
+            expect(moves[0].file).to.be.equal(3);
+            expect(moves[0].rank).to.be.equal(6);
+
+            expect(moves[1].file).to.be.equal(3);
+            expect(moves[1].rank).to.be.equal(7);
+
+            expect(moves[2].file).to.be.equal(2);
+            expect(moves[2].rank).to.be.equal(7);
+
+            expect(moves[3]).to.be.undefined;
+
+        });
+
+    });
+
+    describe('_getCastlingMove', () => {
+
+        let jboard;
+
+        before(() => {
+            jboard = new JBoard;
+            jboard.setUpPosition(CASTLING_POSITION);
+        });
+
+        it('return only move for white king', () => {
+
+            let moves = jboard._getCastlingMove(4, 0);
+
+            expect(moves[0].file).to.be.equal(6);
+            expect(moves[0].rank).to.be.equal(0);
+
+            expect(moves[1]).to.be.undefined;
+
+        });
+
+        it('return only move for black king', () => {
+
+            let moves = jboard._getCastlingMove(4, 7);
+
+            expect(moves[0].file).to.be.equal(2);
+            expect(moves[0].rank).to.be.equal(7);
+
+            expect(moves[1]).to.be.undefined;
+
+        });
+
+    });
 
     /*
      *   GET PIECE MOVES
@@ -1492,7 +1548,7 @@ describe('jBoard', () => {
         before(() => {
             jboard = new JBoard;
             jboard.setUpPosition(TEST_POSITION);
-        })
+        });
 
         it('return two squares for knight c3', () => {
 
@@ -1524,7 +1580,7 @@ describe('jBoard', () => {
 
             expect(moves[8]).to.be.undefined;
 
-        })
+        });
 
         it('return two squares for knight f5', () => {
 
@@ -1547,7 +1603,7 @@ describe('jBoard', () => {
 
             expect(moves[5]).to.be.undefined;
 
-        })
+        });
 
         it('return two squares for rook h8', () => {
 
@@ -1570,7 +1626,7 @@ describe('jBoard', () => {
 
             expect(moves[5]).to.be.undefined;
 
-        })
+        });
 
         it('return two squares for bishop h5', () => {
 
@@ -1587,8 +1643,8 @@ describe('jBoard', () => {
 
             expect(moves[3]).to.be.undefined;
 
-        })
-    })
+        });
+    });
 
     describe('_getAttackedSquares', () => {
 
@@ -1597,7 +1653,7 @@ describe('jBoard', () => {
         before(() => {
             jboard = new JBoard;
             jboard.setUpPosition(CASTLING_POSITION);
-        })
+        });
 
         it('return squares, which are attacked by bishop move', () => {
 
@@ -1611,9 +1667,9 @@ describe('jBoard', () => {
 
             expect(square[2]).to.be.undefined;
 
-        })
+        });
 
-    })
+    });
 
     /*
      *   VALIDATORS
@@ -1625,7 +1681,7 @@ describe('jBoard', () => {
 
         before(() => {
             jboard = new JBoard;
-        })
+        });
 
         it('return false if square isn\'t correct', () => {
 
@@ -1634,7 +1690,7 @@ describe('jBoard', () => {
             expect(jboard._validateSquare(-1, 0)).to.be.false;
             expect(jboard._validateSquare(0, -1)).to.be.false;
 
-        })
+        });
 
         it('return true if square is correct', () => {
 
@@ -1643,8 +1699,8 @@ describe('jBoard', () => {
             expect(jboard._validateSquare(0, 3)).to.be.true;
             expect(jboard._validateSquare(3, 5)).to.be.true;
 
-        })
-    })
+        });
+    });
 
     /*
      *   SERVICES
@@ -1656,7 +1712,7 @@ describe('jBoard', () => {
 
         before(() => {
             jboard = new JBoard;
-        })
+        });
 
         it('return null if arguments aren\'t correct', () => {
 
@@ -1664,9 +1720,9 @@ describe('jBoard', () => {
              *   !!! ADD SOMETHING !!!
              */
 
-        })
+        });
 
-    })
+    });
 
     describe('_isFriend', () => {
 
@@ -1674,7 +1730,7 @@ describe('jBoard', () => {
 
         before(() => {
             jboard = new JBoard;
-        })
+        });
 
         it('return null if arguments aren\'t correct', () => {
 
@@ -1682,9 +1738,9 @@ describe('jBoard', () => {
              *   !!! ADD SOMETHING !!!
              */
 
-        })
+        });
 
-    })
+    });
 
     describe('_isFoe', () => {
 
@@ -1692,7 +1748,7 @@ describe('jBoard', () => {
 
         before(() => {
             jboard = new JBoard;
-        })
+        });
 
         it('return null if arguments aren\'t correct', () => {
 
@@ -1700,9 +1756,9 @@ describe('jBoard', () => {
              *   !!! ADD SOMETHING !!!
              */
 
-        })
+        });
 
-    })
+    });
 
     describe('_isSquareAttacked', () => {
 
@@ -1711,7 +1767,7 @@ describe('jBoard', () => {
         before(() => {
             jboard = new JBoard;
             jboard.setUpPosition(CASTLING_POSITION);
-        })
+        });
 
         it('return false if square isn\'t correct', () => {
 
@@ -1720,7 +1776,7 @@ describe('jBoard', () => {
             expect(jboard._isSquareAttacked(-1, 0)).to.be.null;
             expect(jboard._isSquareAttacked(0, -1)).to.be.null;
 
-        })
+        });
 
         it('return true if square is attacked', () => {
 
@@ -1734,7 +1790,7 @@ describe('jBoard', () => {
             jboard._isSquareAttacked('black', 3, 2).should.be.true;
             jboard._isSquareAttacked('black', 5, 2).should.be.true;
 
-        })
+        });
 
         it('return true if square isn\'t attacked', () => {
 
@@ -1743,9 +1799,9 @@ describe('jBoard', () => {
             jboard._isSquareAttacked('white', 6, 2).should.be.false;
             jboard._isSquareAttacked('white', 1, 0).should.be.false;
 
-        })
+        });
 
-    })
+    });
 
     describe('_isSquareAttackedByPawn', () => {
 
@@ -1754,7 +1810,7 @@ describe('jBoard', () => {
         before(() => {
             jboard = new JBoard;
             jboard.setUpPosition(CASTLING_POSITION);
-        })
+        });
 
         it('return false if square isn\'t correct', () => {
 
@@ -1763,7 +1819,7 @@ describe('jBoard', () => {
             expect(jboard._isSquareAttackedByPawn(-1, 0)).to.be.null;
             expect(jboard._isSquareAttackedByPawn(0, -1)).to.be.null;
 
-        })
+        });
 
         it('return true if square is attacked by pawn', () => {
 
@@ -1772,7 +1828,7 @@ describe('jBoard', () => {
             jboard._isSquareAttackedByPawn('black', 3, 2).should.be.true;
             jboard._isSquareAttackedByPawn('black', 5, 2).should.be.true;
 
-        })
+        });
 
         it('return false if square isn\'t attacked by pawn', () => {
 
@@ -1781,9 +1837,9 @@ describe('jBoard', () => {
             jboard._isSquareAttackedByPawn('black', 3, 3).should.be.false;
             jboard._isSquareAttackedByPawn('black', 5, 3).should.be.false;
 
-        })
+        });
 
-    })
+    });
 
     describe('_isCheck', () => {
 
@@ -1791,48 +1847,48 @@ describe('jBoard', () => {
 
         before(() => {
             jboard = new JBoard;
-        })
+        });
 
         beforeEach(() => {
             jboard.setUpPosition(TEST_POSITION);
-        })
+        });
 
         it('return false if square isn\'t correct', () => {
 
             expect(jboard._isCheck('red')).to.be.null;
             expect(jboard._isCheck('green')).to.be.null;
 
-        })
+        });
 
         it('both kings are not in check', () => {
 
             expect(jboard._isCheck('white')).to.be.false;
             expect(jboard._isCheck('black')).to.be.false;
 
-        })
+        });
 
         it('white king is in check by queen', () => {
 
             jboard._doMove(3, 3, 5, 1);
             expect(jboard._isCheck('white')).to.be.true;
 
-        })
+        });
 
         it('white king is in discovered check by bishop', () => {
 
             jboard._doMove(2, 2, 3, 5);
             expect(jboard._isCheck('white')).to.be.true;
 
-        })
+        });
 
         it('black king is in check by pawn', () => {
 
             jboard._doMove(3, 5, 3, 6);
             expect(jboard._isCheck('black')).to.be.true;
 
-        })
+        });
 
-    })
+    });
 
     describe('_getKing', () => {
 
@@ -1841,14 +1897,14 @@ describe('jBoard', () => {
         before(() => {
             jboard = new JBoard;
             jboard.setUpPosition(CASTLING_POSITION);
-        })
+        });
 
         it('return false if square isn\'t correct', () => {
 
             expect(jboard._getKing('red')).to.be.null;
             expect(jboard._getKing('green')).to.be.null;
 
-        })
+        });
 
         it('return white king position', () => {
 
@@ -1857,7 +1913,7 @@ describe('jBoard', () => {
             expect(square.file).to.be.equal(4);
             expect(square.rank).to.be.equal(0);
 
-        })
+        });
 
         it('return black king position', () => {
 
@@ -1866,39 +1922,203 @@ describe('jBoard', () => {
             expect(square.file).to.be.equal(4);
             expect(square.rank).to.be.equal(7);
 
-        })
+        });
 
-    })
+    });
 
     describe('_cloneBoard', () => {
 
         let jboard;
-        let newBoard
+        let newBoard;
 
         before(() => {
             jboard = new JBoard;
             jboard.setUpPosition(CASTLING_POSITION);
             newBoard = jboard._cloneBoard(jboard);
-        })
+        });
 
         it('check white rook position on new board', () => {
             expect(newBoard.getPieceType(0, 0)).to.be.equal('rook');
-        })
+        });
 
         it('check white rook position on new board after move on source board', () => {
             expect(jboard.getPieceType(0, 0)).to.be.equal('rook');
             jboard._doMove(0, 0, 1, 0);
             expect(jboard.getPieceType(0, 0)).to.be.null;
             expect(newBoard.getPieceType(0, 0)).to.be.equal('rook');
-        })
+        });
 
         it('check black rook position on source board after move on new board', () => {
             expect(newBoard.getPieceType(0, 7)).to.be.equal('rook');
             newBoard._doMove(0, 7, 1, 7);
             expect(newBoard.getPieceType(0, 7)).to.be.null;
             expect(jboard.getPieceType(0, 7)).to.be.equal('rook');
-        })
+        });
 
-    })
+    });
 
-})
+    /*
+     *   FEN
+     */
+
+    describe('_getFEN', () => {
+
+        let jboard;
+
+        before(() => {
+            jboard = new JBoard;
+            jboard.setUpInitial();
+        });
+
+        // it('get FEN of initial position', () => {
+        //     jboard.setUpInitial();
+        //     jboard._getFEN().should.to.be.equal('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+        // });
+        //
+        // it('get FEN of test position', () => {
+        //     jboard.setUpPosition(TEST_POSITION);
+        //     jboard._getFEN().should.to.be.equal('r3k2r/pp3pp1/b2P4/b1pP1n1B/3q1P1p/2n2NP1/PP2P2P/RNBQK2R w KQkq - 0 1');
+        // });
+
+    });
+
+    describe('_getFENPiece', () => {
+
+        let jboard;
+
+        before(() => {
+            jboard = new JBoard;
+            jboard.setUpInitial();
+        });
+
+        it('return null if square is empty', () => {
+            expect(jboard._getFENPiece(0, 4)).to.be.null;
+            expect(jboard._getFENPiece(4, 5)).to.be.null;
+            expect(jboard._getFENPiece(6, 3)).to.be.null;
+        });
+
+        it('return FEN of white pieces', () => {
+            jboard._getFENPiece(0, 0).should.to.be.equal('R');
+            jboard._getFENPiece(4, 0).should.to.be.equal('K');
+            jboard._getFENPiece(2, 1).should.to.be.equal('P');
+        });
+
+        it('return FEN of black pieces', () => {
+            jboard._getFENPiece(1, 7).should.to.be.equal('n');
+            jboard._getFENPiece(2, 7).should.to.be.equal('b');
+            jboard._getFENPiece(3, 7).should.to.be.equal('q');
+        });
+
+    });
+
+    describe('_getFENBoard', () => {
+
+        let jboard;
+
+        before(() => {
+            jboard = new JBoard;
+        });
+
+        it('get FEN board of initial position', () => {
+            jboard.setUpInitial();
+            jboard._getFENBoard().should.to.be.equal('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR');
+        });
+
+        it('get FEN board of test position', () => {
+            jboard.setUpPosition(TEST_POSITION);
+            jboard._getFENBoard().should.to.be.equal('r3k2r/pp3pp1/b2P4/b1pP1n1B/3q1P1p/2n2NP1/PP2P2P/RNBQK2R');
+        });
+
+
+
+    });
+
+    describe('_getFENTurn', () => {
+
+        let jboard;
+
+        before(() => {
+            jboard = new JBoard;
+        });
+
+        it('get FEN turn of initial position', () => {
+            jboard.setUpInitial();
+            jboard._getFENTurn().should.to.be.equal('w');
+        });
+
+        it('get FEN turn of test position', () => {
+            jboard.setUpPosition(TEST_POSITION);
+            jboard._getFENTurn().should.to.be.equal('w');
+        });
+
+    });
+
+    describe('_getFENCastling', () => {
+
+        let jboard;
+
+        before(() => {
+            jboard = new JBoard;
+        });
+
+        it('get FEN castling of initial position', () => {
+            jboard.setUpInitial();
+            jboard._getFENCastling().should.to.be.equal('KQkq');
+        });
+
+        it('get FEN castling of test position', () => {
+            jboard.setUpPosition(TEST_POSITION);
+            jboard._getFENCastling().should.to.be.equal('KQkq');
+        });
+
+        it('get "Qk" if castling available in queenside for white and in kingside for black', () => {
+            jboard.castling.white = 2;
+            jboard.castling.black = 1;
+            jboard._getFENCastling().should.to.be.equal('Qk');
+        });
+
+        it('get "Kq" if castling available in kingside for white and in queenside for black', () => {
+            jboard.castling.white = 1;
+            jboard.castling.black = 2;
+            jboard._getFENCastling().should.to.be.equal('Kq');
+        });
+
+        it('get "-" if castling unavailable', () => {
+            jboard.castling.white = 0;
+            jboard.castling.black = 0;
+            jboard._getFENCastling().should.to.be.equal('-');
+        });
+
+    });
+
+    describe('_getFENEnPassant', () => {
+
+        let jboard;
+
+        before(() => {
+            jboard = new JBoard;
+        });
+
+        it('return "-" for initial position', () => {
+            jboard.setUpInitial();
+            jboard._getFENEnPassant().should.to.be.equal('-');
+        });
+
+        it('return "-" for test position', () => {
+            jboard.setUpPosition(TEST_POSITION);
+            jboard._getFENEnPassant().should.to.be.equal('-');
+        });
+
+        it('return "b3" for test position after two moves', () => {
+            jboard.setUpPosition(TEST_POSITION);
+            jboard.turn = 'black';
+            jboard.pickSquare(2, 4);
+            jboard.pickSquare(2, 3);
+            jboard.pickSquare(1, 1);
+            jboard.pickSquare(1, 3);
+            jboard._getFENEnPassant().should.to.be.equal('b3');
+        });
+
+    });
+
+});
