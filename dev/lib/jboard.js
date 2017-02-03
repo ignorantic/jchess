@@ -18,6 +18,8 @@ export default class JBoard {
         this._paintBoard();
 
         this.turn = 'white';
+        this.count = 1;
+        this.countFiftyMove = 0;
 
         this.selectFile = null;
         this.selectRank = null;
@@ -563,24 +565,24 @@ export default class JBoard {
      *   EN PASSANT
      */
 
-    _checkEnPassant(file, rank) {
+    _checkEnPassant(startFile, startRank, stopFile, stopRank) {
 
-        let piece = this.getPieceType(this.selectFile, this.selectRank);
+        let piece = this.getPieceType(startFile, startRank);
 
         if (piece == 'pawn') {
 
-            this._isEnPassant(file, rank) && this._removePiece(file, this.selectRank);
+            this._isEnPassant(stopFile, stopRank) && this._removePiece(stopFile, startRank);
             this._setEnPassant(null);
 
-            let color = this.getPieceColor(this.selectFile, this.selectRank);
+            let color = this.getPieceColor(startFile, startRank);
 
             if (color === 'white') {
 
-                rank == 3 && this._setEnPassant(file, 2);
+                stopRank == 3 && this._setEnPassant(stopFile, 2);
 
             } else {
 
-                rank == 4 && this._setEnPassant(file, 5);
+                stopRank == 4 && this._setEnPassant(stopFile, 5);
 
             }
 
@@ -769,29 +771,38 @@ export default class JBoard {
 
     _doMove(startFile, startRank, stopFile, stopRank) {
 
-        this._checkEnPassant(stopFile, stopRank);
+        this._checkEnPassant(startFile, startRank, stopFile, stopRank);
 
         let type = this.getPieceType(startFile, startRank);
         let color = this.getPieceColor(startFile, startRank);
+        let capture = false;
 
         if (!this._validateSquare(startFile, startRank)) return null;
         if (!this._validateSquare(stopFile, stopRank)) return null;
-        if (!this.getPieceType(startFile, startRank)) return null;
+        if (this._isEmpty(startFile, startRank)) return null;
         if (this._isFriend(color, stopFile, stopRank)) return null;
 
         if (type == 'king' && Math.abs(startFile - stopFile) === 2) {
-
             this._doCastling(color, stopFile);
-
         } else {
-
+            capture = this._isFoe(color, stopFile, stopRank);
             this.setPiece(stopFile, stopRank, type, color);
             this._removePiece(startFile, startRank);
-
         }
 
         if (type == 'king' || type == 'rook') {
             this._checkCastling(color, type, startFile);
+        }
+
+        if (color == 'black') {
+            this.count++;
+            this.countFiftyMove++;
+        }
+
+        if (capture) {
+            this.countFiftyMove = 0;
+        } else {
+            this.countFiftyMove++;
         }
 
         this._passTurn();
@@ -1134,16 +1145,12 @@ export default class JBoard {
         let newBoard = new JBoard;
 
         if (src.enPassant !== null) {
-
             newBoard.enPassant = {
                 file: src.enPassant.file,
                 rank: src.enPassant.rank
             };
-
         } else {
-
             newBoard.enPassant = null;
-
         }
 
         newBoard.castling = {
@@ -1153,10 +1160,8 @@ export default class JBoard {
 
         for (let file = 0; file < 8; file++) {
             for (let rank = 0; rank < 8; rank++) {
-
                 newBoard.board[file][rank].piece.type = src.board[file][rank].piece.type;
                 newBoard.board[file][rank].piece.color = src.board[file][rank].piece.color;
-
             }
         }
 
@@ -1168,12 +1173,12 @@ export default class JBoard {
      *   FEN
      */
 
-    _getFEN() {
-
+    getFEN() {
         return this._getFENBoard() + ' ' +
-        this._getFENTurn() + ' ' +
-        this._getFENCastling() + ' ';
-
+               this._getFENTurn() + ' ' +
+               this._getFENCastling() + ' ' +
+               this._getFENEnPassant() + ' ' +
+               this._getFENCounts();
     }
 
     _getFENPiece(file, rank) {
@@ -1268,8 +1273,20 @@ export default class JBoard {
 
         let enPassant = this.enPassant;
         if (!this.enPassant) return '-';
-        return String.fromCharCode(enPassant.file + 97) + (enPassant.rank + 1);
+        return this._getAlgebraicByDigits(enPassant.file, enPassant.rank);
 
+    }
+
+    _getFENCounts() {
+
+        return this.countFiftyMove + ' ' + this.count;
+
+    }
+
+    _getAlgebraicByDigits(file, rank) {
+        let shiftFile = 97;
+        let shiftRank = 1;
+        return String.fromCharCode(file + shiftFile) + (rank + shiftRank);
     }
 
 }

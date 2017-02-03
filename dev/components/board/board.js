@@ -13,6 +13,12 @@ export default function initBoard(jchess) {
         board = document.createElement('section');
 
     board.classList.add('board');
+    board.id = 'board';
+
+    board.addEventListener('change', () => {
+        drawBoard(jchess);
+    })
+
     for (let file = 0; file < 8; file++) {
         for (let rank = 0; rank < 8; rank++) {
             let square = newSquare(jchess, file, rank);
@@ -27,6 +33,9 @@ export default function initBoard(jchess) {
     function handlerClick(e) {
         jchess.pickSquare(+e.target.dataset.file, +e.target.dataset.rank);
         drawBoard(jchess);
+        let FEN = document.querySelector('.fen__input');
+        let event = new Event('change');
+        FEN.dispatchEvent(event);
     }
 }
 

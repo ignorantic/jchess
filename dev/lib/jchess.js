@@ -71,4 +71,13 @@ export default class JChess {
     isSquareMarked(file, rank) {
         return this.mainBoard.isSquareMarked(file, rank);
     }
+
+    /*
+     *   FEN
+     */
+
+    getFEN() {
+        return this.mainBoard.getFEN();
+    }
+
 }

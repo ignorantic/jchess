@@ -1961,7 +1961,7 @@ describe('jBoard', () => {
      *   FEN
      */
 
-    describe('_getFEN', () => {
+    describe('getFEN', () => {
 
         let jboard;
 
@@ -1970,15 +1970,15 @@ describe('jBoard', () => {
             jboard.setUpInitial();
         });
 
-        // it('get FEN of initial position', () => {
-        //     jboard.setUpInitial();
-        //     jboard._getFEN().should.to.be.equal('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
-        // });
-        //
-        // it('get FEN of test position', () => {
-        //     jboard.setUpPosition(TEST_POSITION);
-        //     jboard._getFEN().should.to.be.equal('r3k2r/pp3pp1/b2P4/b1pP1n1B/3q1P1p/2n2NP1/PP2P2P/RNBQK2R w KQkq - 0 1');
-        // });
+        it('get FEN of initial position', () => {
+            jboard.setUpInitial();
+            jboard.getFEN().should.to.be.equal('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+        });
+
+        it('get FEN of test position', () => {
+            jboard.setUpPosition(TEST_POSITION);
+            jboard.getFEN().should.to.be.equal('r3k2r/pp3pp1/b2P4/b1pP1n1B/3q1P1p/2n2NP1/PP2P2P/RNBQK2R w KQkq - 0 1');
+        });
 
     });
 
@@ -2112,10 +2112,8 @@ describe('jBoard', () => {
         it('return "b3" for test position after two moves', () => {
             jboard.setUpPosition(TEST_POSITION);
             jboard.turn = 'black';
-            jboard.pickSquare(2, 4);
-            jboard.pickSquare(2, 3);
-            jboard.pickSquare(1, 1);
-            jboard.pickSquare(1, 3);
+            jboard._doMove(2, 4, 2, 3);
+            jboard._doMove(1, 1, 1, 3);
             jboard._getFENEnPassant().should.to.be.equal('b3');
         });
 

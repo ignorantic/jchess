@@ -146,6 +146,34 @@ gulp.task('lint:js', function() {
 });
 
 /*
+ *      TEST
+ */
+
+gulp.task('test:js', function (done) {
+    new Karma({
+        configFile: __dirname + '/karma.conf.js',
+        autoWatch: false,
+        singleRun: true
+    }, function() {
+        done();
+    }).start();
+});
+
+/*
+ *      TDD
+ */
+
+gulp.task('tdd', function (done) {
+    new Karma({
+        configFile: __dirname + '/karma.conf.js',
+        autoWatch: true,
+        singleRun: false
+    }, function() {
+        done();
+    }).start();
+});
+
+/*
  *      FONTS
  */
 
@@ -219,17 +247,6 @@ gulp.task('build:svgSprite', function () {
 });
 
 /*
- *      TESTS
- */
-
-gulp.task('test', function (done) {
-    new Karma({
-        configFile: __dirname + '/karma.conf.js',
-        singleRun: true
-    }, done).start();
-});
-
-/*
  *      CLEAN
  */
 
@@ -269,6 +286,6 @@ gulp.task('watch', function(done) {
  *      COMPLEX TASKS
  */
 
-gulp.task('build', gulp.series('clean', 'build:pages', 'build:sprite', 'build:sass', 'build:js', 'build:img', 'build:fonts'));
+gulp.task('build', gulp.series('clean', 'build:pages', 'build:sprite', 'build:sass', 'test:js', 'build:js', 'build:img', 'build:fonts'));
 gulp.task('default', gulp.series('build'));
 gulp.task('run', gulp.series(gulp.parallel('build:pages', 'build:sass', 'lint:js', 'build:js'), gulp.parallel('watch', 'server')));

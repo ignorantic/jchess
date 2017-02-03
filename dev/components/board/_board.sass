@@ -2,37 +2,44 @@
   display: flex
   flex-direction: column-reverse
   flex-wrap: wrap
-  height: 360px
-  width: 360px
+  height: 500px
+  width: 500px
   margin: 40px auto
-  border: 1px solid $cBase
+  border: 1px solid $cShadowSquare
 
 .board__square
-  height: 45px
-  width: 45px
+  position: relative
+  height: 12.5%
+  width: 12.5%
 
 .board__square_white
   background: $cWhiteSquare
+  box-shadow: inset 0 0 50px -10px $cShadowSquare
 
 .board__square_black
   background: $cBlackSquare
+  box-shadow: inset 0 0 50px -10px $cShadowSquare
 
 .board__square_selected
   background: $cSelectedBlackSquare
+  box-shadow: inset 0 0 50px -10px $cSelectedShadowSquare
 
 .board__square_marked_white
   background: $cMarkedWhiteSquare
+  box-shadow: inset 0 0 50px -10px $cMarkedShadowSquare
 
 .board__square_marked_black
   background: $cMarkedBlackSquare
+  box-shadow: inset 0 0 50px -10px $cMarkedShadowSquare
 
 @mixin piece($i)
-    $piece: map-get($icons, $i)
-    $sprite: map-get($icons, sprite)
-    width: map-get($piece, width)
-    height: map-get($piece, height)
-    background-image: url(map-get($sprite, svgPath))
-    background-position: map-get($piece, backgroundX) map-get($piece, backgroundX)
+  $piece: map-get($icons, $i)
+  $sprite: map-get($icons, sprite)
+  $xPosition: map-get($piece, backgroundX) / map-get($piece, squareHeight) * 100
+  $yPosition: map-get($piece, backgroundY) / map-get($piece, squareWidth) * 100
+  background-image: url(map-get($sprite, svgPath))
+  background-position: $xPosition $yPosition
+  background-size: 1200% 1200%
 
 .board__square_pawn_white
   @include piece(wp)

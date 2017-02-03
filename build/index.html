@@ -8,8 +8,19 @@
   </head>
   <body>
     <div class="page-wrap">
-      <div class="container">
-        <div class="board-wrap"></div>
+      <div class="container container_flex">
+        <div class="content">
+          <div class="board-wrap"></div>
+          <div class="fen-wrap">
+            <div class="fen">
+              <label class="fen__label" for="fen">FEN</label>
+              <input class="fen__input" type="text" id="fen" spellcheck="false">
+            </div>
+          </div>
+        </div>
+        <aside class="sidebar">
+          <button class="button" id="btn_sreset">Reset</button>
+        </aside>
       </div>
     </div>
     <link rel="stylesheet" href="css/main.css">

@@ -11,13 +11,15 @@ module.exports = function(config) {
         frameworks: ['browserify', 'mocha', 'chai'],
         files: [
             'dev/lib/**/*.{js, spec.js}',
-            'dev/blocks/**/*.{js, spec.js}'
+            'dev/blocks/**/*.{js, spec.js}',
+            'dev/components/**/*.{js, spec.js}'
         ],
         exclude: [
         ],
         preprocessors: {
             'dev/lib/**/*.{js, spec.js}': ['browserify'],
-            'dev/blocks/**/*.{js, spec.js}': ['browserify']
+            'dev/blocks/**/*.{js, spec.js}': ['browserify'],
+            'dev/components/**/*.{js, spec.js}': ['browserify']
         },
         browserify: {
             debug: true,
