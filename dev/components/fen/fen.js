@@ -8,7 +8,9 @@ export default function initFEN(jchess) {
 
     'use strict';
 
-    let FEN = document.querySelector('.fen__input');
+    let FEN = document.querySelector('#fen');
+
+    FEN.value = jchess.getFEN();
 
     FEN.addEventListener('change', () => {
         FEN.value = jchess.getFEN();

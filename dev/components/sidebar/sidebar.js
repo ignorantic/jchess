@@ -12,9 +12,11 @@ export default function initSidebar(jchess) {
 
     reset.addEventListener('click', () => {
         jchess.setUpInitial();
-        let board = document.querySelector('#board');
         let event = new Event('change');
+        let board = document.querySelector('#board');
+        let FEN = document.querySelector('#fen');
         board.dispatchEvent(event);
+        FEN.dispatchEvent(event);
     });
 
 }

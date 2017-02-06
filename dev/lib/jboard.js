@@ -477,6 +477,18 @@ export default class JBoard {
 
     setUpPosition(pieceSet) {
 
+        this.turn = 'white';
+
+        this.count = 1;
+        this.countFiftyMove = 0;
+
+        this.enPassant = null;
+
+        this.castling = {
+            white: 3,
+            black: 3
+        };
+
         this.resetPosition();
         pieceSet.forEach(
             (item) => {
@@ -574,16 +586,19 @@ export default class JBoard {
             this._isEnPassant(stopFile, stopRank) && this._removePiece(stopFile, startRank);
             this._setEnPassant(null);
 
-            let color = this.getPieceColor(startFile, startRank);
+            if (Math.abs(startRank - stopRank) == 2) {
 
-            if (color === 'white') {
+                let color = this.getPieceColor(startFile, startRank);
 
-                stopRank == 3 && this._setEnPassant(stopFile, 2);
+                if (this._isFoesPawn(color, stopFile - 1, stopRank) ||
+                    this._isFoesPawn(color, stopFile + 1, stopRank)) {
 
-            } else {
-
-                stopRank == 4 && this._setEnPassant(stopFile, 5);
-
+                    if (color === 'white') {
+                        stopRank == 3 && this._setEnPassant(stopFile, 2);
+                    } else {
+                        stopRank == 4 && this._setEnPassant(stopFile, 5);
+                    }
+                }
             }
 
             return true;
@@ -591,7 +606,7 @@ export default class JBoard {
         }
 
         this._setEnPassant(null);
-        return false;
+        return true;
 
     }
 
@@ -796,10 +811,9 @@ export default class JBoard {
 
         if (color == 'black') {
             this.count++;
-            this.countFiftyMove++;
         }
 
-        if (capture) {
+        if (capture || type == 'pawn') {
             this.countFiftyMove = 0;
         } else {
             this.countFiftyMove++;
@@ -1049,6 +1063,10 @@ export default class JBoard {
 
     }
 
+    _isFoesPawn(color, file, rank) {
+        return this.getPieceType(file, rank) == 'pawn' && this._isFoe(color, file, rank);
+    }
+
      _isEmpty(file, rank) {
 
          if (!this._validateSquare(file, rank)) return null;
@@ -1152,6 +1170,8 @@ export default class JBoard {
         } else {
             newBoard.enPassant = null;
         }
+
+        newBoard.turn = this.turn;
 
         newBoard.castling = {
             white: src.castling.white,
