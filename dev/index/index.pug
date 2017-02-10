@@ -1,0 +1,13 @@
+- pageTitle = 'Home'
+- activeIndex = 0
+doctype html
+html(lang="en")
+    include ../blocks/head/head
+    body
+        .page-wrap
+            .container.container_flex
+                .content
+                    include ../components/dom_board/board
+                    include ../components/dom_fen/fen
+                include ../components/dom_sidebar/sidebar
+        include ../blocks/sources/sources

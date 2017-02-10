@@ -73,7 +73,7 @@ export default class JChess {
     }
 
     /*
-     *   FEN
+     *   DOMFEN
      */
 
     getFEN() {

@@ -47,7 +47,7 @@ const paths = {
         root:   'dev',
         img:   ['dev/img/**/*.{png,jpg,gif,svg}', '!dev/img/sprite/**/*.*'],
         sprite: 'dev/img/sprite/**/*.*',
-        pug:    'dev/pages/*.pug',
+        pug:    'dev/index/*.pug',
         sass:   'dev/index/main.sass',
         js:     'dev/index/app.js',
         fonts:  'dev/fonts/**/*.*'
@@ -60,7 +60,7 @@ const paths = {
     },
     clean:      './build',
     watch:  {
-        pug:   ['dev/blocks/**/*.pug', 'dev/components/**/*.pug', 'dev/pages/**/*.pug'],
+        pug:   ['dev/blocks/**/*.pug', 'dev/components/**/*.pug', 'dev/index/**/*.pug'],
         js:    ['dev/index/**/*.js', 'dev/blocks/**/*.js', 'dev/components/**/*.js', 'dev/lib/**/*.js'],
         sass:   'dev/{index,blocks,components,mixins}/**/*.{sass,css}',
         img:    'dev/img/**/*.{png,jpg,gif,svg}',
