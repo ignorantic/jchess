@@ -662,7 +662,7 @@ describe('jBoard', () => {
 
     });
 
-    describe('_setUpPiece', () => {
+    describe('_setPiece', () => {
 
         let jboard;
 
@@ -693,7 +693,7 @@ describe('jBoard', () => {
 
         it('check square h2 after setup', () => {
 
-            jboard._setUpPiece(7, 1, 'pawn', 'white');
+            jboard._setPiece(7, 1, 'pawn', 'white');
             jboard._board[7][1].piece.type.should.be.equal('pawn');
             jboard._board[7][1].piece.color.should.be.equal('white');
 
@@ -701,7 +701,7 @@ describe('jBoard', () => {
 
         it('check square c3 after setup', () => {
 
-            jboard._setUpPiece(2, 2, 'knight', 'white');
+            jboard._setPiece(2, 2, 'knight', 'white');
             jboard._board[2][2].piece.type.should.be.equal('knight');
             jboard._board[2][2].piece.color.should.be.equal('white');
 
@@ -709,7 +709,7 @@ describe('jBoard', () => {
 
         it('check square e4 after setup', () => {
 
-            jboard._setUpPiece(4, 3, 'rook', 'black');
+            jboard._setPiece(4, 3, 'rook', 'black');
             jboard._board[4][3].piece.type.should.be.equal('rook');
             jboard._board[4][3].piece.color.should.be.equal('black');
 
@@ -837,7 +837,7 @@ describe('jBoard', () => {
      *   SQUARE SETTERS
      */
 
-    describe('setPieceType', () => {
+    describe('_setPieceType', () => {
 
         let jboard;
 
@@ -847,44 +847,44 @@ describe('jBoard', () => {
 
         it('return null if arguments aren\'t correct', () => {
 
-            expect(jboard.setPieceType(0, 8, 'pawn')).to.be.null;
-            expect(jboard.setPieceType(8, 0, 'king')).to.be.null;
-            expect(jboard.setPieceType(-5, 5, 'bishop')).to.be.null;
-            expect(jboard.setPieceType(0, -1, 'queen')).to.be.null;
+            expect(jboard._setPieceType(0, 8, 'pawn')).to.be.null;
+            expect(jboard._setPieceType(8, 0, 'king')).to.be.null;
+            expect(jboard._setPieceType(-5, 5, 'bishop')).to.be.null;
+            expect(jboard._setPieceType(0, -1, 'queen')).to.be.null;
 
         });
 
         it('return true if setting was successful', () => {
 
-            expect(jboard.setPieceType(0, 0, 'pawn')).to.be.true;
-            expect(jboard.setPieceType(1, 1, 'knight')).to.be.true;
-            expect(jboard.setPieceType(7, 6, null)).to.be.true;
-            expect(jboard.setPieceType(5, 4, 'bishop')).to.be.true;
+            expect(jboard._setPieceType(0, 0, 'pawn')).to.be.true;
+            expect(jboard._setPieceType(1, 1, 'knight')).to.be.true;
+            expect(jboard._setPieceType(7, 6, null)).to.be.true;
+            expect(jboard._setPieceType(5, 4, 'bishop')).to.be.true;
 
         });
 
         it('set piece type and check', () => {
 
             expect(jboard.getPieceType(1, 2)).to.be.null;
-            jboard.setPieceType(1, 2, 'pawn');
+            jboard._setPieceType(1, 2, 'pawn');
             expect(jboard.getPieceType(1, 2)).to.be.equal('pawn');
 
             expect(jboard.getPieceType(2, 4)).to.be.null;
-            jboard.setPieceType(2, 4, 'queen');
+            jboard._setPieceType(2, 4, 'queen');
             expect(jboard.getPieceType(2, 4)).to.be.equal('queen');
 
             expect(jboard.getPieceType(1, 1)).to.be.equal('knight');
-            jboard.setPieceType(1, 1, 'bishop');
+            jboard._setPieceType(1, 1, 'bishop');
             expect(jboard.getPieceType(1, 1)).to.be.equal('bishop');
 
             expect(jboard.getPieceType(2, 4)).to.be.equal('queen');
-            jboard.setPieceType(2, 4, 'king');
+            jboard._setPieceType(2, 4, 'king');
             expect(jboard.getPieceType(2, 4)).to.be.equal('king');
 
         });
     });
 
-    describe('setPieceColor', () => {
+    describe('_setPieceColor', () => {
 
         let jboard;
 
@@ -894,38 +894,38 @@ describe('jBoard', () => {
 
         it('return null if arguments aren\'t correct', () => {
 
-            expect(jboard.setPieceColor(0, 8, 'white')).to.be.null;
-            expect(jboard.setPieceColor(8, 0, 'white')).to.be.null;
-            expect(jboard.setPieceColor(-3, 0, 'black')).to.be.null;
-            expect(jboard.setPieceColor(0, -1, 'black')).to.be.null;
+            expect(jboard._setPieceColor(0, 8, 'white')).to.be.null;
+            expect(jboard._setPieceColor(8, 0, 'white')).to.be.null;
+            expect(jboard._setPieceColor(-3, 0, 'black')).to.be.null;
+            expect(jboard._setPieceColor(0, -1, 'black')).to.be.null;
 
         });
 
         it('return true if setting was successful', () => {
 
-            expect(jboard.setPieceColor(0, 0, 'white')).to.be.true;
-            expect(jboard.setPieceColor(1, 1, 'white')).to.be.true;
-            expect(jboard.setPieceColor(7, 6, null)).to.be.true;
-            expect(jboard.setPieceColor(5, 4, 'black')).to.be.true;
+            expect(jboard._setPieceColor(0, 0, 'white')).to.be.true;
+            expect(jboard._setPieceColor(1, 1, 'white')).to.be.true;
+            expect(jboard._setPieceColor(7, 6, null)).to.be.true;
+            expect(jboard._setPieceColor(5, 4, 'black')).to.be.true;
 
         });
 
         it('set piece type and check', () => {
 
             expect(jboard.getPieceColor(1, 2)).to.be.null;
-            jboard.setPieceColor(1, 2, 'black');
+            jboard._setPieceColor(1, 2, 'black');
             expect(jboard.getPieceColor(1, 2)).to.be.equal('black');
 
             expect(jboard.getPieceColor(2, 4)).to.be.null;
-            jboard.setPieceColor(2, 4, 'white');
+            jboard._setPieceColor(2, 4, 'white');
             expect(jboard.getPieceColor(2, 4)).to.be.equal('white');
 
             expect(jboard.getPieceColor(1, 1)).to.be.equal('white');
-            jboard.setPieceColor(1, 1, 'black');
+            jboard._setPieceColor(1, 1, 'black');
             expect(jboard.getPieceColor(1, 1)).to.be.equal('black');
 
             expect(jboard.getPieceColor(5, 4)).to.be.equal('black');
-            jboard.setPieceColor(5, 4, 'white');
+            jboard._setPieceColor(5, 4, 'white');
             expect(jboard.getPieceColor(5, 4)).to.be.equal('white');
 
         });
@@ -1958,7 +1958,7 @@ describe('jBoard', () => {
     });
 
     /*
-     *   DOMFEN
+     *   FEN
      */
 
     describe('getFEN', () => {
@@ -1970,12 +1970,12 @@ describe('jBoard', () => {
             jboard.setUpInitial();
         });
 
-        it('get DOMFEN of initial position', () => {
+        it('get FEN of initial position', () => {
             jboard.setUpInitial();
             jboard.getFEN().should.to.be.equal('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
         });
 
-        it('get DOMFEN of test position', () => {
+        it('get FEN of test position', () => {
             jboard.setUpPosition(TEST_POSITION);
             jboard.getFEN().should.to.be.equal('r3k2r/pp3pp1/b2P4/b1pP1n1B/3q1P1p/2n2NP1/PP2P2P/RNBQK2R w KQkq - 0 1');
         });
@@ -1997,13 +1997,13 @@ describe('jBoard', () => {
             expect(jboard._getFENPiece(6, 3)).to.be.null;
         });
 
-        it('return DOMFEN of white pieces', () => {
+        it('return FEN of white pieces', () => {
             jboard._getFENPiece(0, 0).should.to.be.equal('R');
             jboard._getFENPiece(4, 0).should.to.be.equal('K');
             jboard._getFENPiece(2, 1).should.to.be.equal('P');
         });
 
-        it('return DOMFEN of black pieces', () => {
+        it('return FEN of black pieces', () => {
             jboard._getFENPiece(1, 7).should.to.be.equal('n');
             jboard._getFENPiece(2, 7).should.to.be.equal('b');
             jboard._getFENPiece(3, 7).should.to.be.equal('q');
@@ -2019,12 +2019,12 @@ describe('jBoard', () => {
             jboard = new JBoard;
         });
 
-        it('get DOMFEN _board of initial position', () => {
+        it('get FEN _board of initial position', () => {
             jboard.setUpInitial();
             jboard._getFENBoard().should.to.be.equal('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR');
         });
 
-        it('get DOMFEN _board of test position', () => {
+        it('get FEN _board of test position', () => {
             jboard.setUpPosition(TEST_POSITION);
             jboard._getFENBoard().should.to.be.equal('r3k2r/pp3pp1/b2P4/b1pP1n1B/3q1P1p/2n2NP1/PP2P2P/RNBQK2R');
         });
@@ -2041,12 +2041,12 @@ describe('jBoard', () => {
             jboard = new JBoard;
         });
 
-        it('get DOMFEN _turn of initial position', () => {
+        it('get FEN turn of initial position', () => {
             jboard.setUpInitial();
             jboard._getFENTurn().should.to.be.equal('w');
         });
 
-        it('get DOMFEN _turn of test position', () => {
+        it('get FEN turn of test position', () => {
             jboard.setUpPosition(TEST_POSITION);
             jboard._getFENTurn().should.to.be.equal('w');
         });
@@ -2061,29 +2061,29 @@ describe('jBoard', () => {
             jboard = new JBoard;
         });
 
-        it('get DOMFEN _castling of initial position', () => {
+        it('get FEN castling of initial position', () => {
             jboard.setUpInitial();
             jboard._getFENCastling().should.to.be.equal('KQkq');
         });
 
-        it('get DOMFEN _castling of test position', () => {
+        it('get FEN castling of test position', () => {
             jboard.setUpPosition(TEST_POSITION);
             jboard._getFENCastling().should.to.be.equal('KQkq');
         });
 
-        it('get "Qk" if _castling available in queenside for white and in kingside for black', () => {
+        it('get "Qk" if castling available in queenside for white and in kingside for black', () => {
             jboard._castling.white = 2;
             jboard._castling.black = 1;
             jboard._getFENCastling().should.to.be.equal('Qk');
         });
 
-        it('get "Kq" if _castling available in kingside for white and in queenside for black', () => {
+        it('get "Kq" if castling available in kingside for white and in queenside for black', () => {
             jboard._castling.white = 1;
             jboard._castling.black = 2;
             jboard._getFENCastling().should.to.be.equal('Kq');
         });
 
-        it('get "-" if _castling unavailable', () => {
+        it('get "-" if castling unavailable', () => {
             jboard._castling.white = 0;
             jboard._castling.black = 0;
             jboard._getFENCastling().should.to.be.equal('-');
@@ -2115,6 +2115,57 @@ describe('jBoard', () => {
             jboard._doMove(2, 4, 2, 3);
             jboard._doMove(1, 1, 1, 3);
             jboard._getFENEnPassant().should.to.be.equal('b3');
+        });
+
+    });
+
+    describe('setPositionByFEN', () => {
+
+        let jboard;
+
+        before(() => {
+            jboard = new JBoard;
+        });
+
+        it('get 8 string for setting ranks', () => {
+
+        });
+
+    });
+
+    describe('_getRankByFEN', () => {
+
+        let jboard;
+
+        before(() => {
+            jboard = new JBoard;
+        });
+
+        it('return null for too long string', () => {
+            expect(jboard._getRankByFEN('rnbqkbnrr')).to.be.null;
+        });
+
+        it('return null for incorrect string', () => {
+            expect(jboard._getRankByFEN('rnbqk5nr')).to.be.null;
+            expect(jboard._getRankByFEN('77b7nr')).to.be.null;
+            expect(jboard._getRankByFEN('r9knr')).to.be.null;
+            expect(jboard._getRankByFEN('90')).to.be.null;
+            expect(jboard._getRankByFEN('r7000r')).to.be.null;
+            expect(jboard._getRankByFEN('rnfqkbnr')).to.be.null;
+        });
+
+        it('return array for correct string', () => {
+            expect(jboard._getRankByFEN('rnbqk1nr')[0].type).to.be.equal('rook');
+            expect(jboard._getRankByFEN('rnbqk1nr')[0].color).to.be.equal('black');
+            expect(jboard._getRankByFEN('rn1qk1nr')[7].type).to.be.equal('rook');
+            expect(jboard._getRankByFEN('rn1qk1nr')[7].color).to.be.equal('black');
+            expect(jboard._getRankByFEN('rnbq2nr')[1].type).to.be.equal('knight');
+            expect(jboard._getRankByFEN('rnbq2nr')[1].color).to.be.equal('black');
+            expect(jboard._getRankByFEN('rnbqk1nr')[6].type).to.be.equal('knight');
+            expect(jboard._getRankByFEN('rnbqk1nr')[6].color).to.be.equal('black');
+            expect(jboard._getRankByFEN('1nbqk1nr')[3].type).to.be.equal('queen');
+            expect(jboard._getRankByFEN('r1Bq4')[2].type).to.be.equal('bishop');
+            expect(jboard._getRankByFEN('r1Bq4')[2].color).to.be.equal('white');
         });
 
     });

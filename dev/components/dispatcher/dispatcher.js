@@ -7,15 +7,12 @@
 
 import JChess from '../../lib/jchess';
 import DOMBoard from '../dom_board/dom_board';
+import DOMTurnIndicator from '../dom_turn_indicator/dom_turn_indicator';
 import DOMSidebar from '../dom_sidebar/dom_sidebar';
 import DOMFEN from '../dom_fen/dom_fen';
 
 
 export default class Dispatcher {
-
-    /**
-     *   CONSTRUCTOR
-     */
 
     constructor() {
 
@@ -25,6 +22,7 @@ export default class Dispatcher {
         this.DOMBoard = new DOMBoard(this);
         this.DOMSidebar = new DOMSidebar(this);
         this.DOMFEN = new DOMFEN(this);
+        this.DOMTurnIndicator = new DOMTurnIndicator(this);
 
     }
 
@@ -34,8 +32,9 @@ export default class Dispatcher {
 
         return (e) => {
             self.chess.pickSquare(+e.target.dataset.file, +e.target.dataset.rank);
-            self.DOMBoard.drawBoard(self.chess);
+            self.DOMBoard.render(self.chess);
             self.DOMFEN.update(self.chess);
+            self.DOMTurnIndicator.update(self.chess);
         };
 
     }
@@ -46,29 +45,23 @@ export default class Dispatcher {
 
         return () => {
             self.chess.setUpInitial();
-            self.DOMBoard.drawBoard(self.chess);
+            self.DOMBoard.render(self.chess);
             self.DOMFEN.update(self.chess);
-        };
-
-    }
-
-    boardChange() {
-
-        let self = this;
-
-        return () => {
-            self.DOMBoard.drawBoard(self.chess);
+            self.DOMTurnIndicator.update(self.chess);
         };
 
     }
 
     FENChange() {
 
-        // let self = this;
-        //
-        // return () => {
-        //
-        // };
+        let self = this;
+
+        return () => {
+            self.chess.setPositionByFEN(self.DOMFEN.getFEN());
+            self.DOMBoard.render(self.chess);
+            self.DOMFEN.update(self.chess);
+            self.DOMTurnIndicator.update(self.chess);
+        };
 
     }
 

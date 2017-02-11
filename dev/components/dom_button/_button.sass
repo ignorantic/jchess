@@ -1,12 +1,12 @@
-@import "button_theme"
-
 .button
-  text-decoration: none
   font-size: 16px
-  text-align: center
-  background: $cFace
-  color: $cHead
-  padding: 8px 10px 6px
+  background: $cHeadHover
+  color: $cText
+  padding: 4px 6px 4px
   outline: none
-  &:hover
-    color: $cHeadHover
+  border: 1px solid $cFace
+
+.button:active
+  position: relative
+  top: 1px
+  left: 1px

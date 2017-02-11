@@ -20,8 +20,6 @@ export default class DOMBoard {
         let board = document.querySelector('section.board'),
             fragment = document.createDocumentFragment();
 
-        fragment.addEventListener('change', dispatcher.boardChange());
-
         for (let file = 0; file < 8; file++) {
             for (let rank = 0; rank < 8; rank++) {
                 let square = this.newSquare(dispatcher.chess, file, rank);
@@ -34,7 +32,7 @@ export default class DOMBoard {
 
     }
 
-    drawBoard(chess) {
+    render(chess) {
 
         let squares = document.querySelectorAll('div.board__square');
         let length = squares.length;

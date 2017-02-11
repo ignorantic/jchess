@@ -492,35 +492,24 @@ export default class JBoard {
         this.resetPosition();
         pieceSet.forEach(
             (item) => {
-                this._setUpPiece(item.file, item.rank, item.piece.type, item.piece.color);
+                this._setPiece(item.file, item.rank, item.piece.type, item.piece.color);
             }
         );
 
     }
 
     resetPosition() {
-        this._resetSelect();
-        this._resetMarks();
-        this._board.forEach(
+        this._resetSelect()
+            ._resetMarks()
+            ._board.forEach(
             (item, file) => {
                 item.forEach(
                     (square, rank) => {
-                        this._setUpPiece(file, rank, null, null);
+                        this._setPiece(file, rank, null, null);
                     }
                 );
             }
         );
-
-    }
-
-    _setUpPiece(file, rank, type, color) {
-
-        if (!this._validateSquare(file, rank)) return null;
-        this._board[file][rank].piece = {
-            type: type,
-            color: color
-        };
-        return true;
 
     }
 
@@ -549,7 +538,7 @@ export default class JBoard {
      *   SQUARE SETTERS
      */
 
-    setPieceType(file, rank, type) {
+    _setPieceType(file, rank, type) {
 
         if (!this._validateSquare(file, rank)) return null;
         this._board[file][rank].piece.type = type;
@@ -557,7 +546,7 @@ export default class JBoard {
 
     }
 
-    setPieceColor(file, rank, color) {
+    _setPieceColor(file, rank, color) {
 
         if (!this._validateSquare(file, rank)) return null;
         this._board[file][rank].piece.color = color;
@@ -565,11 +554,13 @@ export default class JBoard {
 
     }
 
-    setPiece(file, rank, type, color) {
+    _setPiece(file, rank, type, color) {
 
         if (!this._validateSquare(file, rank)) return null;
-        this._board[file][rank].piece.color = color;
-        this._board[file][rank].piece.type = type;
+        this._board[file][rank].piece = {
+            type: type,
+            color: color
+        };
         return true;
 
     }
@@ -655,8 +646,8 @@ export default class JBoard {
 
             this._selectFile = null;
             this._selectRank = null;
-            this._resetMarks();
-            this._resetSelect();
+            this._resetMarks()
+                ._resetSelect();
 
         } else {
 
@@ -681,6 +672,15 @@ export default class JBoard {
 
     }
 
+    getTurn() {
+        return this._turn;
+    }
+
+    setTurn(color) {
+        (color === 'white') && (this._turn = 'white');
+        (color === 'black') && (this._turn = 'black');
+    }
+
     /**
      *   SELECT
      */
@@ -698,6 +698,8 @@ export default class JBoard {
 
             }
         );
+
+        return this;
 
     }
 
@@ -726,6 +728,8 @@ export default class JBoard {
 
             }
         );
+
+        return this;
 
     }
 
@@ -802,7 +806,7 @@ export default class JBoard {
             this._doCastling(color, stopFile);
         } else {
             capture = this._isFoe(color, stopFile, stopRank);
-            this.setPiece(stopFile, stopRank, type, color);
+            this._setPiece(stopFile, stopRank, type, color);
             this._removePiece(startFile, startRank);
         }
 
@@ -937,27 +941,27 @@ export default class JBoard {
 
         if (color === 'white') {
 
-            this.setPiece(file, 0, 'king', 'white');
+            this._setPiece(file, 0, 'king', 'white');
             this._removePiece(4, 0);
 
             if (file === 2) {
-                this.setPiece(3, 0, 'rook', 'white');
+                this._setPiece(3, 0, 'rook', 'white');
                 this._removePiece(0, 0);
             } else {
-                this.setPiece(5, 0, 'rook', 'white');
+                this._setPiece(5, 0, 'rook', 'white');
                 this._removePiece(7, 0);
             }
 
         } else {
 
-            this.setPiece(file, 7, 'king', 'black');
+            this._setPiece(file, 7, 'king', 'black');
             this._removePiece(4, 7);
 
             if (file === 2) {
-                this.setPiece(3, 7, 'rook', 'black');
+                this._setPiece(3, 7, 'rook', 'black');
                 this._removePiece(0, 7);
             } else {
-                this.setPiece(5, 7, 'rook', 'black');
+                this._setPiece(5, 7, 'rook', 'black');
                 this._removePiece(7, 7);
             }
 
@@ -1154,8 +1158,8 @@ export default class JBoard {
 
     _removePiece(file, rank) {
 
-        this.setPieceType(file, rank, null);
-        this.setPieceColor(file, rank, null);
+        this._setPieceType(file, rank, null);
+        this._setPieceColor(file, rank, null);
 
     }
 
@@ -1191,7 +1195,7 @@ export default class JBoard {
     }
 
     /**
-     *   DOMFEN
+     *   FEN
      */
 
     getFEN() {
@@ -1308,6 +1312,195 @@ export default class JBoard {
         let shiftFile = 97;
         let shiftRank = 1;
         return String.fromCharCode(file + shiftFile) + (rank + shiftRank);
+    }
+
+    setPositionByFEN(FEN) {
+
+        let pieceSet,
+            hash,
+            tail;
+
+        hash = this._parseFEN(FEN);
+
+        pieceSet = this._getPiecesByFEN(hash.ranks);
+        tail = hash.tail;
+        if (pieceSet === null) return null;
+        this.setUpPosition(pieceSet);
+
+        if (tail[0] === 'w') this.setTurn('white');
+        if (tail[0] === 'b') this.setTurn('black');
+
+        this._setFENCastling(tail[1]);
+
+    }
+
+    _setFENCastling(FEN) {
+
+        let i,
+            n = FEN.length,
+            result = {
+                white: 0,
+                black: 0
+            };
+
+        if (FEN !== '-') {
+
+            for (i = 0; i < n; i++) {
+                switch (FEN[i]) {
+
+                    case 'K':
+                        result.white += 1;
+                        break;
+
+                    case 'Q':
+                        result.white += 2;
+                        break;
+
+                    case 'k':
+                        result.black += 1;
+                        break;
+
+                    case 'q':
+                        result.black += 2;
+                        break;
+
+                }
+            }
+        }
+
+        this._castling = {
+            white: result.white,
+            black: result.black
+        };
+
+    }
+
+    _parseFEN(FEN) {
+
+        let tail,
+            ranks = FEN.split('/');
+        if (ranks.length != 8) return null;
+        tail = ranks[7].split(' ');
+        ranks[7] = tail[0];
+        tail.shift();
+        ranks.reverse();
+
+        return {
+            ranks: ranks,
+            tail: tail
+        };
+
+    }
+
+    _getPiecesByFEN(ranks) {
+
+        let rank,
+            file,
+            rankSet,
+            result = [];
+
+        for (rank = 0; rank < 8; rank++) {
+            rankSet = this._getRankByFEN(ranks[rank]);
+            if (rankSet === null) return null;
+            if (rankSet.length != 8) return null;
+            for (file = 0; file < 8; file++) {
+                result.push({
+                    file: file,
+                    rank: rank,
+                    piece: {
+                        type: rankSet[file].type,
+                        color: rankSet[file].color
+                    }
+                });
+            }
+        }
+
+        return result;
+
+    }
+
+    _getRankByFEN(FEN) {
+
+        let i, j, n,
+            length = FEN.length,
+            count = 0,
+            result = [];
+
+        if (length > 8) return null;
+
+        for (i = 0; i < length; i++) {
+
+            if (+FEN[i] > 0 && +FEN[i] < 9) {
+
+                n = +FEN[i];
+
+                if (count + n < 9) {
+
+                    for (j = 0; j < n; j++) {
+                        result[count] = {
+                            type: null,
+                            color: null
+                        };
+                        count++;
+                    }
+
+                } else {
+
+                    return null;
+
+                }
+
+            } else {
+
+                result[count] = {};
+                switch (FEN[i].toLowerCase()) {
+
+                    case 'r':
+                        result[count].type = 'rook';
+                        break;
+
+                    case 'n':
+                        result[count].type = 'knight';
+                        break;
+
+                    case 'b':
+                        result[count].type = 'bishop';
+                        break;
+
+                    case 'q':
+                        result[count].type = 'queen';
+                        break;
+
+                    case 'k':
+                        result[count].type = 'king';
+                        break;
+
+                    case 'p':
+                        result[count].type = 'pawn';
+                        break;
+
+                    default:
+                        return null;
+
+                }
+
+                if (FEN[i].toLowerCase() === FEN[i]) {
+                    result[count].color = 'black';
+                } else {
+                    result[count].color = 'white';
+                }
+
+                count++;
+
+            }
+
+            if (count > 8) return null;
+        }
+
+        if (count != 8) return null;
+
+        return result;
+
     }
 
 }

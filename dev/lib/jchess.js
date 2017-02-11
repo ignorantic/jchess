@@ -28,6 +28,10 @@ export default class JChess {
         this.mainBoard.setUpPosition(pieceSet);
     }
 
+    setPositionByFEN(FEN) {
+        this.mainBoard.setPositionByFEN(FEN);
+    }
+
     /*
      *   GETTERS
      */
@@ -46,6 +50,10 @@ export default class JChess {
 
     getPieceColor(file, rank) {
         return this.mainBoard.getSquare(file, rank) && this.mainBoard.getSquare(file, rank).piece.color;
+    }
+
+    getTurn() {
+        return this.mainBoard.getTurn();
     }
 
     /*
