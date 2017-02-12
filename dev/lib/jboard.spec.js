@@ -10,8 +10,6 @@ import {expect} from 'chai';
 
 describe('jBoard', () => {
 
-    'use strict';
-
     let TEST_POSITION = [
         {
             file: 0,
@@ -419,7 +417,7 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            jboard = new JBoard();
         });
 
         it('check size of _board', () => {
@@ -461,7 +459,7 @@ describe('jBoard', () => {
 
         before(() => {
 
-            jboard = new JBoard;
+            jboard = new JBoard();
             jboard.setUpInitial();
 
         });
@@ -547,14 +545,14 @@ describe('jBoard', () => {
         });
     });
 
-    describe('setUpPosition', () => {
+    describe('_setPiecesByArray', () => {
 
         let jboard;
 
         before(() => {
 
-            jboard = new JBoard;
-            jboard.setUpPosition([
+            jboard = new JBoard();
+            jboard._setPiecesByArray([
                 {
                     file: 0,
                     rank: 1,
@@ -611,7 +609,7 @@ describe('jBoard', () => {
 
         before(() => {
 
-            jboard = new JBoard;
+            jboard = new JBoard();
             jboard.setUpInitial();
 
         });
@@ -667,7 +665,7 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            jboard = new JBoard();
         });
 
         it('check square h2 before setup', () => {
@@ -716,7 +714,7 @@ describe('jBoard', () => {
         });
 
     });
-    
+
     /*
      *   SQUARE GETTERS
      */
@@ -726,7 +724,7 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            jboard = new JBoard();
         });
 
         it('return null if arguments aren\'t correct', () => {
@@ -771,7 +769,7 @@ describe('jBoard', () => {
 
         before(() => {
 
-            jboard = new JBoard;
+            jboard = new JBoard();
             jboard.setUpInitial();
 
         });
@@ -800,7 +798,7 @@ describe('jBoard', () => {
 
         before(() => {
 
-            jboard = new JBoard;
+            jboard = new JBoard();
             jboard.setUpInitial();
 
         });
@@ -842,7 +840,7 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            jboard = new JBoard();
         });
 
         it('return null if arguments aren\'t correct', () => {
@@ -889,7 +887,7 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            jboard = new JBoard();
         });
 
         it('return null if arguments aren\'t correct', () => {
@@ -937,10 +935,10 @@ describe('jBoard', () => {
 
     describe('_checkEnPassant', () => {
 
-        let jboard;
+        // let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            // jboard = new JBoard();
         });
 
         it('return null if arguments aren\'t correct', () => {
@@ -955,10 +953,10 @@ describe('jBoard', () => {
 
     describe('_getEnPassant', () => {
 
-        let jboard;
+        // let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            // jboard = new JBoard();
         });
 
         it('return null if arguments aren\'t correct', () => {
@@ -973,10 +971,10 @@ describe('jBoard', () => {
 
     describe('_setEnPassant', () => {
 
-        let jboard;
+        // let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            // jboard = new JBoard();
         });
 
         it('return null if arguments aren\'t correct', () => {
@@ -991,10 +989,10 @@ describe('jBoard', () => {
 
     describe('_isEnPassant', () => {
 
-        let jboard;
+        // let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            // jboard = new JBoard();
         });
 
         it('return null if arguments aren\'t correct', () => {
@@ -1006,7 +1004,7 @@ describe('jBoard', () => {
         });
 
     });
-    
+
     /*
      *   PICK
      */
@@ -1017,8 +1015,8 @@ describe('jBoard', () => {
 
         before(() => {
 
-            jboard = new JBoard;
-            jboard.setUpPosition(TEST_POSITION);
+            jboard = new JBoard();
+            jboard._setPiecesByArray(TEST_POSITION);
 
         });
 
@@ -1075,7 +1073,7 @@ describe('jBoard', () => {
 
         before(() => {
 
-            jboard = new JBoard;
+            jboard = new JBoard();
             jboard.pickSquare(4, 4);
 
         });
@@ -1096,7 +1094,7 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            jboard = new JBoard();
         });
 
         it('return null if arguments aren\'t correct', () => {
@@ -1127,10 +1125,10 @@ describe('jBoard', () => {
 
     describe('_resetMarks', () => {
 
-        let jboard;
+        // let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            // jboard = new JBoard();
         });
 
         it('reset marked square', () => {
@@ -1148,8 +1146,8 @@ describe('jBoard', () => {
 
         before(() => {
 
-            jboard = new JBoard;
-            jboard.setUpPosition(TEST_POSITION);
+            jboard = new JBoard();
+            jboard._setPiecesByArray(TEST_POSITION);
 
         });
 
@@ -1213,12 +1211,12 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            jboard = new JBoard();
 
         });
 
         beforeEach(() => {
-            jboard.setUpPosition(TEST_POSITION);
+            jboard._setPiecesByArray(TEST_POSITION);
         });
 
         it('return null if arguments aren\'t correct', () => {
@@ -1303,12 +1301,12 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            jboard = new JBoard();
 
         });
 
         beforeEach(() => {
-            jboard.setUpPosition(TEST_POSITION);
+            jboard._setPiecesByArray(TEST_POSITION);
         });
 
         it('return false if arguments aren\'t correct', () => {
@@ -1355,8 +1353,8 @@ describe('jBoard', () => {
 
         before(() => {
 
-            jboard = new JBoard;
-            jboard.setUpPosition(TEST_POSITION);
+            jboard = new JBoard();
+            jboard._setPiecesByArray(TEST_POSITION);
 
         });
 
@@ -1458,8 +1456,8 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
-            jboard.setUpPosition(CASTLING_POSITION);
+            jboard = new JBoard();
+            jboard._setPiecesByArray(CASTLING_POSITION);
         });
 
         it('return two squares for white king', () => {
@@ -1509,8 +1507,8 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
-            jboard.setUpPosition(CASTLING_POSITION);
+            jboard = new JBoard();
+            jboard._setPiecesByArray(CASTLING_POSITION);
         });
 
         it('return only move for white king', () => {
@@ -1546,8 +1544,8 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
-            jboard.setUpPosition(TEST_POSITION);
+            jboard = new JBoard();
+            jboard._setPiecesByArray(TEST_POSITION);
         });
 
         it('return two squares for knight c3', () => {
@@ -1651,8 +1649,8 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
-            jboard.setUpPosition(CASTLING_POSITION);
+            jboard = new JBoard();
+            jboard._setPiecesByArray(CASTLING_POSITION);
         });
 
         it('return squares, which are attacked by bishop move', () => {
@@ -1680,7 +1678,7 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            jboard = new JBoard();
         });
 
         it('return false if square isn\'t correct', () => {
@@ -1708,10 +1706,10 @@ describe('jBoard', () => {
 
     describe('_pushMove', () => {
 
-        let jboard;
+        // let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            // jboard = new JBoard();
         });
 
         it('return null if arguments aren\'t correct', () => {
@@ -1726,10 +1724,10 @@ describe('jBoard', () => {
 
     describe('_isFriend', () => {
 
-        let jboard;
+        // let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            // jboard = new JBoard();
         });
 
         it('return null if arguments aren\'t correct', () => {
@@ -1744,10 +1742,10 @@ describe('jBoard', () => {
 
     describe('_isFoe', () => {
 
-        let jboard;
+        // let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            // jboard = new JBoard();
         });
 
         it('return null if arguments aren\'t correct', () => {
@@ -1765,8 +1763,8 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
-            jboard.setUpPosition(CASTLING_POSITION);
+            jboard = new JBoard();
+            jboard._setPiecesByArray(CASTLING_POSITION);
         });
 
         it('return false if square isn\'t correct', () => {
@@ -1808,8 +1806,8 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
-            jboard.setUpPosition(CASTLING_POSITION);
+            jboard = new JBoard();
+            jboard._setPiecesByArray(CASTLING_POSITION);
         });
 
         it('return false if square isn\'t correct', () => {
@@ -1846,11 +1844,11 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            jboard = new JBoard();
         });
 
         beforeEach(() => {
-            jboard.setUpPosition(TEST_POSITION);
+            jboard._setPiecesByArray(TEST_POSITION);
         });
 
         it('return false if square isn\'t correct', () => {
@@ -1895,8 +1893,8 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
-            jboard.setUpPosition(CASTLING_POSITION);
+            jboard = new JBoard();
+            jboard._setPiecesByArray(CASTLING_POSITION);
         });
 
         it('return false if square isn\'t correct', () => {
@@ -1932,8 +1930,8 @@ describe('jBoard', () => {
         let newBoard;
 
         before(() => {
-            jboard = new JBoard;
-            jboard.setUpPosition(CASTLING_POSITION);
+            jboard = new JBoard();
+            jboard._setPiecesByArray(CASTLING_POSITION);
             newBoard = jboard._cloneBoard(jboard);
         });
 
@@ -1966,18 +1964,20 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            jboard = new JBoard();
             jboard.setUpInitial();
         });
 
         it('get FEN of initial position', () => {
             jboard.setUpInitial();
-            jboard.getFEN().should.to.be.equal('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+            jboard.getFEN().should.to.be
+                .equal('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
         });
 
         it('get FEN of test position', () => {
-            jboard.setUpPosition(TEST_POSITION);
-            jboard.getFEN().should.to.be.equal('r3k2r/pp3pp1/b2P4/b1pP1n1B/3q1P1p/2n2NP1/PP2P2P/RNBQK2R w KQkq - 0 1');
+            jboard._setPiecesByArray(TEST_POSITION);
+            jboard.getFEN().should.to.be
+                .equal('r3k2r/pp3pp1/b2P4/b1pP1n1B/3q1P1p/2n2NP1/PP2P2P/RNBQK2R w KQkq - 0 1');
         });
 
     });
@@ -1987,7 +1987,7 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            jboard = new JBoard();
             jboard.setUpInitial();
         });
 
@@ -2016,20 +2016,20 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            jboard = new JBoard();
         });
 
         it('get FEN _board of initial position', () => {
             jboard.setUpInitial();
-            jboard._getFENBoard().should.to.be.equal('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR');
+            jboard._getFENBoard().should.to.be
+                .equal('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR');
         });
 
         it('get FEN _board of test position', () => {
-            jboard.setUpPosition(TEST_POSITION);
-            jboard._getFENBoard().should.to.be.equal('r3k2r/pp3pp1/b2P4/b1pP1n1B/3q1P1p/2n2NP1/PP2P2P/RNBQK2R');
+            jboard._setPiecesByArray(TEST_POSITION);
+            jboard._getFENBoard().should.to.be
+                .equal('r3k2r/pp3pp1/b2P4/b1pP1n1B/3q1P1p/2n2NP1/PP2P2P/RNBQK2R');
         });
-
-
 
     });
 
@@ -2038,7 +2038,7 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            jboard = new JBoard();
         });
 
         it('get FEN turn of initial position', () => {
@@ -2047,7 +2047,7 @@ describe('jBoard', () => {
         });
 
         it('get FEN turn of test position', () => {
-            jboard.setUpPosition(TEST_POSITION);
+            jboard._setPiecesByArray(TEST_POSITION);
             jboard._getFENTurn().should.to.be.equal('w');
         });
 
@@ -2058,7 +2058,7 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            jboard = new JBoard();
         });
 
         it('get FEN castling of initial position', () => {
@@ -2067,17 +2067,19 @@ describe('jBoard', () => {
         });
 
         it('get FEN castling of test position', () => {
-            jboard.setUpPosition(TEST_POSITION);
+            jboard._setPiecesByArray(TEST_POSITION);
             jboard._getFENCastling().should.to.be.equal('KQkq');
         });
 
-        it('get "Qk" if castling available in queenside for white and in kingside for black', () => {
+        it('get "Qk" if castling available in queenside for white ' +
+           'and in kingside for black', () => {
             jboard._castling.white = 2;
             jboard._castling.black = 1;
             jboard._getFENCastling().should.to.be.equal('Qk');
         });
 
-        it('get "Kq" if castling available in kingside for white and in queenside for black', () => {
+        it('get "Kq" if castling available in kingside for white ' +
+           'and in queenside for black', () => {
             jboard._castling.white = 1;
             jboard._castling.black = 2;
             jboard._getFENCastling().should.to.be.equal('Kq');
@@ -2096,7 +2098,7 @@ describe('jBoard', () => {
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            jboard = new JBoard();
         });
 
         it('return "-" for initial position', () => {
@@ -2105,12 +2107,12 @@ describe('jBoard', () => {
         });
 
         it('return "-" for test position', () => {
-            jboard.setUpPosition(TEST_POSITION);
+            jboard._setPiecesByArray(TEST_POSITION);
             jboard._getFENEnPassant().should.to.be.equal('-');
         });
 
         it('return "b3" for test position after two moves', () => {
-            jboard.setUpPosition(TEST_POSITION);
+            jboard._setPiecesByArray(TEST_POSITION);
             jboard._turn = 'black';
             jboard._doMove(2, 4, 2, 3);
             jboard._doMove(1, 1, 1, 3);
@@ -2121,10 +2123,10 @@ describe('jBoard', () => {
 
     describe('setPositionByFEN', () => {
 
-        let jboard;
+        // let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            // jboard = new JBoard();
         });
 
         it('get 8 string for setting ranks', () => {
@@ -2133,39 +2135,39 @@ describe('jBoard', () => {
 
     });
 
-    describe('_getRankByFEN', () => {
+    describe('_parseFENRank', () => {
 
         let jboard;
 
         before(() => {
-            jboard = new JBoard;
+            jboard = new JBoard();
         });
 
         it('return null for too long string', () => {
-            expect(jboard._getRankByFEN('rnbqkbnrr')).to.be.null;
+            expect(jboard._parseFENRank('rnbqkbnrr')).to.be.null;
         });
 
         it('return null for incorrect string', () => {
-            expect(jboard._getRankByFEN('rnbqk5nr')).to.be.null;
-            expect(jboard._getRankByFEN('77b7nr')).to.be.null;
-            expect(jboard._getRankByFEN('r9knr')).to.be.null;
-            expect(jboard._getRankByFEN('90')).to.be.null;
-            expect(jboard._getRankByFEN('r7000r')).to.be.null;
-            expect(jboard._getRankByFEN('rnfqkbnr')).to.be.null;
+            expect(jboard._parseFENRank('rnbqk5nr')).to.be.null;
+            expect(jboard._parseFENRank('77b7nr')).to.be.null;
+            expect(jboard._parseFENRank('r9knr')).to.be.null;
+            expect(jboard._parseFENRank('90')).to.be.null;
+            expect(jboard._parseFENRank('r7000r')).to.be.null;
+            expect(jboard._parseFENRank('rnfqkbnr')).to.be.null;
         });
 
         it('return array for correct string', () => {
-            expect(jboard._getRankByFEN('rnbqk1nr')[0].type).to.be.equal('rook');
-            expect(jboard._getRankByFEN('rnbqk1nr')[0].color).to.be.equal('black');
-            expect(jboard._getRankByFEN('rn1qk1nr')[7].type).to.be.equal('rook');
-            expect(jboard._getRankByFEN('rn1qk1nr')[7].color).to.be.equal('black');
-            expect(jboard._getRankByFEN('rnbq2nr')[1].type).to.be.equal('knight');
-            expect(jboard._getRankByFEN('rnbq2nr')[1].color).to.be.equal('black');
-            expect(jboard._getRankByFEN('rnbqk1nr')[6].type).to.be.equal('knight');
-            expect(jboard._getRankByFEN('rnbqk1nr')[6].color).to.be.equal('black');
-            expect(jboard._getRankByFEN('1nbqk1nr')[3].type).to.be.equal('queen');
-            expect(jboard._getRankByFEN('r1Bq4')[2].type).to.be.equal('bishop');
-            expect(jboard._getRankByFEN('r1Bq4')[2].color).to.be.equal('white');
+            expect(jboard._parseFENRank('rnbqk1nr')[0].type).to.be.equal('rook');
+            expect(jboard._parseFENRank('rnbqk1nr')[0].color).to.be.equal('black');
+            expect(jboard._parseFENRank('rn1qk1nr')[7].type).to.be.equal('rook');
+            expect(jboard._parseFENRank('rn1qk1nr')[7].color).to.be.equal('black');
+            expect(jboard._parseFENRank('rnbq2nr')[1].type).to.be.equal('knight');
+            expect(jboard._parseFENRank('rnbq2nr')[1].color).to.be.equal('black');
+            expect(jboard._parseFENRank('rnbqk1nr')[6].type).to.be.equal('knight');
+            expect(jboard._parseFENRank('rnbqk1nr')[6].color).to.be.equal('black');
+            expect(jboard._parseFENRank('1nbqk1nr')[3].type).to.be.equal('queen');
+            expect(jboard._parseFENRank('r1Bq4')[2].type).to.be.equal('bishop');
+            expect(jboard._parseFENRank('r1Bq4')[2].color).to.be.equal('white');
         });
 
     });

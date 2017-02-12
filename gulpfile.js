@@ -1,5 +1,5 @@
 
-/*
+/**
  *     gulpfile.js for jChess project
  *     2016 by Andrii Sorokin
  *     https://github.com/ignorantic/caramel.git
@@ -10,7 +10,6 @@ const sourcemap     = require('gulp-sourcemaps');
 const gutil         = require('gulp-util');
 const connect       = require('gulp-connect');
 const debug         = require('gulp-debug');
-const pug           = require('gulp-pug');
 const sass          = require('gulp-sass');
 const prefixer      = require('gulp-autoprefixer');
 const cssmin        = require('gulp-cssmin');
@@ -18,7 +17,7 @@ const rename        = require('gulp-rename');
 const imagemin      = require('gulp-imagemin');
 const babel         = require('gulp-babel');
 const streamify     = require('gulp-streamify');
-const jshint        = require('gulp-jshint');
+const eslint        = require('gulp-eslint');
 const uglify        = require('gulp-uglify');
 const cached        = require('gulp-cached');
 const gulpif        = require('gulp-if');
@@ -37,7 +36,7 @@ const isDev = !process.env.NODE_ENV || process.env.NODE_ENV == 'development';
 const paths = {
     build:  {
         root:   'build',
-        pug:    'build/',
+        html:    'build/',
         js:     'build/js/',
         css:    'build/css/',
         img:    'build/img/',
@@ -47,9 +46,9 @@ const paths = {
         root:   'dev',
         img:   ['dev/img/**/*.{png,jpg,gif,svg}', '!dev/img/sprite/**/*.*'],
         sprite: 'dev/img/sprite/**/*.*',
-        pug:    'dev/index/*.pug',
+        html:    'dev/index/*.html',
         sass:   'dev/index/main.sass',
-        js:     'dev/index/app.js',
+        js:     'dev/index/app.jsx',
         fonts:  'dev/fonts/**/*.*'
     },
     sprite: {
@@ -60,9 +59,9 @@ const paths = {
     },
     clean:      './build',
     watch:  {
-        pug:   ['dev/blocks/**/*.pug', 'dev/components/**/*.pug', 'dev/index/**/*.pug'],
-        js:    ['dev/index/**/*.js', 'dev/blocks/**/*.js', 'dev/components/**/*.js', 'dev/lib/**/*.js'],
-        sass:   'dev/{index,blocks,components,mixins}/**/*.{sass,css}',
+        html:   ['dev/index/**/*.html'],
+        js:    ['dev/index/**/*.{js,jsx}', 'dev/modules/**/*.{js,jsx}', 'dev/components/**/*.{js,jsx}', 'dev/lib/**/*.{js,jsx}'],
+        sass:   'dev/{index,components,mixins}/**/*.{sass,css}',
         img:    'dev/img/**/*.{png,jpg,gif,svg}',
         fonts:  'dev/fonts/**/*.{ttf,eot,svg,woff,woff2}',
         serve:  'build/**/*.*'
@@ -70,20 +69,12 @@ const paths = {
 };
 
 /*
- *     PUG
+ *     HTML
  */
 
 gulp.task('build:pages', function(done) {
-    gulp.src(paths.src.pug)
-        .pipe(pug({
-            pretty: true
-        }))
-        .on('error', function(err){
-            gutil.log(gutil.colors.red('💀'), gutil.colors.red.bold('⇵ pug error'));
-            gutil.log(gutil.colors.yellow(err.message));
-            this.emit('end');
-        })
-        .pipe(gulp.dest(paths.build.pug))
+    gulp.src(paths.src.html)
+        .pipe(gulp.dest(paths.build.html))
         .pipe(connect.reload());
     done();
 });
@@ -118,10 +109,7 @@ gulp.task('build:js', function (done) {
             extensions: ['.js'],
             debug: true
         })
-        .transform('babelify', {
-            presets: ['es2015'],
-            plugins: ['transform-class-properties']
-        })
+        .transform('babelify')
         .bundle()
         .on('error', function(err){
             gutil.log(gutil.colors.red('💀'), gutil.colors.red.bold('⇵ browserify error'));
@@ -141,8 +129,8 @@ gulp.task('build:js', function (done) {
 
 gulp.task('lint:js', function() {
     return gulp.src(paths.watch.js)
-        .pipe(jshint())
-        .pipe(jshint.reporter('jshint-stylish'));
+        .pipe(eslint())
+        .pipe(eslint.format());
 });
 
 /*
@@ -274,7 +262,7 @@ gulp.task('server', function(done) {
  */
 
 gulp.task('watch', function(done) {
-    gulp.watch(paths.watch.pug, gulp.series('build:pages'));
+    gulp.watch(paths.watch.html, gulp.series('build:pages'));
     gulp.watch(paths.watch.img, gulp.series('build:img'));
     gulp.watch(paths.watch.sass, gulp.series('build:sass'));
     gulp.watch(paths.watch.fonts, gulp.series('build:fonts'));

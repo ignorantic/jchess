@@ -9,17 +9,16 @@ module.exports = function(config) {
     config.set({
         basePath: '',
         frameworks: ['browserify', 'mocha', 'chai'],
+        plugins: [
+            'karma-browserify'
+        ],
         files: [
-            'dev/lib/**/*.{js, spec.js}',
-            'dev/blocks/**/*.{js, spec.js}',
-            'dev/components/**/*.{js, spec.js}'
+            'dev/lib/**/*.{js, spec.js}'
         ],
         exclude: [
         ],
         preprocessors: {
-            'dev/lib/**/*.{js, spec.js}': ['browserify'],
-            'dev/blocks/**/*.{js, spec.js}': ['browserify'],
-            'dev/components/**/*.{js, spec.js}': ['browserify']
+            'dev/lib/**/*.{js, spec.js}': ['browserify']
         },
         browserify: {
             debug: true,

@@ -4,7 +4,7 @@
  *     2017 by Andrii Sorokin
  */
 
-import JChess from './jchess';
+// import JChess from './jchess';
 import {describe, it, before} from 'mocha';
 
 describe('jChess', () => {
@@ -13,14 +13,12 @@ describe('jChess', () => {
      *   MOVE
      */
 
-    'use strict';
-
     describe('nothing', () => {
 
-        let jchess;
+        // let jchess;
 
         before(() => {
-            jchess = new JChess;
+            // jchess = new JChess;
         });
 
         it('nothing', () => {

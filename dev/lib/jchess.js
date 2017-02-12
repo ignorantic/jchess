@@ -13,7 +13,7 @@ export default class JChess {
      */
 
     constructor() {
-        this.mainBoard = new JBoard;
+        this.mainBoard = new JBoard();
     }
 
     /*
@@ -25,7 +25,7 @@ export default class JChess {
     }
 
     setUpPosition(pieceSet) {
-        this.mainBoard.setUpPosition(pieceSet);
+        this.mainBoard.setPositionByArray(pieceSet);
     }
 
     setPositionByFEN(FEN) {
@@ -41,19 +41,26 @@ export default class JChess {
     }
 
     getSquareColor(file, rank) {
-        return this.mainBoard.getSquare(file, rank) && this.mainBoard.getSquare(file, rank).color;
+        return this.mainBoard.getSquare(file, rank) &&
+               this.mainBoard.getSquare(file, rank).color;
     }
 
     getPieceType(file, rank) {
-        return this.mainBoard.getSquare(file, rank) && this.mainBoard.getSquare(file, rank).piece.type;
+        return this.mainBoard.getSquare(file, rank) &&
+               this.mainBoard.getSquare(file, rank).piece.type;
     }
 
     getPieceColor(file, rank) {
-        return this.mainBoard.getSquare(file, rank) && this.mainBoard.getSquare(file, rank).piece.color;
+        return this.mainBoard.getSquare(file, rank) &&
+               this.mainBoard.getSquare(file, rank).piece.color;
     }
 
     getTurn() {
         return this.mainBoard.getTurn();
+    }
+
+    getBoard() {
+        return this.mainBoard.getBoard();
     }
 
     /*
