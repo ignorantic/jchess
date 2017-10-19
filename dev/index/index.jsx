@@ -8,12 +8,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Tal from '../components/tal/tal.jsx';
+import './index.sass';
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    ReactDOM.render(
-        <Tal />,
-        document.getElementById('root')
-    );
+  ReactDOM.render(
+    <Tal />,
+    document.getElementById('root')
+  );
 
 });
