@@ -1,11 +1,4 @@
-
-/**
- *     dom_turn_indicator.js for jChess project
- *     2017 by Andrii Sorokin
- *     https://github.com/ignorantic/jchess.git
- */
-
-export default class DOMTurnIndicator {
+export default class TurnIndicator {
 
     constructor(dispatcher) {
         this.turn = dispatcher.chess.getTurn();

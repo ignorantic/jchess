@@ -1,13 +1,6 @@
-
-/**
- *     tal-button.jsx for jChess project
- *     2017 by Andrii Sorokin
- *     https://github.com/ignorantic/jchess.git
- */
-
 import React from 'react';
 
-export default class TalButton extends React.Component {
+export default class Button extends React.PureComponent {
 
     render() {
         let btnClass = 'button';

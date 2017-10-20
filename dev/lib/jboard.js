@@ -1,9 +1,3 @@
-
-/**
- *     jChess ~ jboard.js
- *     2017 by Andrii Sorokin
- */
-
 export default class JBoard {
 
     /**
@@ -262,7 +256,7 @@ export default class JBoard {
      */
 
     getBoard() {
-        return this._board;
+        return [].concat(this._board);
     }
 
     /**
@@ -611,7 +605,7 @@ export default class JBoard {
 
         this._passTurn();
 
-        return this;
+        return true;
 
     }
 

@@ -5,7 +5,6 @@ const devServer = require('./webpack/dev-server');
 const build = require('./webpack/build');
 const production = require('./webpack/production');
 
-
 const common = {
   entry: {
     index: path.join(__dirname, 'dev/index/index.jsx'),
@@ -55,9 +54,19 @@ const common = {
       {
         test: /\.(jpe*g|png|gif|svg)$/,
         loader: 'file-loader',
-        exclude: /(fonts|sprite-src)/,
+        exclude: /(fonts|sprite-src|favicon)/,
         options: {
           outputPath: 'img/',
+          name: '[name].[ext]',
+        },
+      },
+
+      {
+        test: /\.(jpe*g|png|gif|svg)$/,
+        loader: 'file-loader',
+        include: /favicon.png/,
+        options: {
+          outputPath: '/',
           name: '[name].[ext]',
         },
       },
