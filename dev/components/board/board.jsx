@@ -1,6 +1,7 @@
 import React from 'react';
-import TalSquare from '../square/square.jsx';
 import { connect } from 'react-redux';
+import TalSquare from '../square/square';
+import { pickOnSquare } from '../../modules/actions/actions';
 
 class Board extends React.PureComponent {
   render() {
@@ -11,11 +12,11 @@ class Board extends React.PureComponent {
             return fItem.map((rItem, rank) => {
               return (
                 <TalSquare
-                  file={file}
-                  rank={rank}
-                  square={rItem}
-                  key={file + '.' + rank}
-                  dispatch={this.props.dispatch}
+                  file = { file }
+                  rank = { rank }
+                  square = { rItem }
+                  key = { file + '.' + rank }
+                  pick = { this.props.pick }
                 />
               );
             });
@@ -26,8 +27,16 @@ class Board extends React.PureComponent {
   }
 }
 
-export default connect(state => {
+const mapStateToProps = (state) => {
   return {
     board: state.board,
   }
-})(Board);
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    pick: (file, rank) => dispatch(pickOnSquare(file, rank)),
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Board);

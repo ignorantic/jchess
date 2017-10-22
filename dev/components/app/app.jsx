@@ -1,20 +1,20 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import store from '../../modules/stores/store';
-import TalBoard from '../board/board.jsx';
-import TalSidebar from '../sidebar/sidebar.jsx';
-import TalFEN from '../fen/fen.jsx';
+import Board from '../board/board';
+import Sidebar from '../sidebar/sidebar';
+import FEN from '../fen/fen';
 
-export default class Tal extends React.PureComponent {
+export default class App extends React.Component {
   render() {
     return (
-      <Provider store = { store }>
+      <Provider store={store}>
         <div className="container">
           <div className="content">
-            <TalBoard />
-            <TalFEN />
+            <Board />
+            <FEN />
           </div>
-          <TalSidebar />
+          <Sidebar />
         </div>
       </Provider>
     );

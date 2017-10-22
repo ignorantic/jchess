@@ -1,30 +1,11 @@
-import keyMirror from '../constants/keys';
-import talChessModel from '../models/chess-model';
+import keyMirror from '../constants/consts';
 
-const initialState = {
-  board: talChessModel.getBoard(),
-  fen: talChessModel.getFEN(),
-}
-
-const reducer = (state = initialState, action) => {
+const reducer = (state, action) => {
   switch (action.type) {
-    case keyMirror.PICK_ON_SQUARE:
-      talChessModel.pickSquare(action.file, action.rank);
+    case keyMirror.UPDATE_POSITION:
       return {
-        board: talChessModel.getBoard(),
-        fen: talChessModel.getFEN(),
-      };
-    case keyMirror.RESET_POSITION:
-      talChessModel.setUpInitial();
-      return {
-        board: talChessModel.getBoard(),
-        fen: talChessModel.getFEN(),
-      };
-    case keyMirror.CHANGE_FEN:
-      talChessModel.setPositionByFEN(action.fen);
-      return {
-        board: talChessModel.getBoard(),
-        fen: talChessModel.getFEN(),
+        board: action.payload.board,
+        fen: action.payload.fen,
       };
     default:
       return state;

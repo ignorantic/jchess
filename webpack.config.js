@@ -10,6 +10,10 @@ const common = {
     index: path.join(__dirname, 'dev/index/index.jsx'),
   },
 
+  resolve: {
+    extensions: ['.webpack.js', '.web.js', '.js', '.json', '.jsx'],
+  },
+
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: '[name].js',
@@ -17,7 +21,6 @@ const common = {
 
   module: {
     rules: [
-
       {
         test: /\.(js|jsx)$/,
         exclude: [/node_modules/],

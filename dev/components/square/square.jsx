@@ -1,37 +1,22 @@
-import keyMirror from '../../modules/constants/keys';
 import React from 'react';
 
 export default class Square extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick() {
-    this.props.dispatch({
-      type: keyMirror.PICK_ON_SQUARE,
-      file: this.props.file,
-      rank: this.props.rank,
-    });
-  }
-
   render() {
-    let markedClass = '',
-      selectedClass = '';
+    let mc = '';
+    let sc = '';
+    let cc = `square square_${this.props.square.color}`;
+    let pc = `square_${this.props.square.piece.type}_${this.props.square.piece.color}`;
     if (this.props.square.marked) {
-      (markedClass = ' square_marked_' + this.props.square.color);
+      mc = ` square_marked_${this.props.square.color}`;
     }
     if (this.props.square.selected) {
-      (selectedClass = ' square_selected');
+      (sc = ' square_selected');
     }
-    let squareClass = 'square square_' + this.props.square.color +
-      ' square_' + this.props.square.piece.type +
-      '_' + this.props.square.piece.color + markedClass + selectedClass;
+    let classes = `${cc} ${pc}${mc}${sc}`;
     return (
       <div
-        className={squareClass}
-        onClick={this.handleClick}
+        className = { classes }
+        onClick = { () => this.props.pick(this.props.file, this.props.rank) }
       />
     );
   }

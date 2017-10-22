@@ -1,7 +1,7 @@
 import React from 'react';
-import TalButton from '../button/button.jsx';
-import keyMirror from '../../modules/constants/keys';
 import { connect } from 'react-redux';
+import Button from '../button/button';
+import { changeFEN } from '../../modules/actions/actions';
 
 class FEN extends React.PureComponent {
   constructor(props) {
@@ -17,11 +17,9 @@ class FEN extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.fen !== this.state.value) {
-      this.setState({
-        value: nextProps.fen
-      });
-    }
+    this.setState({
+      value: nextProps.fen,
+    });
   }
 
   componentDidUpdate() {
@@ -36,17 +34,17 @@ class FEN extends React.PureComponent {
   }
 
   handleClickOnButton() {
-    this.props.dispatch({
-      type: keyMirror.CHANGE_FEN,
-      fen: this.state.value,
+    this.props.input(this.state.value);
+    this.setState({
+      value: this.props.fen,
     });
   }
 
   handleKeyPress(event) {
     if (event.keyCode === 13) {
-      this.props.dispatch({
-        type: keyMirror.CHANGE_FEN,
-        fen: this.state.value,
+      this.props.input(this.state.value);
+      this.setState({
+        value: this.props.fen,
       });
     }
   }
@@ -79,27 +77,35 @@ class FEN extends React.PureComponent {
           {this.label}
         </label>
         <input
-          className='fen__input'
-          id='fen'
-          type='text'
-          spellCheck='false'
-          value={this.state.value}
-          autoComplete='off'
-          onChange={this.handleChange}
-          onKeyDown={this.handleKeyPress}
+          className = 'fen__input'
+          id = 'fen'
+          type = 'text'
+          spellCheck = 'false'
+          value = { this.state.value }
+          autoComplete = 'off'
+          onChange = { this.handleChange }
+          onKeyDown = { this.handleKeyPress }
         />
-        <TalButton
-          className='button_fen'
-          label='>>'
-          onClick={this.handleClickOnButton}
+        <Button
+          className = 'button_fen'
+          label = '>>'
+          onClick = { this.handleClickOnButton }
         />
       </div>
     );
   }
 }
 
-export default connect(state => {
+const mapStateToProps = (state) => {
   return {
     fen: state.fen,
   }
-})(FEN);
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    input: (fen) => dispatch(changeFEN(fen)),
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FEN);

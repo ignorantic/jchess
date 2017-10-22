@@ -1,7 +1,7 @@
 import React from 'react';
-import keyMirror from '../../modules/constants/keys';
-import TalButton from '../button/button.jsx';
 import { connect } from 'react-redux';
+import Button from '../button/button';
+import { resetPosition } from '../../modules/actions/actions';
 
 class Sidebar extends React.PureComponent {
 
@@ -11,15 +11,13 @@ class Sidebar extends React.PureComponent {
   }
 
   handleReset() {
-    this.props.dispatch({
-      type: keyMirror.RESET_POSITION,
-    });
+    this.props.dispatch(resetPosition());
   }
 
   render() {
     return (
       <aside className='sidebar'>
-        <TalButton
+        <Button
           label='Reset'
           onClick={this.handleReset}
         />
