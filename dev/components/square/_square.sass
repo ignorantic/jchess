@@ -3,8 +3,27 @@
   height: 12.5%
   width: 12.5%
   border-width: 0
-  padding: 4px 6px
   outline: none
+
+  &::-moz-focus-outer,
+  &::-moz-focus-inner
+    border: 0
+    padding: 0
+
+  &:focus::after,
+  &:focus::before
+    box-sizing: border-box
+    position: absolute
+    content: ''
+    left: 5%
+    top: 5%
+    width: 90%
+    height: 90%
+    border: 1px solid #000
+
+  &:focus::after
+    border: 1px dashed #fff
+
 
 .square_white
   background: $cWhiteSquare
