@@ -7,7 +7,10 @@ const production = require('./webpack/production');
 
 const common = {
   entry: {
-    index: path.join(__dirname, 'dev/index/index.jsx'),
+    index: [
+      'react-hot-loader/patch',
+      path.join(__dirname, 'dev/index/index.jsx'),
+    ],
   },
 
   resolve: {

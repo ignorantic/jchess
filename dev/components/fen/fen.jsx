@@ -29,7 +29,6 @@ class FEN extends React.Component {
       fen: PropTypes.string.isRequired,
       onInput: PropTypes.func.isRequired,
     };
-    this.label = 'FEN';
     this.state = {
       value: this.props.fen,
       caretPos: 0,
@@ -81,7 +80,7 @@ class FEN extends React.Component {
           className="fen__label"
           htmlFor="fen"
         >
-          {this.label}
+          FEN
           <input
             className="fen__input"
             id="fen"

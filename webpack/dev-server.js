@@ -1,9 +1,12 @@
+const webpack = require('webpack');
+
 module.exports = () => ({
   devtool: 'source-map',
   devServer: {
     stats: 'errors-only',
     port: 3000,
     contentBase: 'build',
+    hot: true,
   },
   module: {
     rules: [
@@ -29,4 +32,9 @@ module.exports = () => ({
       },
     ],
   },
+
+  plugins: [
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+  ],
 });
