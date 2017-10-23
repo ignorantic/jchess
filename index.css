@@ -219,8 +219,29 @@ body {
   height: 12.5%;
   width: 12.5%;
   border-width: 0;
-  padding: 4px 6px;
   outline: none;
+}
+
+.square::-moz-focus-outer,
+.square::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+.square:focus::after,
+.square:focus::before {
+  box-sizing: border-box;
+  position: absolute;
+  content: '';
+  left: 5%;
+  top: 5%;
+  width: 90%;
+  height: 90%;
+  border: 1px solid #000;
+}
+
+.square:focus::after {
+  border: 1px dashed #fff;
 }
 
 .square_white {
