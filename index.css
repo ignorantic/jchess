@@ -218,6 +218,9 @@ body {
   position: relative;
   height: 12.5%;
   width: 12.5%;
+  border-width: 0;
+  padding: 4px 6px;
+  outline: none;
 }
 
 .square_white {
@@ -366,7 +369,7 @@ body {
 }
 
 .fen__input {
-  width: calc(100% - 71px);
+  width: calc(100% - 75px);
   height: 20px;
   font-size: 13px;
   outline: none;
