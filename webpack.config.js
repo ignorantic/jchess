@@ -31,7 +31,7 @@ const common = {
               compact: true,
             },
           },
-          // 'eslint-loader',
+          'eslint-loader',
         ],
       },
 

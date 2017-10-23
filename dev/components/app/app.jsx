@@ -1,14 +1,23 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import store from '../../modules/stores/store';
+import PropTypes from 'prop-types';
 import Board from '../board/board';
 import Sidebar from '../sidebar/sidebar';
 import FEN from '../fen/fen';
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    App.propTypes = {
+      store: PropTypes.shape({
+        board: PropTypes.array,
+        fen: PropTypes.string,
+      }).isRequired,
+    };
+  }
   render() {
     return (
-      <Provider store={store}>
+      <Provider store={this.props.store}>
         <div className="container">
           <div className="content">
             <Board />

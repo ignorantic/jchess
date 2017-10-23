@@ -1,17 +1,34 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export default class Button extends React.Component {
+class Button extends React.Component {
+  constructor(props) {
+    super(props);
+    Button.propTypes = {
+      label: PropTypes.string.isRequired,
+      className: PropTypes.string,
+      onClick: PropTypes.func.isRequired,
+    };
+    Button.defaultProps = {
+      className: 'button',
+    };
+  }
 
-    render() {
-        let btnClass = 'button';
-        this.props.className && (btnClass += ' ' + this.props.className);
-        return (
-            <button
-                className = { btnClass }
-                onClick = { this.props.onClick }>
-                {this.props.label}
-            </button>
-        );
+  render() {
+    const { className, onClick, label } = this.props;
+    let btnClass = 'button';
+    if (this.props.className) {
+      btnClass = `${btnClass} ${className}`;
     }
-
+    return (
+      <button
+        className={btnClass}
+        onClick={onClick}
+      >
+        {label}
+      </button>
+    );
+  }
 }
+
+export default Button;

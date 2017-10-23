@@ -7,7 +7,7 @@ export function pickOnSquare(file, rank) {
     const payload = {
       board: boardModel.getBoard(),
       fen: boardModel.getFEN(),
-    }
+    };
     dispatch({
       type: consts.UPDATE_POSITION,
       payload,
@@ -21,7 +21,7 @@ export function resetPosition() {
     const payload = {
       board: boardModel.getBoard(),
       fen: boardModel.getFEN(),
-    }
+    };
     dispatch({
       type: consts.UPDATE_POSITION,
       payload,
@@ -35,7 +35,7 @@ export function changeFEN(newFEN) {
     const payload = {
       board: boardModel.getBoard(),
       fen: boardModel.getFEN(),
-    }
+    };
     dispatch({
       type: consts.UPDATE_POSITION,
       payload,

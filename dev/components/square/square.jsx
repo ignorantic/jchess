@@ -1,24 +1,47 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class Square extends React.Component {
+  constructor(props) {
+    super(props);
+    Square.propTypes = {
+      file: PropTypes.number.isRequired,
+      rank: PropTypes.number.isRequired,
+      square: PropTypes.shape({
+        color: PropTypes.string,
+        piece: PropTypes.shape({
+          color: PropTypes.string,
+          type: PropTypes.string,
+        }),
+      }).isRequired,
+      onPick: PropTypes.func.isRequired,
+    };
+  }
+
   render() {
+    const {
+      file,
+      rank,
+      square,
+      onPick,
+    } = this.props;
     let mc = '';
     let sc = '';
-    let cc = `square square_${this.props.square.color}`;
-    let pc = `square_${this.props.square.piece.type}_${this.props.square.piece.color}`;
-    if (this.props.square.marked) {
-      mc = ` square_marked_${this.props.square.color}`;
+    const cc = `square square_${square.color}`;
+    const pc = `square_${square.piece.type}_${square.piece.color}`;
+    if (square.marked) {
+      mc = ` square_marked_${square.color}`;
     }
-    if (this.props.square.selected) {
+    if (square.selected) {
       (sc = ' square_selected');
     }
-    let classes = `${cc} ${pc}${mc}${sc}`;
+    const classes = `${cc} ${pc}${mc}${sc}`;
     return (
-      <div
-        className = { classes }
-        onClick = { () => this.props.pick(this.props.file, this.props.rank) }
+      <button
+        className={classes}
+        onMouseDown={() => onPick(file, rank)}
+        onKeyPress={() => onPick(file, rank)}
       />
     );
   }
-
 }

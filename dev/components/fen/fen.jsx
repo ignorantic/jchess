@@ -1,11 +1,34 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Button from '../button/button';
 import { changeFEN } from '../../modules/actions/actions';
 
-class FEN extends React.PureComponent {
+class FEN extends React.Component {
+  static setCaretPosition(pos) {
+    const elemFEN = document.querySelector('#fen');
+    elemFEN.setSelectionRange(pos, pos);
+  }
+
+  static getCaretPosition() {
+    const elemFEN = document.querySelector('#fen');
+    if (elemFEN) {
+      if (elemFEN.createRange) {
+        const range = document.selection.createRange.duplicate();
+        range.moveStart('character', -elemFEN.value.length);
+        return range.text.length;
+      }
+      return elemFEN.selectionStart;
+    }
+    return 0;
+  }
+
   constructor(props) {
     super(props);
+    FEN.propTypes = {
+      fen: PropTypes.string.isRequired,
+      onInput: PropTypes.func.isRequired,
+    };
     this.label = 'FEN';
     this.state = {
       value: this.props.fen,
@@ -23,89 +46,69 @@ class FEN extends React.PureComponent {
   }
 
   componentDidUpdate() {
-    this.setCaretPosition(this.state.caretPos);
-  }
-
-  handleChange(event) {
-    this.setState({
-      value: event.target.value,
-      caretPos: this.getCaretPosition()
-    });
-  }
-
-  handleClickOnButton() {
-    this.props.input(this.state.value);
-    this.setState({
-      value: this.props.fen,
-    });
+    this.constructor.setCaretPosition(this.state.caretPos);
   }
 
   handleKeyPress(event) {
     if (event.keyCode === 13) {
-      this.props.input(this.state.value);
+      this.props.onInput(this.state.value);
       this.setState({
         value: this.props.fen,
       });
     }
   }
 
-  getCaretPosition() {
-    let elemFEN = document.querySelector('#fen');
-    if (elemFEN) {
-      if (elemFEN.createRange) {
-        let range = document.selection.createRange.duplicate();
-        range.moveStart('character', -elemFEN.value.length);
-        return range.text.length;
-      }
-      return elemFEN.selectionStart;
-    }
-    return 0;
+  handleClickOnButton() {
+    this.props.onInput(this.state.value);
+    this.setState({
+      value: this.props.fen,
+    });
   }
 
-  setCaretPosition(pos) {
-    let elemFEN = document.querySelector('#fen');
-    elemFEN.setSelectionRange(pos, pos);
+  handleChange(event) {
+    this.setState({
+      value: event.target.value,
+      caretPos: this.constructor.getCaretPosition(),
+    });
   }
 
   render() {
     return (
       <div
-        className='fen'>
+        className="fen"
+      >
         <label
-          className='fen__label'
-          htmlFor='fen'>
+          className="fen__label"
+          htmlFor="fen"
+        >
           {this.label}
+          <input
+            className="fen__input"
+            id="fen"
+            type="text"
+            spellCheck="false"
+            value={this.state.value}
+            autoComplete="off"
+            onChange={this.handleChange}
+            onKeyDown={this.handleKeyPress}
+          />
         </label>
-        <input
-          className = 'fen__input'
-          id = 'fen'
-          type = 'text'
-          spellCheck = 'false'
-          value = { this.state.value }
-          autoComplete = 'off'
-          onChange = { this.handleChange }
-          onKeyDown = { this.handleKeyPress }
-        />
         <Button
-          className = 'button_fen'
-          label = '>>'
-          onClick = { this.handleClickOnButton }
+          className="button button_fen"
+          label=">>"
+          onClick={this.handleClickOnButton}
         />
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    fen: state.fen,
-  }
-};
+const mapStateToProps = state => ({
+  fen: state.fen,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    input: (fen) => dispatch(changeFEN(fen)),
-  }
-};
+const mapDispatchToProps = dispatch => ({
+  onInput: fen => dispatch(changeFEN(fen)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(FEN);

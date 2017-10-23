@@ -3,8 +3,5 @@
   "env": {
     "browser": true,
     "node": true
-  },
-  "settings" : {
-    "import/extensions": ["js", "jsx"]
   }
 }
