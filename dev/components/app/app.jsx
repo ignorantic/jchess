@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Board from '../board/board';
 import Sidebar from '../sidebar/sidebar';
 import FEN from '../fen/fen';
+import Turn from '../turn/turn';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -19,6 +20,7 @@ export default class App extends React.Component {
     return (
       <Provider store={this.props.store}>
         <div className="container">
+          <Turn />
           <div className="content">
             <Board />
             <FEN />

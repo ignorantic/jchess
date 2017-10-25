@@ -20,8 +20,8 @@ export default class Square extends React.Component {
   }
 
   handleKeyDown(event) {
+    const { file, rank, onPick } = this.props;
     if (event.keyCode > 36 && event.keyCode < 41) {
-      const { file, rank } = this.props;
       let nf = file;
       let nr = rank;
       switch (event.keyCode) {
@@ -40,13 +40,15 @@ export default class Square extends React.Component {
         default:
           break;
       }
-      if (nf > 7) nf = 0;
-      if (nf < 0) nf = 7;
-      if (nr > 7) nr = 0;
-      if (nr < 0) nr = 7;
+      if (nf > 7) nf = 7;
+      if (nf < 0) nf = 0;
+      if (nr > 7) nr = 7;
+      if (nr < 0) nr = 0;
       const selector = `.square[data-file="${nf}"][data-rank="${nr}"]`;
       const elemNext = document.querySelector(selector);
       if (elemNext.focus) elemNext.focus();
+    } else if (event.keyCode === 13) {
+      onPick(file, rank);
     }
   }
 
@@ -77,7 +79,6 @@ export default class Square extends React.Component {
         data-file={file}
         data-rank={rank}
         onMouseDown={() => onPick(file, rank)}
-        onClick={() => onPick(file, rank)}
         onKeyDown={this.handleKeyDown}
       />
     );

@@ -2,11 +2,12 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import reducer from '../reducers/reducer';
-import chessModel from '../models/board-model';
+import boardModel from '../models/board-model';
 
 const initialState = {
-  board: chessModel.getBoard(),
-  fen: chessModel.getFEN(),
+  board: boardModel.getBoard(),
+  fen: boardModel.getFEN(),
+  turn: boardModel.getTurn(),
 };
 
 const store = createStore(

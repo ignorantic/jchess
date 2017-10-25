@@ -6,6 +6,7 @@ const reducer = (state, action) => {
       return {
         board: action.payload.board,
         fen: action.payload.fen,
+        turn: action.payload.turn,
       };
     default:
       return state;

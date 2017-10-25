@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
@@ -39,9 +40,17 @@ module.exports = () => ({
       allChunks: true,
     }),
 
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production'),
+      },
+    }),
+
     new UglifyJSPlugin({
-      output: {
-        comments: false,
+      uglifyOptions: {
+        output: {
+          comments: false,
+        },
       },
     }),
   ],
