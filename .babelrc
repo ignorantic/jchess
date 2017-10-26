@@ -1,11 +1,38 @@
 {
-  "presets": [
-    ["es2015", {"modules": false}],
-    "react"
-  ],
-  "plugins": [
-    "transform-class-properties",
-    "transform-object-assign",
-    "transform-object-rest-spread"
-  ]
+
+  "env": {
+    "development": {
+      "presets": [
+        ["es2015", { "modules": false }],
+        "react"
+      ],
+      "plugins": [
+        "react-hot-loader/babel",
+        "transform-class-properties",
+        "transform-object-assign",
+        "transform-object-rest-spread"
+      ]
+    },
+    "production": {
+      "presets": [
+        "es2015",
+        "react"
+      ],
+      "plugins": [
+        "transform-class-properties",
+        "transform-object-assign",
+        "transform-object-rest-spread"
+      ]
+    },
+    "test": {
+      "presets": [
+        "es2015"
+      ],
+      "plugins": [
+        "transform-class-properties",
+        "transform-object-assign",
+        "transform-object-rest-spread"
+      ]
+    }
+  }
 }

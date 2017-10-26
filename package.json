@@ -4,11 +4,10 @@
   "description": "caramel project",
   "main": "index.js",
   "scripts": {
-    "test": "karma start",
-    "mocha": "mocha dev/lib/*.spec.js --compilers js:babel-register",
+    "test": "NODE_ENV=test mocha dev/lib/*.spec.js --compilers js:babel-register",
     "sass-lint": "sass-lint -c .sass-lint.yml 'dev/**/*.scss' -v -q",
     "eslint": "eslint dev/lib dev/index dev/components",
-    "lint": "yarn run eslint && yarn run pug-lint && yarn run sass-lint",
+    "lint": "yarn run eslint && yarn run sass-lint",
     "imagemin": "imagemin build/img/**/* -o build/img",
     "svg-sprite": "gulp svgSprite",
     "production": "webpack --progress --env production && yarn run imagemin",

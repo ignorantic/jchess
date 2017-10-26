@@ -56,7 +56,7 @@
   $x-position: map-get($piece, background-x) / map-get($piece, square-height) * 100;
   $y-position: map-get($piece, background-y) / map-get($piece, square-width) * 100;
 
-  background-image: url(map-get($sprite, svgPath));
+  background-image: url(map-get($sprite, svg-path));
   background-position: $x-position $y-position;
   background-size: 1200% 1200%;
 }
