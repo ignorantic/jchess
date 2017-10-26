@@ -8,9 +8,26 @@ export function pickOnSquare(file, rank) {
       board: boardModel.getBoard(),
       fen: boardModel.getFEN(),
       turn: boardModel.getTurn(),
+      focus: {
+        file,
+        rank,
+      },
     };
     dispatch({
       type: consts.UPDATE_POSITION,
+      payload,
+    });
+  };
+}
+
+export function changeFocus(file, rank) {
+  return (dispatch) => {
+    const payload = {
+      file,
+      rank,
+    };
+    dispatch({
+      type: consts.CHANGE_FOCUS,
       payload,
     });
   };
@@ -25,7 +42,7 @@ export function resetPosition() {
       turn: boardModel.getTurn(),
     };
     dispatch({
-      type: consts.UPDATE_POSITION,
+      type: consts.RESET_POSITION,
       payload,
     });
   };
@@ -40,7 +57,7 @@ export function changeFEN(newFEN) {
       turn: boardModel.getTurn(),
     };
     dispatch({
-      type: consts.UPDATE_POSITION,
+      type: consts.CHANGE_FEN,
       payload,
     });
   };

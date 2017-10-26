@@ -12,8 +12,8 @@ gulp.task('svgSprite', function () {
           bust: false,
           render: {
             scss: {
-              dest: 'dev/mixins/_sprite_svg.scss',
-              template: 'dev/mixins/tmpl/sprite_template.scss'
+              dest: 'dev/scss/_sprite_svg.scss',
+              template: 'dev/scss/tmpl/sprite_template.scss'
             }
           }
         }

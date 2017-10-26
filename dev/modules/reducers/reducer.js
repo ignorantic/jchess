@@ -7,6 +7,26 @@ const reducer = (state, action) => {
         board: action.payload.board,
         fen: action.payload.fen,
         turn: action.payload.turn,
+        focus: {
+          file: action.payload.focus.file,
+          rank: action.payload.focus.rank,
+        },
+      };
+    case keyMirror.RESET_POSITION:
+    case keyMirror.CHANGE_FEN:
+      return {
+        ...state,
+        board: action.payload.board,
+        fen: action.payload.fen,
+        turn: action.payload.turn,
+      };
+    case keyMirror.CHANGE_FOCUS:
+      return {
+        ...state,
+        focus: {
+          file: action.payload.file,
+          rank: action.payload.rank,
+        },
       };
     default:
       return state;

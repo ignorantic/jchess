@@ -13,7 +13,7 @@ class Turn extends React.Component {
   render() {
     const { turn } = this.props;
     return (
-      <div className="turn-container">
+      <div className="turn-wrap">
         <div className={`turn turn_${turn}`} />
       </div>
     );

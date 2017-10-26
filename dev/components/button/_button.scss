@@ -1,0 +1,23 @@
+.button {
+  font-size: 16px;
+  background: $cFace;
+  color: $cTextAlt;
+  padding: 5px 10px;
+  border: 1px solid $cFace;
+  outline: none;
+
+  &:active {
+    position: relative;
+    top: 1px;
+    left: 1px;
+  }
+
+  &:focus {
+    outline: {
+      style: dotted;
+      color: red;
+      width: 1px;
+      offset: -1px;
+    }
+  }
+}

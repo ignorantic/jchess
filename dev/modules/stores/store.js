@@ -8,6 +8,10 @@ const initialState = {
   board: boardModel.getBoard(),
   fen: boardModel.getFEN(),
   turn: boardModel.getTurn(),
+  focus: {
+    file: 0,
+    rank: 0,
+  },
 };
 
 const store = createStore(
