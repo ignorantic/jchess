@@ -1,0 +1,13 @@
+@import "../scss/vendors/normalize";
+
+@import "../scss/vars";
+@import "../scss/text";
+@import "../scss/wraps";
+@import "../scss/sprite_svg";
+
+@import "../components/board/board";
+@import "../components/square/square";
+@import "../components/button/button";
+@import "../components/turn/turn";
+@import "../components/fen/fen";
+@import "../components/sidebar/sidebar";

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import store from '../modules/stores/store';
 import App from '../components/app/app';
-import './index.sass';
+import './index.scss';
 import '../img/favicon.png';
 
 document.addEventListener('DOMContentLoaded', () => {

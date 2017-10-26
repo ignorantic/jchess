@@ -20,7 +20,7 @@ class Board extends React.Component {
   }
 
   handleKeyDown(event) {
-    const { focus, onFocus } = this.props;
+    const { focus, onPick, onFocus } = this.props;
     if (event.keyCode > 36 && event.keyCode < 41) {
       let nf = focus.file;
       let nr = focus.rank;
@@ -50,6 +50,9 @@ class Board extends React.Component {
         elemNext.focus();
         onFocus(nf, nr);
       }
+    }
+    if (event.keyCode === 13) {
+      onPick(focus.file, focus.rank);
     }
   }
 

@@ -1,9 +1,9 @@
 .button {
   font-size: 16px;
-  background: $cFace;
-  color: $cTextAlt;
+  background: $clr-face;
+  color: $clr-text-alt;
   padding: 5px 10px;
-  border: 1px solid $cFace;
+  border: 1px solid $clr-face;
   outline: none;
 
   &:active {
@@ -15,7 +15,7 @@
   &:focus {
     outline: {
       style: dotted;
-      color: red;
+      color: $clr-face;
       width: 1px;
       offset: -1px;
     }

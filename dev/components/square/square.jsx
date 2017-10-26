@@ -17,14 +17,6 @@ export default class Square extends React.Component {
       ti: PropTypes.number.isRequired,
       onPick: PropTypes.func.isRequired,
     };
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-  }
-
-  handleKeyDown(event) {
-    const { file, rank, onPick } = this.props;
-    if (event.keyCode === 13) {
-      onPick(file, rank);
-    }
   }
 
   render() {
@@ -52,7 +44,6 @@ export default class Square extends React.Component {
         data-file={file}
         data-rank={rank}
         onMouseDown={() => onPick(file, rank)}
-        onKeyDown={this.handleKeyDown}
       />
     );
   }

@@ -5,62 +5,59 @@
   border-width: 0;
   outline: none;
 
-  &::-moz-focus-outer,
-  &::-moz-focus-inner {
-    border: 0;
-    padding: 0;
+  &:focus {
+    &::after,
+    &::before {
+      box-sizing: border-box;
+      position: absolute;
+      content: "";
+      left: 5%;
+      top: 5%;
+      width: 90%;
+      height: 90%;
+      border: 1px solid $clr-black;
+    }
+
+    &::after {
+      border: 1px dashed $clr-white;
+    }
   }
 
-  &:focus::after,
-  &:focus::before {
-    box-sizing: border-box;
-    position: absolute;
-    content: "";
-    left: 5%;
-    top: 5%;
-    width: 90%;
-    height: 90%;
-    border: 1px solid #000;
-  }
-
-  &:focus::after {
-    border: 1px dashed #fff;
-  }
 }
 
 .square_white {
-  background: $cWhiteSquare;
-  box-shadow: inset 0 0 50px -10px $cShadowSquare;
+  background: $clr-white-square;
+  box-shadow: inset 0 0 50px -10px $clr-shadow-square;
 }
 
 .square_black {
-  background: $cBlackSquare;
-  box-shadow: inset 0 0 50px -10px $cShadowSquare;
+  background: $clr-black-square;
+  box-shadow: inset 0 0 50px -10px $clr-shadow-square;
 }
 
 .square_selected {
-  background: $cSelectedBlackSquare;
-  box-shadow: inset 0 0 50px -10px $cSelectedShadowSquare;
+  background: $clr-selected-black-square;
+  box-shadow: inset 0 0 50px -10px $clr-selected-shadow-square;
 }
 
 .square_marked_white {
-  background: $cMarkedWhiteSquare;
-  box-shadow: inset 0 0 50px -10px $cMarkedShadowSquare;
+  background: $clr-marked-white-square;
+  box-shadow: inset 0 0 50px -10px $clr-marked-shadow-square;
 }
 
 .square_marked_black {
-  background: $cMarkedBlackSquare;
-  box-shadow: inset 0 0 50px -10px $cMarkedShadowSquare;
+  background: $clr-marked-black-square;
+  box-shadow: inset 0 0 50px -10px $clr-marked-shadow-square;
 }
 
 @mixin piece($i) {
   $piece: map-get($icons, $i);
   $sprite: map-get($icons, sprite);
-  $xPosition: map-get($piece, backgroundX) / map-get($piece, squareHeight) * 100;
-  $yPosition: map-get($piece, backgroundY) / map-get($piece, squareWidth) * 100;
+  $x-position: map-get($piece, background-x) / map-get($piece, square-height) * 100;
+  $y-position: map-get($piece, background-y) / map-get($piece, square-width) * 100;
 
   background-image: url(map-get($sprite, svgPath));
-  background-position: $xPosition $yPosition;
+  background-position: $x-position $y-position;
   background-size: 1200% 1200%;
 }
 
