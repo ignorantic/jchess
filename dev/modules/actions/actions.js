@@ -9,7 +9,7 @@ export function pickOnSquare(file, rank) {
       fen: boardModel.FEN,
       turn: boardModel.Turn,
       check: boardModel.Check,
-      mate: boardModel.Mate,
+      mate: boardModel.Checkmate,
       focus: {
         file,
         rank,
@@ -43,7 +43,7 @@ export function resetPosition() {
       fen: boardModel.FEN,
       turn: boardModel.Turn,
       check: boardModel.Check,
-      mate: boardModel.Mate,
+      mate: boardModel.Checkmate,
     };
     dispatch({
       type: consts.RESET_POSITION,
@@ -60,7 +60,7 @@ export function changeFEN(newFEN) {
       fen: boardModel.FEN,
       turn: boardModel.Turn,
       check: boardModel.Check,
-      mate: boardModel.Mate,
+      mate: boardModel.Checkmate,
     };
     dispatch({
       type: consts.CHANGE_FEN,

@@ -438,67 +438,45 @@ describe('jBoard', () => {
    *   EN PASSANT
    */
 
-  describe('checkEnPassant', () => {
-    // let jboard;
+  describe('EnPassant', () => {
+    let jboard;
 
-    before(() => {
-      // jboard = new JBoard();
+    beforeEach(() => {
+      jboard = new JBoard();
+      jboard.setPositionByFEN('4k3/p2pppp1/1p6/1P1P1P2/P1p4p/8/3PP1PP/4K3 w - - 0 1');
     });
 
-    it('return null if arguments aren\'t correct', () => {
-
-      /*
-       *   !!! ADD SOMETHING !!!
-       */
-
-    });
-  });
-
-  describe('getEnPassant', () => {
-    // let jboard;
-
-    before(() => {
-      // jboard = new JBoard();
+    it('isEnPassant return false or true', () => {
+      expect(jboard.isEnPassant(6, 2)).to.be.false;
+      jboard.doMove({ file: 6, rank: 1 }, { file: 6, rank: 3 });
+      expect(jboard.isEnPassant(6, 2)).to.be.true;
+      expect(jboard.isEnPassant(6, 5)).to.be.false;
+      jboard.doMove({ file: 6, rank: 6 }, { file: 6, rank: 4 });
+      expect(jboard.isEnPassant(6, 5)).to.be.true;
+      jboard.doMove({ file: 5, rank: 4 }, { file: 6, rank: 5 });
+      expect(jboard.isEnPassant(6, 5)).to.be.false;
+      jboard.doMove({ file: 4, rank: 6 }, { file: 4, rank: 4 });
+      expect(jboard.isEnPassant(4, 5)).to.be.true;
     });
 
-    it('return null if arguments aren\'t correct', () => {
-
-      /*
-       *   !!! ADD SOMETHING !!!
-       */
-
-    });
-  });
-
-  describe('setEnPassant', () => {
-    // let jboard;
-
-    before(() => {
-      // jboard = new JBoard();
+    it('EnPassant return null if theresn\'t en passant', () => {
+      expect(jboard.EnPassant).to.be.null;
+      jboard.doMove({ file: 4, rank: 1 }, { file: 4, rank: 3 });
+      expect(jboard.EnPassant).to.be.null;
+      jboard.doMove({ file: 6, rank: 6 }, { file: 6, rank: 5 });
+      expect(jboard.EnPassant).to.be.null;
+      jboard.doMove({ file: 0, rank: 6 }, { file: 0, rank: 4 });
+      jboard.doMove({ file: 1, rank: 4 }, { file: 0, rank: 5 });
+      expect(jboard.EnPassant).to.be.null;
     });
 
-    it('return null if arguments aren\'t correct', () => {
-
-      /*
-       *   !!! ADD SOMETHING !!!
-       */
-
-    });
-  });
-
-  describe('isEnPassant', () => {
-    // let jboard;
-
-    before(() => {
-      // jboard = new JBoard();
-    });
-
-    it('return null if arguments aren\'t correct', () => {
-
-      /*
-       *   !!! ADD SOMETHING !!!
-       */
-
+    it('EnPassant return square if en passant ithere\'s', () => {
+      jboard.doMove({ file: 6, rank: 1 }, { file: 6, rank: 3 });
+      expect(jboard.EnPassant.file).to.be.equal(6);
+      expect(jboard.EnPassant.rank).to.be.equal(2);
+      jboard.doMove({ file: 6, rank: 6 }, { file: 6, rank: 4 });
+      expect(jboard.EnPassant.file).to.be.equal(6);
+      expect(jboard.EnPassant.rank).to.be.equal(5);
     });
   });
 
@@ -599,22 +577,6 @@ describe('jBoard', () => {
    *   MARK MOVES
    */
 
-  describe('resetMarks', () => {
-    // let jboard;
-
-    before(() => {
-      // jboard = new JBoard();
-    });
-
-    it('reset marked square', () => {
-
-      /*
-       *   !!! ADD SOMETHING !!!
-       */
-
-    });
-  });
-
   describe('markMoves and isSquareMarked', () => {
     let jboard;
 
@@ -680,38 +642,38 @@ describe('jBoard', () => {
     });
 
     it('return null if arguments aren\'t correct', () => {
-      expect(jboard.doMove(0, 5, 8, 7)).to.be.null;
-      expect(jboard.doMove(0, -1, 7, 7)).to.be.null;
-      expect(jboard.doMove(0, 0, 6, 9)).to.be.null;
-      expect(jboard.doMove(10, 8, 18, 8)).to.be.null;
+      expect(jboard.doMove({ file: 0, rank: 5 }, { file: 8, rank: 7 })).to.be.null;
+      expect(jboard.doMove({ file: 0, rank: -1 }, { file: 7, rank: 7 })).to.be.null;
+      expect(jboard.doMove({ file: 0, rank: 0 }, { file: 6, rank: 9 })).to.be.null;
+      expect(jboard.doMove({ file: 10, rank: 8 }, { file: 18, rank: 8 })).to.be.null;
     });
 
     it('return null if there is no piece on start square', () => {
-      expect(jboard.doMove(0, 2, 4, 3)).to.be.null;
-      expect(jboard.doMove(3, 2, 7, 7)).to.be.null;
-      expect(jboard.doMove(6, 7, 4, 6)).to.be.null;
-      expect(jboard.doMove(5, 5, 2, 0)).to.be.null;
+      expect(jboard.doMove({ file: 0, rank: 2 }, { file: 4, rank: 3 })).to.be.null;
+      expect(jboard.doMove({ file: 3, rank: 2 }, { file: 7, rank: 7 })).to.be.null;
+      expect(jboard.doMove({ file: 6, rank: 7 }, { file: 4, rank: 6 })).to.be.null;
+      expect(jboard.doMove({ file: 5, rank: 5 }, { file: 2, rank: 0 })).to.be.null;
     });
 
     it('return null if start piece color equal stop piece color', () => {
-      expect(jboard.doMove(7, 1, 6, 2)).to.be.null;
-      expect(jboard.doMove(2, 0, 1, 1)).to.be.null;
-      expect(jboard.doMove(3, 7, 4, 7)).to.be.null;
-      expect(jboard.doMove(5, 4, 6, 6)).to.be.null;
+      expect(jboard.doMove({ file: 7, rank: 1 }, { file: 6, rank: 2 })).to.be.null;
+      expect(jboard.doMove({ file: 2, rank: 0 }, { file: 1, rank: 1 })).to.be.null;
+      expect(jboard.doMove({ file: 3, rank: 7 }, { file: 4, rank: 7 })).to.be.null;
+      expect(jboard.doMove({ file: 5, rank: 4 }, { file: 6, rank: 6 })).to.be.null;
     });
 
     it('return true if move was successful', () => {
-      expect(jboard.doMove(4, 1, 4, 3)).to.be.true;
-      expect(jboard.doMove(2, 4, 2, 3)).to.be.true;
-      expect(jboard.doMove(6, 6, 6, 5)).to.be.true;
-      expect(jboard.doMove(0, 1, 0, 3)).to.be.true;
+      expect(jboard.doMove({ file: 4, rank: 1 }, { file: 4, rank: 3 })).to.be.true;
+      expect(jboard.doMove({ file: 2, rank: 4 }, { file: 2, rank: 3 })).to.be.true;
+      expect(jboard.doMove({ file: 6, rank: 6 }, { file: 6, rank: 5 })).to.be.true;
+      expect(jboard.doMove({ file: 0, rank: 1 }, { file: 0, rank: 3 })).to.be.true;
     });
 
     it('check stop square if move was successful', () => {
       let color = jboard.getPieceColor(0, 1);
       let type = jboard.getPieceType(0, 1);
 
-      jboard.doMove(0, 1, 0, 3);
+      jboard.doMove({ file: 0, rank: 1 }, { file: 0, rank: 3 });
 
       expect(jboard.getPieceColor(0, 3) === color).to.be.true;
       expect(jboard.getPieceType(0, 3) === type).to.be.true;
@@ -719,7 +681,7 @@ describe('jBoard', () => {
       color = jboard.getPieceColor(7, 3);
       type = jboard.getPieceType(7, 3);
 
-      jboard.doMove(7, 3, 6, 2);
+      jboard.doMove({ file: 7, rank: 3 }, { file: 6, rank: 2 });
 
       expect(jboard.getPieceColor(6, 2) === color).to.be.true;
       expect(jboard.getPieceType(6, 2) === type).to.be.true;
@@ -728,15 +690,25 @@ describe('jBoard', () => {
     it('check start square if move was successful', () => {
       expect(jboard.getPieceColor(0, 1)).to.be.equal('white');
       expect(jboard.getPieceType(0, 1)).to.be.equal('pawn');
-      jboard.doMove(0, 1, 0, 3);
+      jboard.doMove({ file: 0, rank: 1 }, { file: 0, rank: 3 });
       expect(jboard.getPieceColor(0, 1)).to.be.null;
       expect(jboard.getPieceType(0, 1)).to.be.null;
 
       expect(jboard.getPieceColor(7, 3)).to.be.equal('black');
       expect(jboard.getPieceType(7, 3)).to.be.equal('pawn');
-      jboard.doMove(7, 3, 6, 2);
+      jboard.doMove({ file: 7, rank: 3 }, { file: 6, rank: 2 });
       expect(jboard.getPieceColor(7, 3)).to.be.null;
       expect(jboard.getPieceType(7, 3)).to.be.null;
+    });
+
+    it('turn color after move', () => {
+      expect(jboard.Turn).to.be.equal('white');
+      jboard.doMove({ file: 0, rank: 1 }, { file: 0, rank: 3 });
+      expect(jboard.Turn).to.be.equal('black');
+      jboard.doMove({ file: 2, rank: 2 }, { file: 3, rank: 0 });
+      expect(jboard.Turn).to.be.equal('white');
+      jboard.doMove({ file: 2, rank: 0 }, { file: 3, rank: 1 });
+      expect(jboard.Turn).to.be.equal('black');
     });
   });
 
@@ -756,28 +728,28 @@ describe('jBoard', () => {
     });
 
     it('return false if arguments aren\'t correct', () => {
-      expect(jboard.checkMove(0, 5, 8, 7)).to.be.null;
-      expect(jboard.checkMove(0, -1, 7, 7)).to.be.null;
-      expect(jboard.checkMove(0, 0, 6, 9)).to.be.null;
-      expect(jboard.checkMove(10, 8, 18, 8)).to.be.null;
+      expect(jboard.checkMove({ file: 0, rank: 5 }, { file: 8, rank: 7 })).to.be.null;
+      expect(jboard.checkMove({ file: 0, rank: -1 }, { file: 7, rank: 7 })).to.be.null;
+      expect(jboard.checkMove({ file: 0, rank: 0 }, { file: 6, rank: 9 })).to.be.null;
+      expect(jboard.checkMove({ file: 10, rank: 8 }, { file: 18, rank: 8 })).to.be.null;
     });
 
     it('return false if there is no piece on start square', () => {
-      expect(jboard.checkMove(0, 2, 4, 3)).to.be.null;
-      expect(jboard.checkMove(3, 2, 7, 7)).to.be.null;
-      expect(jboard.checkMove(6, 7, 4, 6)).to.be.null;
-      expect(jboard.checkMove(5, 5, 2, 0)).to.be.null;
+      expect(jboard.checkMove({ file: 0, rank: 2 }, { file: 4, rank: 3 })).to.be.null;
+      expect(jboard.checkMove({ file: 3, rank: 2 }, { file: 7, rank: 7 })).to.be.null;
+      expect(jboard.checkMove({ file: 6, rank: 7 }, { file: 4, rank: 6 })).to.be.null;
+      expect(jboard.checkMove({ file: 5, rank: 5 }, { file: 2, rank: 0 })).to.be.null;
     });
 
     it('return true if move is legal', () => {
-      expect(jboard.checkMove(4, 1, 4, 3)).to.be.true;
-      expect(jboard.checkMove(2, 4, 2, 3)).to.be.true;
-      expect(jboard.checkMove(6, 6, 6, 5)).to.be.true;
-      expect(jboard.checkMove(0, 1, 0, 3)).to.be.true;
+      expect(jboard.checkMove({ file: 4, rank: 1 }, { file: 4, rank: 3 })).to.be.true;
+      expect(jboard.checkMove({ file: 2, rank: 4 }, { file: 2, rank: 3 })).to.be.true;
+      expect(jboard.checkMove({ file: 6, rank: 6 }, { file: 6, rank: 5 })).to.be.true;
+      expect(jboard.checkMove({ file: 0, rank: 1 }, { file: 0, rank: 3 })).to.be.true;
     });
 
     it('return false if move is illegal', () => {
-      expect(jboard.checkMove(5, 6, 5, 5)).to.be.false;
+      expect(jboard.checkMove({ file: 5, rank: 6 }, { file: 5, rank: 5 })).to.be.false;
     });
   });
 
@@ -1067,79 +1039,41 @@ describe('jBoard', () => {
    *   VALIDATORS
    */
 
-  describe('validateSquare', () => {
-    let jboard;
-
-    before(() => {
-      jboard = new JBoard();
-    });
-
+  describe('isSquare', () => {
     it('return false if square isn\'t correct', () => {
-      expect(jboard.constructor.validateSquare(0, 8)).to.be.false;
-      expect(jboard.constructor.validateSquare(8, 0)).to.be.false;
-      expect(jboard.constructor.validateSquare(-1, 0)).to.be.false;
-      expect(jboard.constructor.validateSquare(0, -1)).to.be.false;
+      expect(JBoard.isSquare(0)).to.be.false;
+      expect(JBoard.isSquare(8)).to.be.false;
+      expect(JBoard.isSquare(0, null)).to.be.false;
+      expect(JBoard.isSquare(null, 5)).to.be.false;
+      expect(JBoard.isSquare(0, undefined)).to.be.false;
+      expect(JBoard.isSquare(undefined, 2)).to.be.false;
+      expect(JBoard.isSquare(0, 8)).to.be.false;
+      expect(JBoard.isSquare(8, 0)).to.be.false;
+      expect(JBoard.isSquare(-1, 0)).to.be.false;
+      expect(JBoard.isSquare(0, -1)).to.be.false;
+      expect(JBoard.isSquare({ file: 0, rank: 8 })).to.be.false;
+      expect(JBoard.isSquare({ file: 8, rank: 5 })).to.be.false;
+      expect(JBoard.isSquare({ file: 2, rank: 8 })).to.be.false;
+      expect(JBoard.isSquare({ file: 3, rank: 9 })).to.be.false;
+      expect(JBoard.isSquare({ file: null, rank: 9 })).to.be.false;
+      expect(JBoard.isSquare({ file: 3, rank: undefined })).to.be.false;
     });
 
     it('return true if square is correct', () => {
-      expect(jboard.constructor.validateSquare(0, 0)).to.be.true;
-      expect(jboard.constructor.validateSquare(7, 7)).to.be.true;
-      expect(jboard.constructor.validateSquare(0, 3)).to.be.true;
-      expect(jboard.constructor.validateSquare(3, 5)).to.be.true;
+      expect(JBoard.isSquare(0, 0)).to.be.true;
+      expect(JBoard.isSquare(7, 7)).to.be.true;
+      expect(JBoard.isSquare(0, 3)).to.be.true;
+      expect(JBoard.isSquare(3, 5)).to.be.true;
+      expect(JBoard.isSquare({ file: 1, rank: 7 })).to.be.true;
+      expect(JBoard.isSquare({ file: 5, rank: 4 })).to.be.true;
+      expect(JBoard.isSquare({ file: 6, rank: 2 })).to.be.true;
+      expect(JBoard.isSquare({ file: 7, rank: 0 })).to.be.true;
     });
   });
 
   /*
    *   SERVICES
    */
-
-  describe('pushMove', () => {
-    // let jboard;
-
-    before(() => {
-      // jboard = new JBoard();
-    });
-
-    it('return null if arguments aren\'t correct', () => {
-
-      /*
-       *   !!! ADD SOMETHING !!!
-       */
-
-    });
-  });
-
-  describe('isFriend', () => {
-    // let jboard;
-
-    before(() => {
-      // jboard = new JBoard();
-    });
-
-    it('return null if arguments aren\'t correct', () => {
-
-      /*
-       *   !!! ADD SOMETHING !!!
-       */
-
-    });
-  });
-
-  describe('isFoe', () => {
-    // let jboard;
-
-    before(() => {
-      // jboard = new JBoard();
-    });
-
-    it('return null if arguments aren\'t correct', () => {
-
-      /*
-       *   !!! ADD SOMETHING !!!
-       */
-
-    });
-  });
 
   describe('isSquareAttacked', () => {
     let jboard;
@@ -1228,18 +1162,62 @@ describe('jBoard', () => {
     });
 
     it('white king is in check by queen', () => {
-      jboard.doMove(3, 3, 5, 1);
+      jboard.doMove({ file: 3, rank: 3 }, { file: 5, rank: 1 });
       expect(jboard.isCheck('white')).to.be.true;
     });
 
     it('white king is in discovered check by bishop', () => {
-      jboard.doMove(2, 2, 3, 5);
+      jboard.doMove({ file: 2, rank: 2 }, { file: 3, rank: 5 });
       expect(jboard.isCheck('white')).to.be.true;
     });
 
     it('black king is in check by pawn', () => {
-      jboard.doMove(3, 5, 3, 6);
+      jboard.doMove({ file: 3, rank: 5 }, { file: 3, rank: 6 });
       expect(jboard.isCheck('black')).to.be.true;
+    });
+  });
+
+  describe('isCheckmate and get Checkmate', () => {
+    let jboard;
+
+    before(() => {
+      jboard = new JBoard();
+    });
+
+    it('return true if there\'s checkmate', () => {
+      jboard.setPositionByFEN('6rk/5Npp/8/8/8/8/8/4K3 b - - 0 1');
+      expect(jboard.isCheckmate('black')).to.be.true;
+      expect(jboard.Checkmate).to.be.true;
+      jboard.setPositionByFEN('6rk/5NpP/8/8/8/8/8/4K2R b - - 0 1');
+      expect(jboard.isCheckmate('black')).to.be.true;
+      expect(jboard.Checkmate).to.be.true;
+      jboard.setPositionByFEN('6rk/5Np1/7R/8/8/8/8/4K3 b - - 0 1');
+      expect(jboard.isCheckmate('black')).to.be.true;
+      expect(jboard.Checkmate).to.be.true;
+      jboard.setPositionByFEN('6rk/6p1/7R/8/8/8/8/B3K3 b - - 0 1');
+      expect(jboard.isCheckmate('black')).to.be.true;
+      expect(jboard.Checkmate).to.be.true;
+      jboard.setPositionByFEN('6rk/8/5r1Q/8/8/8/8/B3K3 b - - 0 1');
+      expect(jboard.isCheckmate('black')).to.be.true;
+      expect(jboard.Checkmate).to.be.true;
+    });
+
+    it('return false if theresn\'t checkmate', () => {
+      jboard.setPositionByFEN('6rk/5NpP/8/8/8/8/8/4K3 b - - 0 1');
+      expect(jboard.isCheckmate('black')).to.be.false;
+      expect(jboard.Checkmate).to.be.false;
+      jboard.setPositionByFEN('6rk/6p1/7R/8/8/8/8/4K3 b - - 0 1');
+      expect(jboard.isCheckmate('black')).to.be.false;
+      expect(jboard.Checkmate).to.be.false;
+      jboard.setPositionByFEN('6rk/6p1/5p1R/8/8/8/8/B3K3 b - - 0 1');
+      expect(jboard.isCheckmate('black')).to.be.false;
+      expect(jboard.Checkmate).to.be.false;
+      jboard.setPositionByFEN('6rk/8/5r1R/8/8/8/8/B3K3 b - - 0 1');
+      expect(jboard.isCheckmate('black')).to.be.false;
+      expect(jboard.Checkmate).to.be.false;
+      jboard.setPositionByFEN('6rk/6b1/5r1Q/8/8/8/8/B3K3 b - - 0 1');
+      expect(jboard.isCheckmate('black')).to.be.false;
+      expect(jboard.Checkmate).to.be.false;
     });
   });
 
@@ -1287,14 +1265,14 @@ describe('jBoard', () => {
 
     it('check white rook position on new _board after move on source _board', () => {
       expect(jboard.getPieceType(0, 0)).to.be.equal('rook');
-      jboard.doMove(0, 0, 1, 0);
+      jboard.doMove({ file: 0, rank: 0 }, { file: 1, rank: 0 });
       expect(jboard.getPieceType(0, 0)).to.be.null;
       expect(newBoard.getPieceType(0, 0)).to.be.equal('rook');
     });
 
     it('check black rook position on source _board after move on new _board', () => {
       expect(newBoard.getPieceType(0, 7)).to.be.equal('rook');
-      newBoard.doMove(0, 7, 1, 7);
+      newBoard.doMove({ file: 0, rank: 7 }, { file: 1, rank: 7 });
       expect(newBoard.getPieceType(0, 7)).to.be.null;
       expect(jboard.getPieceType(0, 7)).to.be.equal('rook');
     });
@@ -1448,44 +1426,38 @@ describe('jBoard', () => {
     it('return "b3" for test position after two moves', () => {
       jboard.setPositionByFEN(TEST_POSITION);
       jboard.turn = 'black';
-      jboard.doMove(2, 4, 2, 3);
-      jboard.doMove(1, 1, 1, 3);
+      jboard.doMove({ file: 2, rank: 4 }, { file: 2, rank: 3 });
+      jboard.doMove({ file: 1, rank: 1 }, { file: 1, rank: 3 });
       expect(jboard.getFENEnPassant()).to.be.equal('b3');
     });
   });
 
   describe('parseFENRank', () => {
-    let jboard;
-
-    before(() => {
-      jboard = new JBoard();
-    });
-
     it('return null for too long string', () => {
-      expect(jboard.constructor.parseFENRank('rnbqkbnrr')).to.be.null;
+      expect(JBoard.parseFENRank('rnbqkbnrr')).to.be.null;
     });
 
     it('return null for incorrect string', () => {
-      expect(jboard.constructor.parseFENRank('rnbqk5nr')).to.be.null;
-      expect(jboard.constructor.parseFENRank('77b7nr')).to.be.null;
-      expect(jboard.constructor.parseFENRank('r9knr')).to.be.null;
-      expect(jboard.constructor.parseFENRank('90')).to.be.null;
-      expect(jboard.constructor.parseFENRank('r7000r')).to.be.null;
-      expect(jboard.constructor.parseFENRank('rnfqkbnr')).to.be.null;
+      expect(JBoard.parseFENRank('rnbqk5nr')).to.be.null;
+      expect(JBoard.parseFENRank('77b7nr')).to.be.null;
+      expect(JBoard.parseFENRank('r9knr')).to.be.null;
+      expect(JBoard.parseFENRank('90')).to.be.null;
+      expect(JBoard.parseFENRank('r7000r')).to.be.null;
+      expect(JBoard.parseFENRank('rnfqkbnr')).to.be.null;
     });
 
     it('return array for correct string', () => {
-      expect(jboard.constructor.parseFENRank('rnbqk1nr')[0].type).to.be.equal('rook');
-      expect(jboard.constructor.parseFENRank('rnbqk1nr')[0].color).to.be.equal('black');
-      expect(jboard.constructor.parseFENRank('rn1qk1nr')[7].type).to.be.equal('rook');
-      expect(jboard.constructor.parseFENRank('rn1qk1nr')[7].color).to.be.equal('black');
-      expect(jboard.constructor.parseFENRank('rnbq2nr')[1].type).to.be.equal('knight');
-      expect(jboard.constructor.parseFENRank('rnbq2nr')[1].color).to.be.equal('black');
-      expect(jboard.constructor.parseFENRank('rnbqk1nr')[6].type).to.be.equal('knight');
-      expect(jboard.constructor.parseFENRank('rnbqk1nr')[6].color).to.be.equal('black');
-      expect(jboard.constructor.parseFENRank('1nbqk1nr')[3].type).to.be.equal('queen');
-      expect(jboard.constructor.parseFENRank('r1Bq4')[2].type).to.be.equal('bishop');
-      expect(jboard.constructor.parseFENRank('r1Bq4')[2].color).to.be.equal('white');
+      expect(JBoard.parseFENRank('rnbqk1nr')[0].type).to.be.equal('rook');
+      expect(JBoard.parseFENRank('rnbqk1nr')[0].color).to.be.equal('black');
+      expect(JBoard.parseFENRank('rn1qk1nr')[7].type).to.be.equal('rook');
+      expect(JBoard.parseFENRank('rn1qk1nr')[7].color).to.be.equal('black');
+      expect(JBoard.parseFENRank('rnbq2nr')[1].type).to.be.equal('knight');
+      expect(JBoard.parseFENRank('rnbq2nr')[1].color).to.be.equal('black');
+      expect(JBoard.parseFENRank('rnbqk1nr')[6].type).to.be.equal('knight');
+      expect(JBoard.parseFENRank('rnbqk1nr')[6].color).to.be.equal('black');
+      expect(JBoard.parseFENRank('1nbqk1nr')[3].type).to.be.equal('queen');
+      expect(JBoard.parseFENRank('r1Bq4')[2].type).to.be.equal('bishop');
+      expect(JBoard.parseFENRank('r1Bq4')[2].color).to.be.equal('white');
     });
   });
 });

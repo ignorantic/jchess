@@ -9,7 +9,7 @@ const initialState = {
   fen: boardModel.FEN,
   turn: boardModel.Turn,
   check: boardModel.Check,
-  mate: boardModel.Mate,
+  mate: boardModel.Checkmate,
   focus: {
     file: 0,
     rank: 0,
