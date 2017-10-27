@@ -2,13 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from '../button/button';
-import { resetPosition } from '../../modules/actions/actions';
+import { setUpPosition, resetPosition, flipBoard } from '../../modules/actions/actions';
 
 class Sidebar extends React.Component {
   constructor(props) {
     super(props);
     Sidebar.propTypes = {
-      onClick: PropTypes.func.isRequired,
+      onNewClick: PropTypes.func.isRequired,
+      onClearClick: PropTypes.func.isRequired,
+      onFlipClick: PropTypes.func.isRequired,
     };
   }
 
@@ -16,8 +18,19 @@ class Sidebar extends React.Component {
     return (
       <aside className="sidebar">
         <Button
-          label="Reset"
-          onClick={this.props.onClick}
+          key="new"
+          label="New game"
+          onClick={this.props.onNewClick}
+        />
+        <Button
+          key="clear"
+          label="Clear board"
+          onClick={this.props.onClearClick}
+        />
+        <Button
+          key="flip"
+          label="Flip board"
+          onClick={this.props.onFlipClick}
         />
       </aside>
     );
@@ -27,7 +40,9 @@ class Sidebar extends React.Component {
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = dispatch => ({
-  onClick: () => dispatch(resetPosition()),
+  onNewClick: () => dispatch(setUpPosition()),
+  onClearClick: () => dispatch(resetPosition()),
+  onFlipClick: () => dispatch(flipBoard()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

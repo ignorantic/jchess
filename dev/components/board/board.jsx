@@ -12,6 +12,7 @@ class Board extends React.Component {
       turn: PropTypes.string.isRequired,
       check: PropTypes.bool.isRequired,
       mate: PropTypes.bool.isRequired,
+      flip: PropTypes.bool.isRequired,
       focus: PropTypes.shape({
         file: PropTypes.number.isRequired,
         rank: PropTypes.number.isRequired,
@@ -61,13 +62,15 @@ class Board extends React.Component {
 
   render() {
     const {
-      board, turn, check, mate, focus, onPick,
+      board, turn, check, mate, flip, focus, onPick,
     } = this.props;
     let cc = '';
+    let fc = '';
     const tc = ` board_${turn}`;
     if (mate) cc = ' board_mate';
+    if (flip) fc = ' board_flipped';
     else if (check) cc = ' board_check';
-    const className = `board${tc}${cc}`;
+    const className = `board${tc}${cc}${fc}`;
     return (
       <div
         className={className}
@@ -102,7 +105,8 @@ const mapStateToProps = state => ({
   focus: state.focus,
   turn: state.turn,
   check: state.check,
-  mate: state.mate,
+  checkmate: state.checkmate,
+  flip: state.flip,
 });
 
 const mapDispatchToProps = dispatch => ({

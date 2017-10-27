@@ -1,6 +1,6 @@
 import JBoard from '../../lib/jboard';
 
 const chessModel = new JBoard();
-chessModel.setUpInitial();
+chessModel.setUp();
 
 export default chessModel;

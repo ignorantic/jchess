@@ -47,7 +47,7 @@ describe('jBoard', () => {
 
     before(() => {
       jboard = new JBoard();
-      jboard.setUpInitial();
+      jboard.setUp();
     });
 
     it('check rooks', () => {
@@ -176,7 +176,7 @@ describe('jBoard', () => {
 
     before(() => {
       jboard = new JBoard();
-      jboard.setUpInitial();
+      jboard.setUp();
     });
 
     it('check pawn a2 before reset', () => {
@@ -299,7 +299,7 @@ describe('jBoard', () => {
 
     before(() => {
       jboard = new JBoard();
-      jboard.setUpInitial();
+      jboard.setUp();
     });
 
     it('return piece type for (0, 0), etc', () => {
@@ -323,7 +323,7 @@ describe('jBoard', () => {
 
     before(() => {
       jboard = new JBoard();
-      jboard.setUpInitial();
+      jboard.setUp();
     });
 
     it('return null if arguments aren\'t correct', () => {
@@ -1287,11 +1287,11 @@ describe('jBoard', () => {
 
     before(() => {
       jboard = new JBoard();
-      jboard.setUpInitial();
+      jboard.setUp();
     });
 
     it('get FEN of initial position', () => {
-      jboard.setUpInitial();
+      jboard.setUp();
       expect(jboard.FEN)
         .to.be.equal('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
     });
@@ -1308,7 +1308,7 @@ describe('jBoard', () => {
 
     before(() => {
       jboard = new JBoard();
-      jboard.setUpInitial();
+      jboard.setUp();
     });
 
     it('return null if square is empty', () => {
@@ -1338,7 +1338,7 @@ describe('jBoard', () => {
     });
 
     it('get FEN _board of initial position', () => {
-      jboard.setUpInitial();
+      jboard.setUp();
       expect(jboard.getFENBoard())
         .to.be.equal('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR');
     });
@@ -1358,7 +1358,7 @@ describe('jBoard', () => {
     });
 
     it('get FEN turn of initial position', () => {
-      jboard.setUpInitial();
+      jboard.setUp();
       expect(jboard.getFENTurn()).to.be.equal('w');
     });
 
@@ -1376,7 +1376,7 @@ describe('jBoard', () => {
     });
 
     it('get FEN castling of initial position', () => {
-      jboard.setUpInitial();
+      jboard.setUp();
       expect(jboard.getFENCastling()).to.be.equal('KQkq');
     });
 
@@ -1414,7 +1414,7 @@ describe('jBoard', () => {
     });
 
     it('return "-" for initial position', () => {
-      jboard.setUpInitial();
+      jboard.setUp();
       expect(jboard.getFENEnPassant()).to.be.equal('-');
     });
 

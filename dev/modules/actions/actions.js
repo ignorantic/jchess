@@ -35,9 +35,9 @@ export function changeFocus(file, rank) {
   };
 }
 
-export function resetPosition() {
+export function setUpPosition() {
   return (dispatch) => {
-    boardModel.setUpInitial();
+    boardModel.setUp();
     const payload = {
       board: boardModel.Board,
       fen: boardModel.FEN,
@@ -46,7 +46,24 @@ export function resetPosition() {
       mate: boardModel.Checkmate,
     };
     dispatch({
-      type: consts.RESET_POSITION,
+      type: consts.SETUP_POSITION,
+      payload,
+    });
+  };
+}
+
+export function resetPosition() {
+  return (dispatch) => {
+    boardModel.resetPosition();
+    const payload = {
+      board: boardModel.Board,
+      fen: boardModel.FEN,
+      turn: boardModel.Turn,
+      check: boardModel.Check,
+      mate: boardModel.Checkmate,
+    };
+    dispatch({
+      type: consts.CLEAR_POSITION,
       payload,
     });
   };
@@ -65,6 +82,14 @@ export function changeFEN(newFEN) {
     dispatch({
       type: consts.CHANGE_FEN,
       payload,
+    });
+  };
+}
+
+export function flipBoard() {
+  return (dispatch) => {
+    dispatch({
+      type: consts.FLIP_BOARD,
     });
   };
 }

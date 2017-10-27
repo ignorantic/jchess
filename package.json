@@ -1,8 +1,7 @@
 {
-  "name": "caramel",
+  "name": "jchess",
   "version": "0.0.1",
-  "description": "caramel project",
-  "main": "index.js",
+  "private": true,
   "scripts": {
     "test": "NODE_ENV=test mocha test/*.spec.js --compilers js:babel-register",
     "sass-lint": "sass-lint -c .sass-lint.yml 'dev/**/*.scss' -v -q",
@@ -15,8 +14,6 @@
     "start": "yarn run svg-sprite && webpack-dev-server --progress --env development",
     "static": "static build"
   },
-  "author": "snaut",
-  "license": "ISC",
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",
     "babel-core": "^6.26.0",
@@ -62,9 +59,6 @@
     "webpack-dev-server": "2.9.2",
     "webpack-merge": "^4.1.0"
   },
-  "repository": {},
-  "bugs": {},
-  "homepage": "",
   "dependencies": {
     "clean-webpack-plugin": "^0.1.16",
     "extract-text-webpack-plugin": "^3.0.0",

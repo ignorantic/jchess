@@ -7,21 +7,26 @@ class Turn extends React.Component {
     super(props);
     Turn.propTypes = {
       turn: PropTypes.string.isRequired,
+      flip: PropTypes.bool.isRequired,
     };
   }
 
   render() {
-    const { turn } = this.props;
+    const { turn, flip } = this.props;
+    let fc = '';
+    if (flip) fc = ' turn_flipped';
+    const className = `turn turn_${turn}${fc}`;
     return (
-      <div className="turn-wrap">
-        <div className={`turn turn_${turn}`} />
-      </div>
+      <div className={className} />
     );
   }
 }
 
 const mapStateToProps = state => ({
   turn: state.turn,
+  flip: state.flip,
 });
 
-export default connect(mapStateToProps, {})(Turn);
+const mapDispatchToProps = () => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Turn);

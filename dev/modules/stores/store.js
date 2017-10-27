@@ -9,7 +9,8 @@ const initialState = {
   fen: boardModel.FEN,
   turn: boardModel.Turn,
   check: boardModel.Check,
-  mate: boardModel.Checkmate,
+  checkmate: boardModel.Checkmate,
+  flip: false,
   focus: {
     file: 0,
     rank: 0,

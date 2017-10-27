@@ -6,3 +6,8 @@
   width: 480px;
   margin: 40px auto;
 }
+
+.board_flipped {
+  flex-direction: column;
+  flex-wrap: wrap-reverse;
+}

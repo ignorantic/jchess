@@ -16,7 +16,6 @@ export default class JBoard {
     this.selectRank = null;
 
     this.enPassant = null;
-
     this.castling = {
       white: 0,
       black: 0,
@@ -105,7 +104,7 @@ export default class JBoard {
    *   SETUP
    */
 
-  setUpInitial() {
+  setUp() {
     this.setPositionByFEN(this.INITIAL_POSITION);
   }
 
@@ -138,6 +137,14 @@ export default class JBoard {
           this.setPiece(file, rank, null, null);
         });
       });
+    this.turn = 'white';
+    this.count = 1;
+    this.countFiftyMove = 0;
+    this.enPassant = null;
+    this.castling = {
+      white: 0,
+      black: 0,
+    };
   }
 
   get Board() {

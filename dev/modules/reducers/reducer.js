@@ -1,36 +1,43 @@
-import keyMirror from '../constants/consts';
+import consts from '../constants/consts';
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case keyMirror.UPDATE_POSITION:
-      return {
-        board: action.payload.board,
-        fen: action.payload.fen,
-        turn: action.payload.turn,
-        check: action.payload.check,
-        mate: action.payload.mate,
-        focus: {
-          file: action.payload.focus.file,
-          rank: action.payload.focus.rank,
-        },
-      };
-    case keyMirror.RESET_POSITION:
-    case keyMirror.CHANGE_FEN:
+    case consts.UPDATE_POSITION:
       return {
         ...state,
         board: action.payload.board,
         fen: action.payload.fen,
         turn: action.payload.turn,
         check: action.payload.check,
-        mate: action.payload.mate,
+        checkmate: action.payload.checkmate,
+        focus: {
+          file: action.payload.focus.file,
+          rank: action.payload.focus.rank,
+        },
       };
-    case keyMirror.CHANGE_FOCUS:
+    case consts.CLEAR_POSITION:
+    case consts.SETUP_POSITION:
+    case consts.CHANGE_FEN:
+      return {
+        ...state,
+        board: action.payload.board,
+        fen: action.payload.fen,
+        turn: action.payload.turn,
+        check: action.payload.check,
+        checkmate: action.payload.checkmate,
+      };
+    case consts.CHANGE_FOCUS:
       return {
         ...state,
         focus: {
           file: action.payload.file,
           rank: action.payload.rank,
         },
+      };
+    case consts.FLIP_BOARD:
+      return {
+        ...state,
+        flip: !state.flip,
       };
     default:
       return state;

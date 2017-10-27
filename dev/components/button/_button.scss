@@ -6,6 +6,10 @@
   border: 1px solid $clr-face;
   outline: none;
 
+  &:not(:last-of-type) {
+    margin-bottom: 10px;
+  }
+
   &:active {
     position: relative;
     top: 1px;

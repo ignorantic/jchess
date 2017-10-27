@@ -1,11 +1,12 @@
-.turn-wrap {
+.turn {
   position: relative;
   margin: 40px 0;
   width: 40px;
   height: 480px;
 }
 
-.turn {
+.turn:after {
+  content: '';
   position: absolute;
   box-sizing: border-box;
   height: 20px;
@@ -14,12 +15,26 @@
   left: 0;
 }
 
-.turn_white {
+.turn_white:after {
   background: $clr-white;
   bottom: 0;
 }
 
-.turn_black {
+.turn_black:after {
   background: $clr-black;
   top: 0;
+}
+
+.turn_flipped {
+  &.turn_white:after  {
+    top: 0;
+    bottom: auto;
+  }
+}
+
+.turn_flipped {
+  &.turn_black:after {
+    top: auto;
+    bottom: 0;
+  }
 }
