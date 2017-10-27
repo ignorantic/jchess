@@ -469,13 +469,12 @@ export default class JBoard {
 
     if (this.constructor.validateSquare(targetFile, targetRank)) {
       if (!this.getPieceType(targetFile, targetRank)) {
-        this.constructor.pushMove(moves, targetFile, targetRank);
-
+        moves.push({ file: targetFile, rank: targetRank });
         if ((pawnColor === 'white' && rank === 1) ||
           (pawnColor === 'black' && rank === 6)) {
           targetRank = rank + (2 * moveDirection);
           if (!this.getPieceType(targetFile, targetRank)) {
-            this.constructor.pushMove(moves, targetFile, targetRank);
+            moves.push({ file: targetFile, rank: targetRank });
           }
         }
       }
@@ -486,13 +485,13 @@ export default class JBoard {
     targetFile = file - 1;
     if (this.isFoe(pawnColor, targetFile, targetRank) ||
       (this.isEnPassant(targetFile, targetRank))) {
-      this.constructor.pushMove(moves, targetFile, targetRank);
+      moves.push({ file: targetFile, rank: targetRank });
     }
 
     targetFile = file + 1;
     if (this.isFoe(pawnColor, targetFile, targetRank) ||
       (this.isEnPassant(targetFile, targetRank))) {
-      this.constructor.pushMove(moves, targetFile, targetRank);
+      moves.push({ file: targetFile, rank: targetRank });
     }
 
     return this.filterMoves(moves, file, rank);
@@ -527,12 +526,12 @@ export default class JBoard {
     if (this.castling[color] > 1 && !this.isSquareAttacked(color, file - 1, rank) &&
       (this.isEmpty(file - 1, rank)) && (this.isEmpty(file - 2, rank)) &&
       (this.isEmpty(file - 3, rank))) {
-      this.constructor.pushMove(result, 2, rank);
+      result.push({ file: 2, rank });
     }
 
     if (this.castling[color] % 2 === 1 && !this.isSquareAttacked(color, file + 1, rank) &&
       (this.isEmpty(file + 1, rank)) && (this.isEmpty(file + 2, rank))) {
-      this.constructor.pushMove(result, 6, rank);
+      result.push({ file: 6, rank });
     }
 
     return result;
@@ -617,7 +616,7 @@ export default class JBoard {
           if (this.isFriend(color, targetFile, targetRank)) {
             break;
           } else {
-            this.constructor.pushMove(result, targetFile, targetRank);
+            result.push({ file: targetFile, rank: targetRank });
           }
         } else {
           break;
@@ -647,14 +646,6 @@ export default class JBoard {
   /**
    *   SERVICES
    */
-
-  static pushMove(result, file, rank) {
-    const move = {
-      file,
-      rank,
-    };
-    result.push(move);
-  }
 
   isFriend(color, file, rank) {
     if (!this.constructor.validateSquare(file, rank)) {
@@ -731,12 +722,13 @@ export default class JBoard {
 
   isCheck(color) {
     const king = this.getKing(color);
+    return king && this.isSquareAttacked(color, king.file, king.rank);
+  }
 
-    if (king) {
-      return this.isSquareAttacked(color, king.file, king.rank);
-    }
-
-    return null;
+  isMate(color) {
+    if (!this.isCheck(color).length) return false;
+    const moves = this.getMoves(color);
+    return !moves.length;
   }
 
   getKing(color) {

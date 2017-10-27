@@ -1,8 +1,7 @@
+/* eslint-disable no-unused-expressions */
 import { describe, it, before, beforeEach } from 'mocha';
-import chai from 'chai';
-import JBoard from './jboard';
-
-const { expect } = chai;
+import { expect } from 'chai';
+import JBoard from '../dev/lib/jboard';
 
 describe('jBoard', () => {
   const TEST_POSITION = 'r3k2r/pp3pp1/b2P4/b1pP1n1B/3q1P1p/2n2NP1/PP2P2P/RNBQK2R w KQkq - 0 1';
@@ -26,9 +25,9 @@ describe('jBoard', () => {
     });
 
     it('check property\'s value', () => {
-      expect(jboard.selectFile).to.be.equal(null);
-      expect(jboard.selectRank).to.be.equal(null);
-      expect(jboard.enPassant).to.be.equal(null);
+      expect(jboard.selectFile).to.be.null;
+      expect(jboard.selectRank).to.be.null;
+      expect(jboard.enPassant).to.be.null;
     });
 
     it('check square colors', () => {
@@ -198,18 +197,18 @@ describe('jBoard', () => {
     it('check pawn a2 after reset', () => {
       jboard.resetPosition();
 
-      expect(jboard.board[0][1].piece.type).to.be.equal(null);
-      expect(jboard.board[0][1].piece.color).to.be.equal(null);
+      expect(jboard.board[0][1].piece.type).to.be.null;
+      expect(jboard.board[0][1].piece.color).to.be.null;
     });
 
     it('check knight b1 after reset', () => {
-      expect(jboard.board[1][0].piece.type).to.be.equal(null);
-      expect(jboard.board[1][0].piece.color).to.be.equal(null);
+      expect(jboard.board[1][0].piece.type).to.be.null;
+      expect(jboard.board[1][0].piece.color).to.be.null;
     });
 
     it('check rook h8 after reset', () => {
-      expect(jboard.board[7][7].piece.type).to.be.equal(null);
-      expect(jboard.board[7][7].piece.color).to.be.equal(null);
+      expect(jboard.board[7][7].piece.type).to.be.null;
+      expect(jboard.board[7][7].piece.color).to.be.null;
     });
   });
 
@@ -221,18 +220,18 @@ describe('jBoard', () => {
     });
 
     it('check square h2 before setup', () => {
-      expect(jboard.board[7][1].piece.type).to.be.equal(null);
-      expect(jboard.board[7][1].piece.color).to.be.equal(null);
+      expect(jboard.board[7][1].piece.type).to.be.null;
+      expect(jboard.board[7][1].piece.color).to.be.null;
     });
 
     it('check square c3 before setup', () => {
-      expect(jboard.board[2][2].piece.type).to.be.equal(null);
-      expect(jboard.board[2][2].piece.color).to.be.equal(null);
+      expect(jboard.board[2][2].piece.type).to.be.null;
+      expect(jboard.board[2][2].piece.color).to.be.null;
     });
 
     it('check square e4 before setup', () => {
-      expect(jboard.board[4][3].piece.type).to.be.equal(null);
-      expect(jboard.board[4][3].piece.color).to.be.equal(null);
+      expect(jboard.board[4][3].piece.type).to.be.null;
+      expect(jboard.board[4][3].piece.color).to.be.null;
     });
 
     it('check square h2 after setup', () => {
@@ -266,10 +265,10 @@ describe('jBoard', () => {
     });
 
     it('return null if arguments aren\'t correct', () => {
-      expect(jboard.getSquareColor(0, 8)).to.be.equal(null);
-      expect(jboard.getSquareColor(8, 0)).to.be.equal(null);
-      expect(jboard.getSquareColor(-1, 0)).to.be.equal(null);
-      expect(jboard.getSquareColor(0, -1)).to.be.equal(null);
+      expect(jboard.getSquareColor(0, 8)).to.be.null;
+      expect(jboard.getSquareColor(8, 0)).to.be.null;
+      expect(jboard.getSquareColor(-1, 0)).to.be.null;
+      expect(jboard.getSquareColor(0, -1)).to.be.null;
     });
 
     it('return "black" for (0, 0), etc', () => {
@@ -304,8 +303,8 @@ describe('jBoard', () => {
     });
 
     it('return piece type for (0, 0), etc', () => {
-      expect(jboard.getPieceType(0, 2)).to.be.equal(null);
-      expect(jboard.getPieceType(4, 4)).to.be.equal(null);
+      expect(jboard.getPieceType(0, 2)).to.be.null;
+      expect(jboard.getPieceType(4, 4)).to.be.null;
 
       expect(jboard.getPieceType(0, 0)).to.be.equal('rook');
       expect(jboard.getPieceType(7, 7)).to.be.equal('rook');
@@ -328,15 +327,15 @@ describe('jBoard', () => {
     });
 
     it('return null if arguments aren\'t correct', () => {
-      expect(jboard.getPieceColor(0, 8)).to.be.equal(null);
-      expect(jboard.getPieceColor(8, 0)).to.be.equal(null);
-      expect(jboard.getPieceColor(-1, 0)).to.be.equal(null);
-      expect(jboard.getPieceColor(0, -1)).to.be.equal(null);
+      expect(jboard.getPieceColor(0, 8)).to.be.null;
+      expect(jboard.getPieceColor(8, 0)).to.be.null;
+      expect(jboard.getPieceColor(-1, 0)).to.be.null;
+      expect(jboard.getPieceColor(0, -1)).to.be.null;
     });
 
     it('return piece color for (0, 0), etc', () => {
-      expect(jboard.getPieceType(1, 2)).to.be.equal(null);
-      expect(jboard.getPieceType(3, 5)).to.be.equal(null);
+      expect(jboard.getPieceType(1, 2)).to.be.null;
+      expect(jboard.getPieceType(3, 5)).to.be.null;
 
       expect(jboard.getPieceColor(0, 1)).to.be.equal('white');
       expect(jboard.getPieceColor(1, 0)).to.be.equal('white');
@@ -363,25 +362,25 @@ describe('jBoard', () => {
     });
 
     it('return null if arguments aren\'t correct', () => {
-      expect(jboard.setPieceType(0, 8, 'pawn')).to.be.equal(null);
-      expect(jboard.setPieceType(8, 0, 'king')).to.be.equal(null);
-      expect(jboard.setPieceType(-5, 5, 'bishop')).to.be.equal(null);
-      expect(jboard.setPieceType(0, -1, 'queen')).to.be.equal(null);
+      expect(jboard.setPieceType(0, 8, 'pawn')).to.be.null;
+      expect(jboard.setPieceType(8, 0, 'king')).to.be.null;
+      expect(jboard.setPieceType(-5, 5, 'bishop')).to.be.null;
+      expect(jboard.setPieceType(0, -1, 'queen')).to.be.null;
     });
 
     it('return true if setting was successful', () => {
-      expect(jboard.setPieceType(0, 0, 'pawn')).to.be.equal(true);
-      expect(jboard.setPieceType(1, 1, 'knight')).to.be.equal(true);
-      expect(jboard.setPieceType(7, 6, null)).to.be.equal(true);
-      expect(jboard.setPieceType(5, 4, 'bishop')).to.be.equal(true);
+      expect(jboard.setPieceType(0, 0, 'pawn')).to.be.true;
+      expect(jboard.setPieceType(1, 1, 'knight')).to.be.true;
+      expect(jboard.setPieceType(7, 6, null)).to.be.true;
+      expect(jboard.setPieceType(5, 4, 'bishop')).to.be.true;
     });
 
     it('set piece type and check', () => {
-      expect(jboard.getPieceType(1, 2)).to.be.equal(null);
+      expect(jboard.getPieceType(1, 2)).to.be.null;
       jboard.setPieceType(1, 2, 'pawn');
       expect(jboard.getPieceType(1, 2)).to.be.equal('pawn');
 
-      expect(jboard.getPieceType(2, 4)).to.be.equal(null);
+      expect(jboard.getPieceType(2, 4)).to.be.null;
       jboard.setPieceType(2, 4, 'queen');
       expect(jboard.getPieceType(2, 4)).to.be.equal('queen');
 
@@ -403,25 +402,25 @@ describe('jBoard', () => {
     });
 
     it('return null if arguments aren\'t correct', () => {
-      expect(jboard.setPieceColor(0, 8, 'white')).to.be.equal(null);
-      expect(jboard.setPieceColor(8, 0, 'white')).to.be.equal(null);
-      expect(jboard.setPieceColor(-3, 0, 'black')).to.be.equal(null);
-      expect(jboard.setPieceColor(0, -1, 'black')).to.be.equal(null);
+      expect(jboard.setPieceColor(0, 8, 'white')).to.be.null;
+      expect(jboard.setPieceColor(8, 0, 'white')).to.be.null;
+      expect(jboard.setPieceColor(-3, 0, 'black')).to.be.null;
+      expect(jboard.setPieceColor(0, -1, 'black')).to.be.null;
     });
 
     it('return true if setting was successful', () => {
-      expect(jboard.setPieceColor(0, 0, 'white')).to.be.equal(true);
-      expect(jboard.setPieceColor(1, 1, 'white')).to.be.equal(true);
-      expect(jboard.setPieceColor(7, 6, null)).to.be.equal(true);
-      expect(jboard.setPieceColor(5, 4, 'black')).to.be.equal(true);
+      expect(jboard.setPieceColor(0, 0, 'white')).to.be.true;
+      expect(jboard.setPieceColor(1, 1, 'white')).to.be.true;
+      expect(jboard.setPieceColor(7, 6, null)).to.be.true;
+      expect(jboard.setPieceColor(5, 4, 'black')).to.be.true;
     });
 
     it('set piece type and check', () => {
-      expect(jboard.getPieceColor(1, 2)).to.be.equal(null);
+      expect(jboard.getPieceColor(1, 2)).to.be.null;
       jboard.setPieceColor(1, 2, 'black');
       expect(jboard.getPieceColor(1, 2)).to.be.equal('black');
 
-      expect(jboard.getPieceColor(2, 4)).to.be.equal(null);
+      expect(jboard.getPieceColor(2, 4)).to.be.null;
       jboard.setPieceColor(2, 4, 'white');
       expect(jboard.getPieceColor(2, 4)).to.be.equal('white');
 
@@ -516,37 +515,37 @@ describe('jBoard', () => {
     });
 
     it('return null if arguments aren\'t correct', () => {
-      expect(jboard.pickSquare(0, 8)).to.be.equal(null);
-      expect(jboard.pickSquare(8, 0)).to.be.equal(null);
-      expect(jboard.pickSquare(-1, 0)).to.be.equal(null);
-      expect(jboard.pickSquare(0, -1)).to.be.equal(null);
+      expect(jboard.pickSquare(0, 8)).to.be.null;
+      expect(jboard.pickSquare(8, 0)).to.be.null;
+      expect(jboard.pickSquare(-1, 0)).to.be.null;
+      expect(jboard.pickSquare(0, -1)).to.be.null;
     });
 
     it('return true if arguments are correct', () => {
-      expect(jboard.pickSquare(0, 0)).to.be.equal(true);
-      expect(jboard.pickSquare(1, 5)).to.be.equal(true);
-      expect(jboard.pickSquare(5, 6)).to.be.equal(true);
-      expect(jboard.pickSquare(7, 7)).to.be.equal(true);
+      expect(jboard.pickSquare(0, 0)).to.be.true;
+      expect(jboard.pickSquare(1, 5)).to.be.true;
+      expect(jboard.pickSquare(5, 6)).to.be.true;
+      expect(jboard.pickSquare(7, 7)).to.be.true;
     });
 
     it('check selected square', () => {
       jboard.pickSquare(1, 5);
-      expect(jboard.isSquareSelected(1, 5)).to.be.equal(true);
-      expect(jboard.isSquareSelected(7, 7)).to.be.equal(false);
+      expect(jboard.isSquareSelected(1, 5)).to.be.true;
+      expect(jboard.isSquareSelected(7, 7)).to.be.false;
 
       jboard.pickSquare(6, 7);
-      expect(jboard.isSquareSelected(5, 1)).to.be.equal(false);
-      expect(jboard.isSquareSelected(6, 7)).to.be.equal(true);
+      expect(jboard.isSquareSelected(5, 1)).to.be.false;
+      expect(jboard.isSquareSelected(6, 7)).to.be.true;
     });
 
     it('check marked square', () => {
       jboard.pickSquare(0, 1);
 
-      expect(jboard.isSquareMarked(0, 1)).to.be.equal(false);
-      expect(jboard.isSquareMarked(0, 2)).to.be.equal(true);
-      expect(jboard.isSquareMarked(0, 3)).to.be.equal(true);
-      expect(jboard.isSquareMarked(0, 4)).to.be.equal(false);
-      expect(jboard.isSquareMarked(1, 2)).to.be.equal(false);
+      expect(jboard.isSquareMarked(0, 1)).to.be.false;
+      expect(jboard.isSquareMarked(0, 2)).to.be.true;
+      expect(jboard.isSquareMarked(0, 3)).to.be.true;
+      expect(jboard.isSquareMarked(0, 4)).to.be.false;
+      expect(jboard.isSquareMarked(1, 2)).to.be.false;
     });
   });
 
@@ -563,11 +562,11 @@ describe('jBoard', () => {
     });
 
     it('reset selected square', () => {
-      expect(jboard.isSquareSelected(4, 4)).to.be.equal(true);
-      expect(jboard.isSquareSelected(4, 5)).to.be.equal(false);
+      expect(jboard.isSquareSelected(4, 4)).to.be.true;
+      expect(jboard.isSquareSelected(4, 5)).to.be.false;
       jboard.resetSelect(jboard.board);
-      expect(jboard.isSquareSelected(4, 4)).to.be.equal(false);
-      expect(jboard.isSquareSelected(4, 5)).to.be.equal(false);
+      expect(jboard.isSquareSelected(4, 4)).to.be.false;
+      expect(jboard.isSquareSelected(4, 5)).to.be.false;
     });
   });
 
@@ -579,20 +578,20 @@ describe('jBoard', () => {
     });
 
     it('return null if arguments aren\'t correct', () => {
-      expect(jboard.isSquareSelected(0, 8)).to.be.equal(null);
-      expect(jboard.isSquareSelected(8, 0)).to.be.equal(null);
-      expect(jboard.isSquareSelected(-1, 0)).to.be.equal(null);
-      expect(jboard.isSquareSelected(0, -1)).to.be.equal(null);
+      expect(jboard.isSquareSelected(0, 8)).to.be.null;
+      expect(jboard.isSquareSelected(8, 0)).to.be.null;
+      expect(jboard.isSquareSelected(-1, 0)).to.be.null;
+      expect(jboard.isSquareSelected(0, -1)).to.be.null;
     });
 
     it('return true or false if arguments are correct', () => {
       jboard.pickSquare(1, 5);
-      expect(jboard.isSquareSelected(0, 0)).to.be.equal(false);
-      expect(jboard.isSquareSelected(1, 5)).to.be.equal(true);
+      expect(jboard.isSquareSelected(0, 0)).to.be.false;
+      expect(jboard.isSquareSelected(1, 5)).to.be.true;
 
       jboard.pickSquare(7, 7);
-      expect(jboard.isSquareSelected(1, 5)).to.be.equal(false);
-      expect(jboard.isSquareSelected(7, 7)).to.be.equal(true);
+      expect(jboard.isSquareSelected(1, 5)).to.be.false;
+      expect(jboard.isSquareSelected(7, 7)).to.be.true;
     });
   });
 
@@ -625,43 +624,43 @@ describe('jBoard', () => {
     });
 
     it('return null if arguments aren\'t correct', () => {
-      expect(jboard.markMoves(0, 8)).to.be.equal(null);
-      expect(jboard.markMoves(8, 0)).to.be.equal(null);
-      expect(jboard.markMoves(-1, 0)).to.be.equal(null);
-      expect(jboard.markMoves(0, -1)).to.be.equal(null);
+      expect(jboard.markMoves(0, 8)).to.be.null;
+      expect(jboard.markMoves(8, 0)).to.be.null;
+      expect(jboard.markMoves(-1, 0)).to.be.null;
+      expect(jboard.markMoves(0, -1)).to.be.null;
     });
 
     it('mark two squares for pawn a2', () => {
       jboard.markMoves(0, 1);
-      expect(jboard.isSquareMarked(0, 2)).to.be.equal(true);
-      expect(jboard.isSquareMarked(0, 3)).to.be.equal(true);
-      expect(jboard.isSquareMarked(0, 4)).to.be.equal(false);
-      expect(jboard.isSquareMarked(1, 2)).to.be.equal(false);
+      expect(jboard.isSquareMarked(0, 2)).to.be.true;
+      expect(jboard.isSquareMarked(0, 3)).to.be.true;
+      expect(jboard.isSquareMarked(0, 4)).to.be.false;
+      expect(jboard.isSquareMarked(1, 2)).to.be.false;
     });
 
     it('mark only square for pawn c5', () => {
       jboard.passTurn();
       jboard.markMoves(2, 4);
-      expect(jboard.isSquareMarked(2, 3)).to.be.equal(true);
-      expect(jboard.isSquareMarked(2, 2)).to.be.equal(false);
-      expect(jboard.isSquareMarked(3, 3)).to.be.equal(false);
-      expect(jboard.isSquareMarked(1, 3)).to.be.equal(false);
+      expect(jboard.isSquareMarked(2, 3)).to.be.true;
+      expect(jboard.isSquareMarked(2, 2)).to.be.false;
+      expect(jboard.isSquareMarked(3, 3)).to.be.false;
+      expect(jboard.isSquareMarked(1, 3)).to.be.false;
     });
 
     it('mark no square for pawn d5', () => {
       jboard.markMoves(3, 4);
-      expect(jboard.isSquareMarked(3, 5)).to.be.equal(false);
-      expect(jboard.isSquareMarked(3, 6)).to.be.equal(false);
-      expect(jboard.isSquareMarked(2, 5)).to.be.equal(false);
-      expect(jboard.isSquareMarked(4, 5)).to.be.equal(false);
+      expect(jboard.isSquareMarked(3, 5)).to.be.false;
+      expect(jboard.isSquareMarked(3, 6)).to.be.false;
+      expect(jboard.isSquareMarked(2, 5)).to.be.false;
+      expect(jboard.isSquareMarked(4, 5)).to.be.false;
     });
 
     it('mark no square for pawn f4', () => {
       jboard.markMoves(5, 3);
-      expect(jboard.isSquareMarked(5, 4)).to.be.equal(false);
-      expect(jboard.isSquareMarked(5, 5)).to.be.equal(false);
-      expect(jboard.isSquareMarked(4, 4)).to.be.equal(false);
-      expect(jboard.isSquareMarked(6, 4)).to.be.equal(false);
+      expect(jboard.isSquareMarked(5, 4)).to.be.false;
+      expect(jboard.isSquareMarked(5, 5)).to.be.false;
+      expect(jboard.isSquareMarked(4, 4)).to.be.false;
+      expect(jboard.isSquareMarked(6, 4)).to.be.false;
     });
   });
 
@@ -681,31 +680,31 @@ describe('jBoard', () => {
     });
 
     it('return null if arguments aren\'t correct', () => {
-      expect(jboard.doMove(0, 5, 8, 7)).to.be.equal(null);
-      expect(jboard.doMove(0, -1, 7, 7)).to.be.equal(null);
-      expect(jboard.doMove(0, 0, 6, 9)).to.be.equal(null);
-      expect(jboard.doMove(10, 8, 18, 8)).to.be.equal(null);
+      expect(jboard.doMove(0, 5, 8, 7)).to.be.null;
+      expect(jboard.doMove(0, -1, 7, 7)).to.be.null;
+      expect(jboard.doMove(0, 0, 6, 9)).to.be.null;
+      expect(jboard.doMove(10, 8, 18, 8)).to.be.null;
     });
 
     it('return null if there is no piece on start square', () => {
-      expect(jboard.doMove(0, 2, 4, 3)).to.be.equal(null);
-      expect(jboard.doMove(3, 2, 7, 7)).to.be.equal(null);
-      expect(jboard.doMove(6, 7, 4, 6)).to.be.equal(null);
-      expect(jboard.doMove(5, 5, 2, 0)).to.be.equal(null);
+      expect(jboard.doMove(0, 2, 4, 3)).to.be.null;
+      expect(jboard.doMove(3, 2, 7, 7)).to.be.null;
+      expect(jboard.doMove(6, 7, 4, 6)).to.be.null;
+      expect(jboard.doMove(5, 5, 2, 0)).to.be.null;
     });
 
     it('return null if start piece color equal stop piece color', () => {
-      expect(jboard.doMove(7, 1, 6, 2)).to.be.equal(null);
-      expect(jboard.doMove(2, 0, 1, 1)).to.be.equal(null);
-      expect(jboard.doMove(3, 7, 4, 7)).to.be.equal(null);
-      expect(jboard.doMove(5, 4, 6, 6)).to.be.equal(null);
+      expect(jboard.doMove(7, 1, 6, 2)).to.be.null;
+      expect(jboard.doMove(2, 0, 1, 1)).to.be.null;
+      expect(jboard.doMove(3, 7, 4, 7)).to.be.null;
+      expect(jboard.doMove(5, 4, 6, 6)).to.be.null;
     });
 
     it('return true if move was successful', () => {
-      expect(jboard.doMove(4, 1, 4, 3)).to.be.equal(true);
-      expect(jboard.doMove(2, 4, 2, 3)).to.be.equal(true);
-      expect(jboard.doMove(6, 6, 6, 5)).to.be.equal(true);
-      expect(jboard.doMove(0, 1, 0, 3)).to.be.equal(true);
+      expect(jboard.doMove(4, 1, 4, 3)).to.be.true;
+      expect(jboard.doMove(2, 4, 2, 3)).to.be.true;
+      expect(jboard.doMove(6, 6, 6, 5)).to.be.true;
+      expect(jboard.doMove(0, 1, 0, 3)).to.be.true;
     });
 
     it('check stop square if move was successful', () => {
@@ -714,30 +713,30 @@ describe('jBoard', () => {
 
       jboard.doMove(0, 1, 0, 3);
 
-      expect(jboard.getPieceColor(0, 3) === color).to.be.equal(true);
-      expect(jboard.getPieceType(0, 3) === type).to.be.equal(true);
+      expect(jboard.getPieceColor(0, 3) === color).to.be.true;
+      expect(jboard.getPieceType(0, 3) === type).to.be.true;
 
       color = jboard.getPieceColor(7, 3);
       type = jboard.getPieceType(7, 3);
 
       jboard.doMove(7, 3, 6, 2);
 
-      expect(jboard.getPieceColor(6, 2) === color).to.be.equal(true);
-      expect(jboard.getPieceType(6, 2) === type).to.be.equal(true);
+      expect(jboard.getPieceColor(6, 2) === color).to.be.true;
+      expect(jboard.getPieceType(6, 2) === type).to.be.true;
     });
 
     it('check start square if move was successful', () => {
       expect(jboard.getPieceColor(0, 1)).to.be.equal('white');
       expect(jboard.getPieceType(0, 1)).to.be.equal('pawn');
       jboard.doMove(0, 1, 0, 3);
-      expect(jboard.getPieceColor(0, 1)).to.be.equal(null);
-      expect(jboard.getPieceType(0, 1)).to.be.equal(null);
+      expect(jboard.getPieceColor(0, 1)).to.be.null;
+      expect(jboard.getPieceType(0, 1)).to.be.null;
 
       expect(jboard.getPieceColor(7, 3)).to.be.equal('black');
       expect(jboard.getPieceType(7, 3)).to.be.equal('pawn');
       jboard.doMove(7, 3, 6, 2);
-      expect(jboard.getPieceColor(7, 3)).to.be.equal(null);
-      expect(jboard.getPieceType(7, 3)).to.be.equal(null);
+      expect(jboard.getPieceColor(7, 3)).to.be.null;
+      expect(jboard.getPieceType(7, 3)).to.be.null;
     });
   });
 
@@ -757,28 +756,28 @@ describe('jBoard', () => {
     });
 
     it('return false if arguments aren\'t correct', () => {
-      expect(jboard.checkMove(0, 5, 8, 7)).to.be.equal(null);
-      expect(jboard.checkMove(0, -1, 7, 7)).to.be.equal(null);
-      expect(jboard.checkMove(0, 0, 6, 9)).to.be.equal(null);
-      expect(jboard.checkMove(10, 8, 18, 8)).to.be.equal(null);
+      expect(jboard.checkMove(0, 5, 8, 7)).to.be.null;
+      expect(jboard.checkMove(0, -1, 7, 7)).to.be.null;
+      expect(jboard.checkMove(0, 0, 6, 9)).to.be.null;
+      expect(jboard.checkMove(10, 8, 18, 8)).to.be.null;
     });
 
     it('return false if there is no piece on start square', () => {
-      expect(jboard.checkMove(0, 2, 4, 3)).to.be.equal(null);
-      expect(jboard.checkMove(3, 2, 7, 7)).to.be.equal(null);
-      expect(jboard.checkMove(6, 7, 4, 6)).to.be.equal(null);
-      expect(jboard.checkMove(5, 5, 2, 0)).to.be.equal(null);
+      expect(jboard.checkMove(0, 2, 4, 3)).to.be.null;
+      expect(jboard.checkMove(3, 2, 7, 7)).to.be.null;
+      expect(jboard.checkMove(6, 7, 4, 6)).to.be.null;
+      expect(jboard.checkMove(5, 5, 2, 0)).to.be.null;
     });
 
     it('return true if move is legal', () => {
-      expect(jboard.checkMove(4, 1, 4, 3)).to.be.equal(true);
-      expect(jboard.checkMove(2, 4, 2, 3)).to.be.equal(true);
-      expect(jboard.checkMove(6, 6, 6, 5)).to.be.equal(true);
-      expect(jboard.checkMove(0, 1, 0, 3)).to.be.equal(true);
+      expect(jboard.checkMove(4, 1, 4, 3)).to.be.true;
+      expect(jboard.checkMove(2, 4, 2, 3)).to.be.true;
+      expect(jboard.checkMove(6, 6, 6, 5)).to.be.true;
+      expect(jboard.checkMove(0, 1, 0, 3)).to.be.true;
     });
 
     it('return false if move is illegal', () => {
-      expect(jboard.checkMove(5, 6, 5, 5)).to.be.equal(false);
+      expect(jboard.checkMove(5, 6, 5, 5)).to.be.false;
     });
   });
 
@@ -800,7 +799,7 @@ describe('jBoard', () => {
       expect(moves[0].rank).to.be.equal(2);
       expect(moves[1].file).to.be.equal(0);
       expect(moves[1].rank).to.be.equal(3);
-      expect(moves[2]).to.be.equal(undefined);
+      expect(moves[2]).to.be.undefined;
     });
 
     it('return two squares for pawn e2', () => {
@@ -810,7 +809,7 @@ describe('jBoard', () => {
       expect(moves[0].rank).to.be.equal(2);
       expect(moves[1].file).to.be.equal(4);
       expect(moves[1].rank).to.be.equal(3);
-      expect(moves[2]).to.be.equal(undefined);
+      expect(moves[2]).to.be.undefined;
     });
 
     it('return only square for pawn c5', () => {
@@ -818,17 +817,17 @@ describe('jBoard', () => {
 
       expect(moves[0].file).to.be.equal(2);
       expect(moves[0].rank).to.be.equal(3);
-      expect(moves[1]).to.be.equal(undefined);
+      expect(moves[1]).to.be.undefined;
     });
 
     it('return null for pawn d5', () => {
       const moves = jboard.getMovesPawn(3, 4);
-      expect(moves[0]).to.be.equal(undefined);
+      expect(moves[0]).to.be.undefined;
     });
 
     it('return null for pawn f4', () => {
       const moves = jboard.getMovesPawn(5, 3);
-      expect(moves[0]).to.be.equal(undefined);
+      expect(moves[0]).to.be.undefined;
     });
 
     it('return three squares for pawn b2', () => {
@@ -843,7 +842,7 @@ describe('jBoard', () => {
       expect(moves[2].file).to.be.equal(2);
       expect(moves[2].rank).to.be.equal(2);
 
-      expect(moves[3]).to.be.equal(undefined);
+      expect(moves[3]).to.be.undefined;
     });
 
     it('return only square for pawn h2', () => {
@@ -851,7 +850,7 @@ describe('jBoard', () => {
 
       expect(moves[0].file).to.be.equal(7);
       expect(moves[0].rank).to.be.equal(2);
-      expect(moves[1]).to.be.equal(undefined);
+      expect(moves[1]).to.be.undefined;
     });
 
     it('return two squares for pawn h4', () => {
@@ -863,7 +862,7 @@ describe('jBoard', () => {
       expect(moves[1].file).to.be.equal(6);
       expect(moves[1].rank).to.be.equal(2);
 
-      expect(moves[2]).to.be.equal(undefined);
+      expect(moves[2]).to.be.undefined;
     });
   });
 
@@ -897,7 +896,7 @@ describe('jBoard', () => {
       expect(moves[4].file).to.be.equal(6);
       expect(moves[4].rank).to.be.equal(0);
 
-      expect(moves[5]).to.be.equal(undefined);
+      expect(moves[5]).to.be.undefined;
     });
 
     it('return two squares for black king', () => {
@@ -912,7 +911,7 @@ describe('jBoard', () => {
       expect(moves[2].file).to.be.equal(2);
       expect(moves[2].rank).to.be.equal(7);
 
-      expect(moves[3]).to.be.equal(undefined);
+      expect(moves[3]).to.be.undefined;
     });
   });
 
@@ -930,7 +929,7 @@ describe('jBoard', () => {
       expect(moves[0].file).to.be.equal(6);
       expect(moves[0].rank).to.be.equal(0);
 
-      expect(moves[1]).to.be.equal(undefined);
+      expect(moves[1]).to.be.undefined;
     });
 
     it('return only move for black king', () => {
@@ -939,7 +938,7 @@ describe('jBoard', () => {
       expect(moves[0].file).to.be.equal(2);
       expect(moves[0].rank).to.be.equal(7);
 
-      expect(moves[1]).to.be.equal(undefined);
+      expect(moves[1]).to.be.undefined;
     });
   });
 
@@ -982,7 +981,7 @@ describe('jBoard', () => {
       expect(moves[7].file).to.be.equal(1);
       expect(moves[7].rank).to.be.equal(4);
 
-      expect(moves[8]).to.be.equal(undefined);
+      expect(moves[8]).to.be.undefined;
     });
 
     it('return two squares for knight f5', () => {
@@ -1003,7 +1002,7 @@ describe('jBoard', () => {
       expect(moves[4].file).to.be.equal(4);
       expect(moves[4].rank).to.be.equal(6);
 
-      expect(moves[5]).to.be.equal(undefined);
+      expect(moves[5]).to.be.undefined;
     });
 
     it('return two squares for rook h8', () => {
@@ -1024,7 +1023,7 @@ describe('jBoard', () => {
       expect(moves[4].file).to.be.equal(5);
       expect(moves[4].rank).to.be.equal(7);
 
-      expect(moves[5]).to.be.equal(undefined);
+      expect(moves[5]).to.be.undefined;
     });
 
     it('return two squares for bishop h5', () => {
@@ -1039,7 +1038,7 @@ describe('jBoard', () => {
       expect(moves[2].file).to.be.equal(5);
       expect(moves[2].rank).to.be.equal(6);
 
-      expect(moves[3]).to.be.equal(undefined);
+      expect(moves[3]).to.be.undefined;
     });
   });
 
@@ -1060,7 +1059,7 @@ describe('jBoard', () => {
       expect(square[1].file).to.be.equal(3);
       expect(square[1].rank).to.be.equal(5);
 
-      expect(square[2]).to.be.equal(undefined);
+      expect(square[2]).to.be.undefined;
     });
   });
 
@@ -1076,17 +1075,17 @@ describe('jBoard', () => {
     });
 
     it('return false if square isn\'t correct', () => {
-      expect(jboard.constructor.validateSquare(0, 8)).to.be.equal(false);
-      expect(jboard.constructor.validateSquare(8, 0)).to.be.equal(false);
-      expect(jboard.constructor.validateSquare(-1, 0)).to.be.equal(false);
-      expect(jboard.constructor.validateSquare(0, -1)).to.be.equal(false);
+      expect(jboard.constructor.validateSquare(0, 8)).to.be.false;
+      expect(jboard.constructor.validateSquare(8, 0)).to.be.false;
+      expect(jboard.constructor.validateSquare(-1, 0)).to.be.false;
+      expect(jboard.constructor.validateSquare(0, -1)).to.be.false;
     });
 
     it('return true if square is correct', () => {
-      expect(jboard.constructor.validateSquare(0, 0)).to.be.equal(true);
-      expect(jboard.constructor.validateSquare(7, 7)).to.be.equal(true);
-      expect(jboard.constructor.validateSquare(0, 3)).to.be.equal(true);
-      expect(jboard.constructor.validateSquare(3, 5)).to.be.equal(true);
+      expect(jboard.constructor.validateSquare(0, 0)).to.be.true;
+      expect(jboard.constructor.validateSquare(7, 7)).to.be.true;
+      expect(jboard.constructor.validateSquare(0, 3)).to.be.true;
+      expect(jboard.constructor.validateSquare(3, 5)).to.be.true;
     });
   });
 
@@ -1151,29 +1150,29 @@ describe('jBoard', () => {
     });
 
     it('return false if square isn\'t correct', () => {
-      expect(jboard.isSquareAttacked(0, 8)).to.be.equal(null);
-      expect(jboard.isSquareAttacked(8, 0)).to.be.equal(null);
-      expect(jboard.isSquareAttacked(-1, 0)).to.be.equal(null);
-      expect(jboard.isSquareAttacked(0, -1)).to.be.equal(null);
+      expect(jboard.isSquareAttacked(0, 8)).to.be.null;
+      expect(jboard.isSquareAttacked(8, 0)).to.be.null;
+      expect(jboard.isSquareAttacked(-1, 0)).to.be.null;
+      expect(jboard.isSquareAttacked(0, -1)).to.be.null;
     });
 
     it('return true if square is attacked', () => {
-      expect(jboard.isSquareAttacked('white', 2, 2)).to.be.equal(true);
-      expect(jboard.isSquareAttacked('white', 2, 7)).to.be.equal(true);
-      expect(jboard.isSquareAttacked('black', 4, 6)).to.be.equal(true);
-      expect(jboard.isSquareAttacked('black', 5, 7)).to.be.equal(true);
+      expect(jboard.isSquareAttacked('white', 2, 2)).to.be.true;
+      expect(jboard.isSquareAttacked('white', 2, 7)).to.be.true;
+      expect(jboard.isSquareAttacked('black', 4, 6)).to.be.true;
+      expect(jboard.isSquareAttacked('black', 5, 7)).to.be.true;
 
-      expect(jboard.isSquareAttacked('white', 0, 5)).to.be.equal(true);
-      expect(jboard.isSquareAttacked('white', 1, 5)).to.be.equal(true);
-      expect(jboard.isSquareAttacked('black', 3, 2)).to.be.equal(true);
-      expect(jboard.isSquareAttacked('black', 5, 2)).to.be.equal(true);
+      expect(jboard.isSquareAttacked('white', 0, 5)).to.be.true;
+      expect(jboard.isSquareAttacked('white', 1, 5)).to.be.true;
+      expect(jboard.isSquareAttacked('black', 3, 2)).to.be.true;
+      expect(jboard.isSquareAttacked('black', 5, 2)).to.be.true;
     });
 
     it('return true if square isn\'t attacked', () => {
-      expect(jboard.isSquareAttacked('black', 0, 3)).to.be.equal(false);
-      expect(jboard.isSquareAttacked('black', 6, 3)).to.be.equal(false);
-      expect(jboard.isSquareAttacked('white', 6, 2)).to.be.equal(false);
-      expect(jboard.isSquareAttacked('white', 1, 0)).to.be.equal(false);
+      expect(jboard.isSquareAttacked('black', 0, 3)).to.be.false;
+      expect(jboard.isSquareAttacked('black', 6, 3)).to.be.false;
+      expect(jboard.isSquareAttacked('white', 6, 2)).to.be.false;
+      expect(jboard.isSquareAttacked('white', 1, 0)).to.be.false;
     });
   });
 
@@ -1186,24 +1185,24 @@ describe('jBoard', () => {
     });
 
     it('return false if square isn\'t correct', () => {
-      expect(jboard.isSquareAttackedByPawn(0, 8)).to.be.equal(null);
-      expect(jboard.isSquareAttackedByPawn(8, 0)).to.be.equal(null);
-      expect(jboard.isSquareAttackedByPawn(-1, 0)).to.be.equal(null);
-      expect(jboard.isSquareAttackedByPawn(0, -1)).to.be.equal(null);
+      expect(jboard.isSquareAttackedByPawn(0, 8)).to.be.null;
+      expect(jboard.isSquareAttackedByPawn(8, 0)).to.be.null;
+      expect(jboard.isSquareAttackedByPawn(-1, 0)).to.be.null;
+      expect(jboard.isSquareAttackedByPawn(0, -1)).to.be.null;
     });
 
     it('return true if square is attacked by pawn', () => {
-      expect(jboard.isSquareAttackedByPawn('white', 0, 5)).to.be.equal(true);
-      expect(jboard.isSquareAttackedByPawn('white', 1, 5)).to.be.equal(true);
-      expect(jboard.isSquareAttackedByPawn('black', 3, 2)).to.be.equal(true);
-      expect(jboard.isSquareAttackedByPawn('black', 5, 2)).to.be.equal(true);
+      expect(jboard.isSquareAttackedByPawn('white', 0, 5)).to.be.true;
+      expect(jboard.isSquareAttackedByPawn('white', 1, 5)).to.be.true;
+      expect(jboard.isSquareAttackedByPawn('black', 3, 2)).to.be.true;
+      expect(jboard.isSquareAttackedByPawn('black', 5, 2)).to.be.true;
     });
 
     it('return false if square isn\'t attacked by pawn', () => {
-      expect(jboard.isSquareAttackedByPawn('white', 0, 4)).to.be.equal(false);
-      expect(jboard.isSquareAttackedByPawn('white', 1, 4)).to.be.equal(false);
-      expect(jboard.isSquareAttackedByPawn('black', 3, 3)).to.be.equal(false);
-      expect(jboard.isSquareAttackedByPawn('black', 5, 3)).to.be.equal(false);
+      expect(jboard.isSquareAttackedByPawn('white', 0, 4)).to.be.false;
+      expect(jboard.isSquareAttackedByPawn('white', 1, 4)).to.be.false;
+      expect(jboard.isSquareAttackedByPawn('black', 3, 3)).to.be.false;
+      expect(jboard.isSquareAttackedByPawn('black', 5, 3)).to.be.false;
     });
   });
 
@@ -1219,28 +1218,28 @@ describe('jBoard', () => {
     });
 
     it('return false if square isn\'t correct', () => {
-      expect(jboard.isCheck('red')).to.be.equal(null);
-      expect(jboard.isCheck('green')).to.be.equal(null);
+      expect(jboard.isCheck('red')).to.be.null;
+      expect(jboard.isCheck('green')).to.be.null;
     });
 
     it('both kings are not in check', () => {
-      expect(jboard.isCheck('white')).to.be.equal(false);
-      expect(jboard.isCheck('black')).to.be.equal(false);
+      expect(jboard.isCheck('white')).to.be.false;
+      expect(jboard.isCheck('black')).to.be.false;
     });
 
     it('white king is in check by queen', () => {
       jboard.doMove(3, 3, 5, 1);
-      expect(jboard.isCheck('white')).to.be.equal(true);
+      expect(jboard.isCheck('white')).to.be.true;
     });
 
     it('white king is in discovered check by bishop', () => {
       jboard.doMove(2, 2, 3, 5);
-      expect(jboard.isCheck('white')).to.be.equal(true);
+      expect(jboard.isCheck('white')).to.be.true;
     });
 
     it('black king is in check by pawn', () => {
       jboard.doMove(3, 5, 3, 6);
-      expect(jboard.isCheck('black')).to.be.equal(true);
+      expect(jboard.isCheck('black')).to.be.true;
     });
   });
 
@@ -1253,8 +1252,8 @@ describe('jBoard', () => {
     });
 
     it('return false if square isn\'t correct', () => {
-      expect(jboard.getKing('red')).to.be.equal(null);
-      expect(jboard.getKing('green')).to.be.equal(null);
+      expect(jboard.getKing('red')).to.be.null;
+      expect(jboard.getKing('green')).to.be.null;
     });
 
     it('return white king position', () => {
@@ -1289,14 +1288,14 @@ describe('jBoard', () => {
     it('check white rook position on new _board after move on source _board', () => {
       expect(jboard.getPieceType(0, 0)).to.be.equal('rook');
       jboard.doMove(0, 0, 1, 0);
-      expect(jboard.getPieceType(0, 0)).to.be.equal(null);
+      expect(jboard.getPieceType(0, 0)).to.be.null;
       expect(newBoard.getPieceType(0, 0)).to.be.equal('rook');
     });
 
     it('check black rook position on source _board after move on new _board', () => {
       expect(newBoard.getPieceType(0, 7)).to.be.equal('rook');
       newBoard.doMove(0, 7, 1, 7);
-      expect(newBoard.getPieceType(0, 7)).to.be.equal(null);
+      expect(newBoard.getPieceType(0, 7)).to.be.null;
       expect(jboard.getPieceType(0, 7)).to.be.equal('rook');
     });
   });
@@ -1315,13 +1314,13 @@ describe('jBoard', () => {
 
     it('get FEN of initial position', () => {
       jboard.setUpInitial();
-      expect(jboard.getFEN()).to.be
+      expect(jboard.getFEN())
         .to.be.equal('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
     });
 
     it('get FEN of test position', () => {
       jboard.setPositionByFEN(TEST_POSITION);
-      expect(jboard.getFEN()).to.be
+      expect(jboard.getFEN())
         .to.be.equal('r3k2r/pp3pp1/b2P4/b1pP1n1B/3q1P1p/2n2NP1/PP2P2P/RNBQK2R w KQkq - 0 1');
     });
   });
@@ -1335,9 +1334,9 @@ describe('jBoard', () => {
     });
 
     it('return null if square is empty', () => {
-      expect(jboard.getFENPiece(0, 4)).to.be.equal(null);
-      expect(jboard.getFENPiece(4, 5)).to.be.equal(null);
-      expect(jboard.getFENPiece(6, 3)).to.be.equal(null);
+      expect(jboard.getFENPiece(0, 4)).to.be.null;
+      expect(jboard.getFENPiece(4, 5)).to.be.null;
+      expect(jboard.getFENPiece(6, 3)).to.be.null;
     });
 
     it('return FEN of white pieces', () => {
@@ -1362,13 +1361,13 @@ describe('jBoard', () => {
 
     it('get FEN _board of initial position', () => {
       jboard.setUpInitial();
-      expect(jboard.getFENBoard()).to.be
+      expect(jboard.getFENBoard())
         .to.be.equal('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR');
     });
 
     it('get FEN _board of test position', () => {
       jboard.setPositionByFEN(TEST_POSITION);
-      expect(jboard.getFENBoard()).to.be
+      expect(jboard.getFENBoard())
         .to.be.equal('r3k2r/pp3pp1/b2P4/b1pP1n1B/3q1P1p/2n2NP1/PP2P2P/RNBQK2R');
     });
   });
@@ -1463,16 +1462,16 @@ describe('jBoard', () => {
     });
 
     it('return null for too long string', () => {
-      expect(jboard.constructor.parseFENRank('rnbqkbnrr')).to.be.equal(null);
+      expect(jboard.constructor.parseFENRank('rnbqkbnrr')).to.be.null;
     });
 
     it('return null for incorrect string', () => {
-      expect(jboard.constructor.parseFENRank('rnbqk5nr')).to.be.equal(null);
-      expect(jboard.constructor.parseFENRank('77b7nr')).to.be.equal(null);
-      expect(jboard.constructor.parseFENRank('r9knr')).to.be.equal(null);
-      expect(jboard.constructor.parseFENRank('90')).to.be.equal(null);
-      expect(jboard.constructor.parseFENRank('r7000r')).to.be.equal(null);
-      expect(jboard.constructor.parseFENRank('rnfqkbnr')).to.be.equal(null);
+      expect(jboard.constructor.parseFENRank('rnbqk5nr')).to.be.null;
+      expect(jboard.constructor.parseFENRank('77b7nr')).to.be.null;
+      expect(jboard.constructor.parseFENRank('r9knr')).to.be.null;
+      expect(jboard.constructor.parseFENRank('90')).to.be.null;
+      expect(jboard.constructor.parseFENRank('r7000r')).to.be.null;
+      expect(jboard.constructor.parseFENRank('rnfqkbnr')).to.be.null;
     });
 
     it('return array for correct string', () => {
