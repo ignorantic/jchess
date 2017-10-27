@@ -9,6 +9,9 @@ class Board extends React.Component {
     super(props);
     Board.propTypes = {
       board: PropTypes.arrayOf(PropTypes.array).isRequired,
+      turn: PropTypes.string.isRequired,
+      check: PropTypes.bool.isRequired,
+      mate: PropTypes.bool.isRequired,
       focus: PropTypes.shape({
         file: PropTypes.number.isRequired,
         rank: PropTypes.number.isRequired,
@@ -51,31 +54,38 @@ class Board extends React.Component {
         onFocus(nf, nr);
       }
     }
-    if (event.keyCode === 13) {
+    if (event.keyCode === 13 || event.keyCode === 32) {
       onPick(focus.file, focus.rank);
     }
   }
 
   render() {
-    const { board, focus, onPick } = this.props;
+    const {
+      board, turn, check, mate, focus, onPick,
+    } = this.props;
+    let cc = '';
+    const tc = ` board_${turn}`;
+    if (mate) cc = ' board_mate';
+    else if (check) cc = ' board_check';
+    const className = `board${tc}${cc}`;
     return (
       <div
-        className="board"
+        className={className}
         onKeyDown={this.handleKeyDown}
         role="toolbar"
       >
         {
           board.map((fItem, file) => (
             fItem.map((rItem, rank) => {
-              let ti = -1;
-              if (file === focus.file && rank === focus.rank) ti = 0;
+              let tabindex = -1;
+              if (file === focus.file && rank === focus.rank) tabindex = 0;
               return (
                 <Square
                   file={file}
                   rank={rank}
                   square={rItem}
                   key={rItem.id}
-                  ti={ti}
+                  tabindex={tabindex}
                   onPick={onPick}
                 />
               );
@@ -90,6 +100,9 @@ class Board extends React.Component {
 const mapStateToProps = state => ({
   board: state.board,
   focus: state.focus,
+  turn: state.turn,
+  check: state.check,
+  mate: state.mate,
 });
 
 const mapDispatchToProps = dispatch => ({

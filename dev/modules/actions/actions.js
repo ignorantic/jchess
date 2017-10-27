@@ -5,9 +5,11 @@ export function pickOnSquare(file, rank) {
   return (dispatch) => {
     boardModel.pickSquare(file, rank);
     const payload = {
-      board: boardModel.getBoard(),
-      fen: boardModel.getFEN(),
-      turn: boardModel.getTurn(),
+      board: boardModel.Board,
+      fen: boardModel.FEN,
+      turn: boardModel.Turn,
+      check: boardModel.Check,
+      mate: boardModel.Mate,
       focus: {
         file,
         rank,
@@ -37,9 +39,11 @@ export function resetPosition() {
   return (dispatch) => {
     boardModel.setUpInitial();
     const payload = {
-      board: boardModel.getBoard(),
-      fen: boardModel.getFEN(),
-      turn: boardModel.getTurn(),
+      board: boardModel.Board,
+      fen: boardModel.FEN,
+      turn: boardModel.Turn,
+      check: boardModel.Check,
+      mate: boardModel.Mate,
     };
     dispatch({
       type: consts.RESET_POSITION,
@@ -52,9 +56,11 @@ export function changeFEN(newFEN) {
   return (dispatch) => {
     boardModel.setPositionByFEN(newFEN);
     const payload = {
-      board: boardModel.getBoard(),
-      fen: boardModel.getFEN(),
-      turn: boardModel.getTurn(),
+      board: boardModel.Board,
+      fen: boardModel.FEN,
+      turn: boardModel.Turn,
+      check: boardModel.Check,
+      mate: boardModel.Mate,
     };
     dispatch({
       type: consts.CHANGE_FEN,

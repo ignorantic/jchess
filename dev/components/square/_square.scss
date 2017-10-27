@@ -108,3 +108,35 @@
 .square_king_black {
   @include piece(bk);
 }
+
+.board_white.board_check {
+  .square_king_white {
+    background: $clr-check-square;
+    box-shadow: inset 0 0 50px -10px $clr-check-shadow-square;
+    @include piece(wk);
+  }
+}
+
+.board_black.board_check {
+  .square_king_black {
+    background: $clr-check-square;
+    box-shadow: inset 0 0 50px -10px $clr-check-shadow-square;
+    @include piece(bk);
+  }
+}
+
+.board_white.board_mate {
+  .square_king_white {
+    background: $clr-mate-square;
+    box-shadow: inset 0 0 50px -10px $clr-mate-shadow-square;
+    @include piece(wk);
+  }
+}
+
+.board_black.board_mate {
+  .square_king_black {
+    background: $clr-mate-square;
+    box-shadow: inset 0 0 50px -10px $clr-mate-shadow-square;
+    @include piece(bk);
+  }
+}

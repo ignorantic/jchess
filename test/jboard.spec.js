@@ -1304,7 +1304,7 @@ describe('jBoard', () => {
    *   FEN
    */
 
-  describe('getFEN', () => {
+  describe('get FEN', () => {
     let jboard;
 
     before(() => {
@@ -1314,13 +1314,13 @@ describe('jBoard', () => {
 
     it('get FEN of initial position', () => {
       jboard.setUpInitial();
-      expect(jboard.getFEN())
+      expect(jboard.FEN)
         .to.be.equal('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
     });
 
     it('get FEN of test position', () => {
       jboard.setPositionByFEN(TEST_POSITION);
-      expect(jboard.getFEN())
+      expect(jboard.FEN)
         .to.be.equal('r3k2r/pp3pp1/b2P4/b1pP1n1B/3q1P1p/2n2NP1/PP2P2P/RNBQK2R w KQkq - 0 1');
     });
   });

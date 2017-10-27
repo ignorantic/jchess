@@ -5,9 +5,11 @@ import reducer from '../reducers/reducer';
 import boardModel from '../models/board-model';
 
 const initialState = {
-  board: boardModel.getBoard(),
-  fen: boardModel.getFEN(),
-  turn: boardModel.getTurn(),
+  board: boardModel.Board,
+  fen: boardModel.FEN,
+  turn: boardModel.Turn,
+  check: boardModel.Check,
+  mate: boardModel.Mate,
   focus: {
     file: 0,
     rank: 0,

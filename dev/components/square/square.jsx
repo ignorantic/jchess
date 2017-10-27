@@ -14,18 +14,14 @@ export default class Square extends React.Component {
           type: PropTypes.string,
         }),
       }).isRequired,
-      ti: PropTypes.number.isRequired,
+      tabindex: PropTypes.number.isRequired,
       onPick: PropTypes.func.isRequired,
     };
   }
 
   render() {
     const {
-      file,
-      rank,
-      square,
-      ti,
-      onPick,
+      file, rank, square, tabindex, onPick,
     } = this.props;
 
     let mc = '';
@@ -39,7 +35,7 @@ export default class Square extends React.Component {
 
     return (
       <button
-        tabIndex={ti}
+        tabIndex={tabindex}
         className={classes}
         data-file={file}
         data-rank={rank}

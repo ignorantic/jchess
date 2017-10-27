@@ -7,6 +7,8 @@ const reducer = (state, action) => {
         board: action.payload.board,
         fen: action.payload.fen,
         turn: action.payload.turn,
+        check: action.payload.check,
+        mate: action.payload.mate,
         focus: {
           file: action.payload.focus.file,
           rank: action.payload.focus.rank,
@@ -19,6 +21,8 @@ const reducer = (state, action) => {
         board: action.payload.board,
         fen: action.payload.fen,
         turn: action.payload.turn,
+        check: action.payload.check,
+        mate: action.payload.mate,
       };
     case keyMirror.CHANGE_FOCUS:
       return {

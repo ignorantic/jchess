@@ -140,11 +140,7 @@ export default class JBoard {
       });
   }
 
-  /**
-   *   GENERAL GETTERS
-   */
-
-  getBoard() {
+  get Board() {
     return [].concat(this.board);
   }
 
@@ -231,7 +227,7 @@ export default class JBoard {
     return true;
   }
 
-  getEnPassant() {
+  get EnPassant() {
     return this.enPassant;
   }
 
@@ -250,7 +246,7 @@ export default class JBoard {
   }
 
   isEnPassant(file, rank) {
-    const pass = this.getEnPassant();
+    const pass = this.EnPassant;
     if (!pass) {
       return false;
     }
@@ -285,21 +281,25 @@ export default class JBoard {
     return true;
   }
 
+  /**
+   *   TURN
+   */
+
+  get Turn() {
+    return this.turn;
+  }
+
+  set Turn(color) {
+    if (color === 'white') this.turn = 'white';
+    if (color === 'black') this.turn = 'black';
+  }
+
   passTurn() {
     if (this.turn === 'white') {
       this.turn = 'black';
     } else {
       this.turn = 'white';
     }
-  }
-
-  getTurn() {
-    return this.turn;
-  }
-
-  setTurn(color) {
-    if (color === 'white') this.turn = 'white';
-    if (color === 'black') this.turn = 'black';
   }
 
   /**
@@ -389,6 +389,19 @@ export default class JBoard {
       default:
         return this.getMovesPiece(file, rank);
     }
+  }
+
+  getAllMoves(color) {
+    let moves = [];
+    for (let file = 0; file < 8; file += 1) {
+      for (let rank = 0; rank < 8; rank += 1) {
+        if (this.getPieceColor(file, rank) === color) {
+          const move = this.getMoves(file, rank);
+          if (move) moves = moves.concat(move);
+        }
+      }
+    }
+    return moves;
   }
 
   /**
@@ -682,17 +695,13 @@ export default class JBoard {
     if (!this.constructor.validateSquare(file, rank)) {
       return null;
     }
-
     let result = false;
-
     if (this.isSquareAttackedByPawn(color, file, rank)) {
       result = true;
     } else {
       const pieces = ['rook', 'knight', 'bishop', 'queen', 'king'];
-
       pieces.forEach((type) => {
         const squares = this.getAttackedSquares(type, color, file, rank);
-
         if (squares) {
           squares.forEach((item) => {
             if (this.getPieceType(item.file, item.rank) === type) {
@@ -702,7 +711,6 @@ export default class JBoard {
         }
       });
     }
-
     return result;
   }
 
@@ -722,13 +730,25 @@ export default class JBoard {
 
   isCheck(color) {
     const king = this.getKing(color);
-    return king && this.isSquareAttacked(color, king.file, king.rank);
+    if (king) {
+      const { file, rank } = this.getKing(color);
+      return !!this.isSquareAttacked(color, file, rank);
+    }
+    return null;
   }
 
   isMate(color) {
-    if (!this.isCheck(color).length) return false;
-    const moves = this.getMoves(color);
+    if (!this.isCheck(color)) return false;
+    const moves = this.getAllMoves(color);
     return !moves.length;
+  }
+
+  get Check() {
+    return this.isCheck(this.Turn);
+  }
+
+  get Mate() {
+    return this.isMate(this.Turn);
   }
 
   getKing(color) {
@@ -788,7 +808,7 @@ export default class JBoard {
    *   FEN
    */
 
-  getFEN() {
+  get FEN() {
     return `${this.getFENBoard()} ${
       this.getFENTurn()} ${
       this.getFENCastling()} ${
@@ -809,27 +829,21 @@ export default class JBoard {
       case 'pawn':
         FEN = 'p';
         break;
-
       case 'rook':
         FEN = 'r';
         break;
-
       case 'knight':
         FEN = 'n';
         break;
-
       case 'bishop':
         FEN = 'b';
         break;
-
       case 'queen':
         FEN = 'q';
         break;
-
       case 'king':
         FEN = 'k';
         break;
-
       default:
         break;
     }
@@ -916,10 +930,10 @@ export default class JBoard {
 
   parseFENTurn(FEN) {
     if (FEN === 'w') {
-      this.setTurn('white');
+      this.Turn = 'white';
     }
     if (FEN === 'b') {
-      this.setTurn('black');
+      this.Turn = 'black';
     }
 
     return this;
@@ -933,7 +947,6 @@ export default class JBoard {
     let countk = 0;
     let countQ = 0;
     let countq = 0;
-
     const { length } = FEN;
 
     if (FEN === '-' || length > 4) {
@@ -943,29 +956,24 @@ export default class JBoard {
       };
       return this;
     }
-
     for (i = 0; i < length; i += 1) {
       switch (FEN[i]) {
         case 'K':
           if (!countK) white += 1;
           countK += 1;
           break;
-
         case 'Q':
           if (!countQ) white += 2;
           countQ += 1;
           break;
-
         case 'k':
           if (!countk) black += 1;
           countk += 1;
           break;
-
         case 'q':
           if (!countq) black += 2;
           countq += 1;
           break;
-
         default:
           break;
       }
@@ -1027,13 +1035,11 @@ export default class JBoard {
         foeColor = 'white';
         neighborRank = 4;
         break;
-
       case 5:
         friendColor = 'white';
         foeColor = 'black';
         neighborRank = 3;
         break;
-
       default:
         return false;
     }
@@ -1131,19 +1137,15 @@ export default class JBoard {
           case 'r':
             result[count].type = 'rook';
             break;
-
           case 'n':
             result[count].type = 'knight';
             break;
-
           case 'b':
             result[count].type = 'bishop';
             break;
-
           case 'q':
             result[count].type = 'queen';
             break;
-
           case 'k':
             result[count].type = 'king';
             break;
