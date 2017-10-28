@@ -1,17 +1,13 @@
 options:
   formatter: stylish
-files:
-  ignore:
-    - 'dev/scss/_sprite_svg.scss'
-    - 'dev/scss/tmpl/sprite_template.scss'
 rules:
   # Extends
-  extends-before-mixins: 1
-  extends-before-declarations: 1
+  extends-before-mixins: 0
+  extends-before-declarations: 0
   placeholder-in-extend: 1
 
   # Mixins
-  mixins-before-declarations: 1
+  mixins-before-declarations: 0
 
   # Line Spacing
   one-declaration-per-line: 1

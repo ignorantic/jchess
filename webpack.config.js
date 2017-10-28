@@ -4,6 +4,7 @@ const merge = require('webpack-merge');
 const devServer = require('./webpack/dev-server');
 const build = require('./webpack/build');
 const production = require('./webpack/production');
+const SassLintPlugin = require('sasslint-webpack-plugin');
 
 const common = {
   entry: {
@@ -84,6 +85,14 @@ const common = {
       filename: 'index.html',
       chunks: ['index'],
       template: 'dev/index/index.html',
+    }),
+    new SassLintPlugin({
+      configFile: '.sass-lint.yml',
+      glob: 'dev/**/*.s?(a|c)ss',
+      ignoreFiles: [
+        path.resolve(__dirname, 'dev/scss/_sprite_svg.scss'),
+        path.resolve(__dirname, 'dev/scss/tmpl/sprite_template.scss'),
+      ],
     }),
   ],
 };

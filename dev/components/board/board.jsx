@@ -11,7 +11,7 @@ class Board extends React.Component {
       board: PropTypes.arrayOf(PropTypes.array).isRequired,
       turn: PropTypes.string.isRequired,
       check: PropTypes.bool.isRequired,
-      mate: PropTypes.bool.isRequired,
+      checkmate: PropTypes.bool.isRequired,
       flip: PropTypes.bool.isRequired,
       focus: PropTypes.shape({
         file: PropTypes.number.isRequired,
@@ -62,14 +62,14 @@ class Board extends React.Component {
 
   render() {
     const {
-      board, turn, check, mate, flip, focus, onPick,
+      board, turn, check, checkmate, flip, focus, onPick,
     } = this.props;
     let cc = '';
     let fc = '';
     const tc = ` board_${turn}`;
-    if (mate) cc = ' board_mate';
-    if (flip) fc = ' board_flipped';
+    if (checkmate) cc = ' board_checkmate';
     else if (check) cc = ' board_check';
+    if (flip) fc = ' board_flipped';
     const className = `board${tc}${cc}${fc}`;
     return (
       <div
