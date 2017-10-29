@@ -5,11 +5,11 @@ export function pickOnSquare(file, rank) {
   return (dispatch) => {
     boardModel.pickSquare(file, rank);
     const payload = {
-      board: boardModel.Board,
-      fen: boardModel.FEN,
-      turn: boardModel.Turn,
-      check: boardModel.Check,
-      checkmate: boardModel.Checkmate,
+      board: boardModel.getBoard(),
+      fen: boardModel.getFEN(),
+      turn: boardModel.getTurn(),
+      check: boardModel.isCheck(),
+      checkmate: boardModel.isCheckmate(),
       focus: {
         file,
         rank,
@@ -39,11 +39,11 @@ export function setUpPosition() {
   return (dispatch) => {
     boardModel.setUp();
     const payload = {
-      board: boardModel.Board,
-      fen: boardModel.FEN,
-      turn: boardModel.Turn,
-      check: boardModel.Check,
-      checkmate: boardModel.Checkmate,
+      board: boardModel.getBoard(),
+      fen: boardModel.getFEN(),
+      turn: boardModel.getTurn(),
+      check: boardModel.isCheck(),
+      checkmate: boardModel.isCheckmate(),
     };
     dispatch({
       type: consts.SETUP_POSITION,
@@ -56,11 +56,11 @@ export function resetPosition() {
   return (dispatch) => {
     boardModel.resetPosition();
     const payload = {
-      board: boardModel.Board,
-      fen: boardModel.FEN,
-      turn: boardModel.Turn,
-      check: boardModel.Check,
-      checkmate: boardModel.Checkmate,
+      board: boardModel.getBoard(),
+      fen: boardModel.getFEN(),
+      turn: boardModel.getTurn(),
+      check: boardModel.isCheck(),
+      checkmate: boardModel.isCheckmate(),
     };
     dispatch({
       type: consts.CLEAR_POSITION,
@@ -73,11 +73,11 @@ export function changeFEN(newFEN) {
   return (dispatch) => {
     boardModel.setPositionByFEN(newFEN);
     const payload = {
-      board: boardModel.Board,
-      fen: boardModel.FEN,
-      turn: boardModel.Turn,
-      check: boardModel.Check,
-      checkmate: boardModel.Checkmate,
+      board: boardModel.getBoard(),
+      fen: boardModel.getFEN(),
+      turn: boardModel.getTurn(),
+      check: boardModel.isCheck(),
+      checkmate: boardModel.isCheckmate(),
     };
     dispatch({
       type: consts.CHANGE_FEN,
