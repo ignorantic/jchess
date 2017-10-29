@@ -10,17 +10,17 @@ export default class JBoard {
 
   /** Initialize constants. */
   initConsts() {
-    const rook = [
+    const r = [
       { file: 0, rank: 1 }, { file: 1, rank: 0 },
       { file: 0, rank: -1 }, { file: -1, rank: 0 },
     ];
 
-    const bishop = [
+    const b = [
       { file: 1, rank: 1 }, { file: 1, rank: -1 },
       { file: -1, rank: -1 }, { file: -1, rank: 1 },
     ];
 
-    const knight = [
+    const n = [
       { file: 1, rank: 2 }, { file: 2, rank: 1 },
       { file: 2, rank: -1 }, { file: 1, rank: -2 },
       { file: -1, rank: -2 }, { file: -2, rank: -1 },
@@ -28,23 +28,23 @@ export default class JBoard {
     ];
 
     this.moves = {
-      rook: [...rook],
-      knight: [...knight],
-      bishop: [...bishop],
-      queen: [...rook, ...bishop],
-      king: [...rook, ...bishop],
+      rook: [...r],
+      knight: [...n],
+      bishop: [...b],
+      queen: [...r, ...b],
+      king: [...r, ...b],
     };
   }
 
   /** Initialize fields. */
   initFields() {
     this.board = [];
-    this.turn = 'white';
+    this.turn = 1;
     this.count = 1;
     this.countFiftyMove = 0;
     this.select = null;
     this.enPassant = null;
-    this.castling = { white: 0, black: 0 };
+    this.castling = { 1: 0, 2: 0 };
   }
 
   /** Initialize board array. */
@@ -71,7 +71,7 @@ export default class JBoard {
 
       for (let j = 0; j < 8; j += 1) {
         countSquare += 1;
-        this.board[i][j].color = countSquare % 2 ? 'black' : 'white';
+        this.board[i][j].color = countSquare % 2 ? 2 : 1;
       }
     }
   }
@@ -107,11 +107,11 @@ export default class JBoard {
       });
     });
 
-    this.turn = 'white';
+    this.turn = 1;
     this.count = 1;
     this.countFiftyMove = 0;
     this.enPassant = null;
-    this.castling = { white: 0, black: 0 };
+    this.castling = { 1: 0, 2: 0 };
   }
 
   /**
@@ -239,7 +239,7 @@ export default class JBoard {
       this.isFoesPawn(color, file - 1, rank)
       || this.isFoesPawn(color, file + 1, rank)
     ) {
-      if (color === 'white') {
+      if (color === 1) {
         if (rank === 3) this.enPassant = { file, rank: 2 };
       } else if (rank === 4) this.enPassant = { file, rank: 5 };
     }
@@ -293,10 +293,10 @@ export default class JBoard {
 
   /** Pass turn. */
   passTurn() {
-    if (this.turn === 'white') {
-      this.turn = 'black';
+    if (this.turn === 1) {
+      this.turn = 2;
     } else {
-      this.turn = 'white';
+      this.turn = 1;
     }
   }
 
@@ -445,7 +445,7 @@ export default class JBoard {
    */
   checkAfterMove(type, color, startFile) {
     this.checkCastling(color, type, startFile);
-    if (color === 'black') {
+    if (color === 2) {
       this.count += 1;
     }
 
@@ -515,8 +515,8 @@ export default class JBoard {
   static handlePawnPromotin(type, color, stopRank) {
     return (
       type === 'pawn'
-      && ((color === 'white' && stopRank === 7)
-      || (color === 'black' && stopRank === 0))
+      && ((color === 1 && stopRank === 7)
+      || (color === 2 && stopRank === 0))
     );
   }
 
@@ -544,7 +544,7 @@ export default class JBoard {
   getMovesPawn(file, rank) {
     const moves = [];
     const pawnColor = this.getPieceColor(file, rank);
-    const moveDirection = (pawnColor === 'white') ? 1 : -1;
+    const moveDirection = (pawnColor === 1) ? 1 : -1;
     const trg = {
       file,
       rank: rank + moveDirection,
@@ -553,8 +553,8 @@ export default class JBoard {
     if (JBoard.isSquare(trg)) {
       if (!this.getPieceType(trg.file, trg.rank)) {
         moves.push({ ...trg });
-        if ((pawnColor === 'white' && rank === 1) ||
-          (pawnColor === 'black' && rank === 6)) {
+        if ((pawnColor === 1 && rank === 1) ||
+          (pawnColor === 2 && rank === 6)) {
           trg.rank = rank + (2 * moveDirection);
           if (!this.getPieceType(trg.file, trg.rank)) {
             moves.push({ ...trg });
@@ -599,7 +599,7 @@ export default class JBoard {
 
   getCastlingMove(file, rank) {
     if (!(file === 4 && (rank === 0 || rank === 7))) return null;
-    const color = (rank === 0) ? 'white' : 'black';
+    const color = (rank === 0) ? 1 : 2;
     if (this.castling[color] === 0) return null;
     if (this.isCheck(color)) return null;
     const result = [];
@@ -644,7 +644,7 @@ export default class JBoard {
 
   doCastling(kingStop) {
     const { file, rank } = kingStop;
-    const color = rank ? 'black' : 'white';
+    const color = rank ? 2 : 1;
     const startFile = file === 2 ? 0 : 7;
     const stopFile = file === 2 ? 3 : 5;
     this.setPiece(file, rank, 'king', color);
@@ -768,7 +768,7 @@ export default class JBoard {
   }
 
   isSquareAttackedByPawn(color, file, rank) {
-    const targetRank = (color === 'white') ? rank + 1 : rank - 1;
+    const targetRank = (color === 1) ? rank + 1 : rank - 1;
     const targetFile = [file - 1, file + 1];
 
     const result = targetFile.filter(item => this.getPieceType(item, targetRank) === 'pawn' &&
@@ -833,8 +833,8 @@ export default class JBoard {
     newBoard.turn = src.turn;
 
     newBoard.castling = {
-      white: src.castling.white,
-      black: src.castling.black,
+      1: src.castling[1],
+      2: src.castling[2],
     };
 
     for (let file = 0; file < 8; file += 1) {
@@ -895,7 +895,7 @@ export default class JBoard {
       }
     }
 
-    if (this.getPieceColor(file, rank) === 'white') {
+    if (this.getPieceColor(file, rank) === 1) {
       return FEN.toUpperCase();
     }
     return FEN;
@@ -932,7 +932,7 @@ export default class JBoard {
   }
 
   getFENTurn() {
-    if (this.turn === 'white') {
+    if (this.turn === 1) {
       return 'w';
     }
 
@@ -942,19 +942,19 @@ export default class JBoard {
   getFENCastling() {
     let result = '';
 
-    if (this.castling.white % 2 === 1) {
+    if (this.castling[1] % 2 === 1) {
       result += 'K';
     }
 
-    if (this.castling.white > 1) {
+    if (this.castling[1] > 1) {
       result += 'Q';
     }
 
-    if (this.castling.black % 2 === 1) {
+    if (this.castling[2] % 2 === 1) {
       result += 'k';
     }
 
-    if (this.castling.black > 1) {
+    if (this.castling[2] > 1) {
       result += 'q';
     }
 
@@ -987,29 +987,26 @@ export default class JBoard {
 
   parseFENTurn(FEN) {
     if (FEN === 'w') {
-      this.turn = 'white';
+      this.turn = 1;
     }
 
     if (FEN === 'b') {
-      this.turn = 'black';
+      this.turn = 2;
     }
   }
 
   parseFENCastling(FEN) {
-    let black = 0;
-    let white = 0;
+    let cb = 0;
+    let cw = 0;
     let i;
-    let countK = 0;
-    let countk = 0;
-    let countQ = 0;
-    let countq = 0;
+    let cK = 0;
+    let ck = 0;
+    let cQ = 0;
+    let cq = 0;
     const { length } = FEN;
 
     if (FEN === '-' || length > 4) {
-      this.castling = {
-        white: 0,
-        black: 0,
-      };
+      this.castling = { 1: 0, 2: 0 };
 
       return;
     }
@@ -1017,23 +1014,23 @@ export default class JBoard {
     for (i = 0; i < length; i += 1) {
       switch (FEN[i]) {
         case 'K': {
-          if (!countK) white += 1;
-          countK += 1;
+          if (!cK) cw += 1;
+          cK += 1;
           break;
         }
         case 'Q': {
-          if (!countQ) white += 2;
-          countQ += 1;
+          if (!cQ) cw += 2;
+          cQ += 1;
           break;
         }
         case 'k': {
-          if (!countk) black += 1;
-          countk += 1;
+          if (!ck) cb += 1;
+          ck += 1;
           break;
         }
         case 'q': {
-          if (!countq) black += 2;
-          countq += 1;
+          if (!cq) cb += 2;
+          cq += 1;
           break;
         }
         default: {
@@ -1042,10 +1039,7 @@ export default class JBoard {
       }
     }
 
-    this.castling = {
-      white,
-      black,
-    };
+    this.castling = { 1: cw, 2: cb };
   }
 
   parseFENEnPassant(FEN) {
@@ -1087,14 +1081,14 @@ export default class JBoard {
 
     switch (rank) {
       case 2: {
-        friendColor = 'black';
-        foeColor = 'white';
+        friendColor = 2;
+        foeColor = 1;
         neighborRank = 4;
         break;
       }
       case 5: {
-        friendColor = 'white';
-        foeColor = 'black';
+        friendColor = 1;
+        foeColor = 2;
         neighborRank = 3;
         break;
       }
@@ -1214,9 +1208,9 @@ export default class JBoard {
           }
         }
         if (FEN[i].toLowerCase() === FEN[i]) {
-          result[count].color = 'black';
+          result[count].color = 2;
         } else {
-          result[count].color = 'white';
+          result[count].color = 1;
         }
 
         count += 1;
@@ -1231,14 +1225,11 @@ export default class JBoard {
   }
 
   setPiecesByArray(pieceSet) {
-    this.turn = 'white';
+    this.turn = 1;
     this.count = 1;
     this.countFiftyMove = 0;
     this.enPassant = null;
-    this.castling = {
-      white: 3,
-      black: 3,
-    };
+    this.castling = { 1: 3, 2: 3 };
 
     this.resetPosition();
     pieceSet.forEach((item) => {

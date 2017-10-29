@@ -23,13 +23,14 @@ export default class Square extends React.Component {
     const {
       file, rank, square, tabindex, onPick,
     } = this.props;
-
+    const color = square.color === 1 ? 'white' : 'black';
+    const pieceColor = square.piece.color === 1 ? 'white' : 'black';
     let mc = '';
     let sc = '';
     let pc = '';
-    const cc = `square square_${square.color}`;
-    if (square.piece.type) pc = ` square_${square.piece.type}_${square.piece.color}`;
-    if (square.marked) mc = ` square_marked_${square.color}`;
+    const cc = `square square_${color}`;
+    if (square.piece.type) pc = ` square_${square.piece.type}_${pieceColor}`;
+    if (square.marked) mc = ` square_marked_${color}`;
     if (square.selected) sc = ' square_selected';
     const classes = `${cc}${pc}${mc}${sc}`;
 

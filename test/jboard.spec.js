@@ -30,10 +30,10 @@ describe('jBoard', () => {
     });
 
     it('check square colors', () => {
-      expect(jboard.board[0][0].color).to.be.equal('black');
-      expect(jboard.board[0][7].color).to.be.equal('white');
-      expect(jboard.board[7][0].color).to.be.equal('white');
-      expect(jboard.board[7][7].color).to.be.equal('black');
+      expect(jboard.board[0][0].color).to.be.equal(2);
+      expect(jboard.board[0][7].color).to.be.equal(1);
+      expect(jboard.board[7][0].color).to.be.equal(1);
+      expect(jboard.board[7][7].color).to.be.equal(2);
     });
   });
 
@@ -51,73 +51,73 @@ describe('jBoard', () => {
 
     it('check rooks', () => {
       expect(jboard.board[0][0].piece.type).to.be.equal('rook');
-      expect(jboard.board[0][0].piece.color).to.be.equal('white');
+      expect(jboard.board[0][0].piece.color).to.be.equal(1);
 
       expect(jboard.board[7][0].piece.type).to.be.equal('rook');
-      expect(jboard.board[7][0].piece.color).to.be.equal('white');
+      expect(jboard.board[7][0].piece.color).to.be.equal(1);
 
       expect(jboard.board[0][7].piece.type).to.be.equal('rook');
-      expect(jboard.board[0][7].piece.color).to.be.equal('black');
+      expect(jboard.board[0][7].piece.color).to.be.equal(2);
 
       expect(jboard.board[7][7].piece.type).to.be.equal('rook');
-      expect(jboard.board[7][7].piece.color).to.be.equal('black');
+      expect(jboard.board[7][7].piece.color).to.be.equal(2);
     });
 
     it('check knights', () => {
       expect(jboard.board[1][0].piece.type).to.be.equal('knight');
-      expect(jboard.board[1][0].piece.color).to.be.equal('white');
+      expect(jboard.board[1][0].piece.color).to.be.equal(1);
 
       expect(jboard.board[6][0].piece.type).to.be.equal('knight');
-      expect(jboard.board[6][0].piece.color).to.be.equal('white');
+      expect(jboard.board[6][0].piece.color).to.be.equal(1);
 
       expect(jboard.board[1][7].piece.type).to.be.equal('knight');
-      expect(jboard.board[1][7].piece.color).to.be.equal('black');
+      expect(jboard.board[1][7].piece.color).to.be.equal(2);
 
       expect(jboard.board[6][7].piece.type).to.be.equal('knight');
-      expect(jboard.board[6][7].piece.color).to.be.equal('black');
+      expect(jboard.board[6][7].piece.color).to.be.equal(2);
     });
 
     it('check bishops', () => {
       expect(jboard.board[2][0].piece.type).to.be.equal('bishop');
-      expect(jboard.board[2][0].piece.color).to.be.equal('white');
+      expect(jboard.board[2][0].piece.color).to.be.equal(1);
 
       expect(jboard.board[5][0].piece.type).to.be.equal('bishop');
-      expect(jboard.board[5][0].piece.color).to.be.equal('white');
+      expect(jboard.board[5][0].piece.color).to.be.equal(1);
 
       expect(jboard.board[2][7].piece.type).to.be.equal('bishop');
-      expect(jboard.board[2][7].piece.color).to.be.equal('black');
+      expect(jboard.board[2][7].piece.color).to.be.equal(2);
 
       expect(jboard.board[5][7].piece.type).to.be.equal('bishop');
-      expect(jboard.board[5][7].piece.color).to.be.equal('black');
+      expect(jboard.board[5][7].piece.color).to.be.equal(2);
     });
 
     it('check queens', () => {
       expect(jboard.board[3][0].piece.type).to.be.equal('queen');
-      expect(jboard.board[3][0].piece.color).to.be.equal('white');
+      expect(jboard.board[3][0].piece.color).to.be.equal(1);
       expect(jboard.board[3][7].piece.type).to.be.equal('queen');
-      expect(jboard.board[3][7].piece.color).to.be.equal('black');
+      expect(jboard.board[3][7].piece.color).to.be.equal(2);
     });
 
     it('check kings', () => {
       expect(jboard.board[4][0].piece.type).to.be.equal('king');
-      expect(jboard.board[4][0].piece.color).to.be.equal('white');
+      expect(jboard.board[4][0].piece.color).to.be.equal(1);
       expect(jboard.board[4][7].piece.type).to.be.equal('king');
-      expect(jboard.board[4][7].piece.color).to.be.equal('black');
+      expect(jboard.board[4][7].piece.color).to.be.equal(2);
     });
 
     it('check white pawns', () => {
       expect(jboard.board[0][1].piece.type).to.be.equal('pawn');
-      expect(jboard.board[7][1].piece.color).to.be.equal('white');
+      expect(jboard.board[7][1].piece.color).to.be.equal(1);
     });
 
     it('check black pawns', () => {
       expect(jboard.board[0][6].piece.type).to.be.equal('pawn');
-      expect(jboard.board[7][6].piece.color).to.be.equal('black');
+      expect(jboard.board[7][6].piece.color).to.be.equal(2);
     });
 
     it('check castlings', () => {
-      expect(jboard.castling.white).to.be.equal(3);
-      expect(jboard.castling.black).to.be.equal(3);
+      expect(jboard.castling[1]).to.be.equal(3);
+      expect(jboard.castling[2]).to.be.equal(3);
     });
   });
 
@@ -132,7 +132,7 @@ describe('jBoard', () => {
           rank: 1,
           piece: {
             type: 'pawn',
-            color: 'white',
+            color: 1,
           },
         },
         {
@@ -140,7 +140,7 @@ describe('jBoard', () => {
           rank: 2,
           piece: {
             type: 'knight',
-            color: 'black',
+            color: 2,
           },
         },
         {
@@ -148,7 +148,7 @@ describe('jBoard', () => {
           rank: 7,
           piece: {
             type: 'queen',
-            color: 'black',
+            color: 2,
           },
         },
       ]);
@@ -156,17 +156,17 @@ describe('jBoard', () => {
 
     it('check pawn', () => {
       expect(jboard.board[0][1].piece.type).to.be.equal('pawn');
-      expect(jboard.board[0][1].piece.color).to.be.equal('white');
+      expect(jboard.board[0][1].piece.color).to.be.equal(1);
     });
 
     it('check knight', () => {
       expect(jboard.board[1][2].piece.type).to.be.equal('knight');
-      expect(jboard.board[1][2].piece.color).to.be.equal('black');
+      expect(jboard.board[1][2].piece.color).to.be.equal(2);
     });
 
     it('check queen', () => {
       expect(jboard.board[5][7].piece.type).to.be.equal('queen');
-      expect(jboard.board[5][7].piece.color).to.be.equal('black');
+      expect(jboard.board[5][7].piece.color).to.be.equal(2);
     });
   });
 
@@ -180,17 +180,17 @@ describe('jBoard', () => {
 
     it('check pawn a2 before reset', () => {
       expect(jboard.board[0][1].piece.type).to.be.equal('pawn');
-      expect(jboard.board[0][1].piece.color).to.be.equal('white');
+      expect(jboard.board[0][1].piece.color).to.be.equal(1);
     });
 
     it('check knight b1 before reset', () => {
       expect(jboard.board[1][0].piece.type).to.be.equal('knight');
-      expect(jboard.board[1][0].piece.color).to.be.equal('white');
+      expect(jboard.board[1][0].piece.color).to.be.equal(1);
     });
 
     it('check rook h8 before reset', () => {
       expect(jboard.board[7][7].piece.type).to.be.equal('rook');
-      expect(jboard.board[7][7].piece.color).to.be.equal('black');
+      expect(jboard.board[7][7].piece.color).to.be.equal(2);
     });
 
     it('check pawn a2 after reset', () => {
@@ -234,21 +234,21 @@ describe('jBoard', () => {
     });
 
     it('check square h2 after setup', () => {
-      jboard.setPiece(7, 1, 'pawn', 'white');
+      jboard.setPiece(7, 1, 'pawn', 1);
       expect(jboard.board[7][1].piece.type).to.be.equal('pawn');
-      expect(jboard.board[7][1].piece.color).to.be.equal('white');
+      expect(jboard.board[7][1].piece.color).to.be.equal(1);
     });
 
     it('check square c3 after setup', () => {
-      jboard.setPiece(2, 2, 'knight', 'white');
+      jboard.setPiece(2, 2, 'knight', 1);
       expect(jboard.board[2][2].piece.type).to.be.equal('knight');
-      expect(jboard.board[2][2].piece.color).to.be.equal('white');
+      expect(jboard.board[2][2].piece.color).to.be.equal(1);
     });
 
     it('check square e4 after setup', () => {
-      jboard.setPiece(4, 3, 'rook', 'black');
+      jboard.setPiece(4, 3, 'rook', 2);
       expect(jboard.board[4][3].piece.type).to.be.equal('rook');
-      expect(jboard.board[4][3].piece.color).to.be.equal('black');
+      expect(jboard.board[4][3].piece.color).to.be.equal(2);
     });
   });
 
@@ -271,25 +271,25 @@ describe('jBoard', () => {
     });
 
     it('return "black" for (0, 0), etc', () => {
-      expect(jboard.getSquareColor(0, 0)).to.be.equal('black');
-      expect(jboard.getSquareColor(0, 2)).to.be.equal('black');
+      expect(jboard.getSquareColor(0, 0)).to.be.equal(2);
+      expect(jboard.getSquareColor(0, 2)).to.be.equal(2);
 
-      expect(jboard.getSquareColor(1, 1)).to.be.equal('black');
-      expect(jboard.getSquareColor(7, 7)).to.be.equal('black');
+      expect(jboard.getSquareColor(1, 1)).to.be.equal(2);
+      expect(jboard.getSquareColor(7, 7)).to.be.equal(2);
 
-      expect(jboard.getSquareColor(5, 7)).to.be.equal('black');
-      expect(jboard.getSquareColor(3, 7)).to.be.equal('black');
+      expect(jboard.getSquareColor(5, 7)).to.be.equal(2);
+      expect(jboard.getSquareColor(3, 7)).to.be.equal(2);
     });
 
     it('return "white" for (0, 1), etc', () => {
-      expect(jboard.getSquareColor(0, 1)).to.be.equal('white');
-      expect(jboard.getSquareColor(0, 3)).to.be.equal('white');
+      expect(jboard.getSquareColor(0, 1)).to.be.equal(1);
+      expect(jboard.getSquareColor(0, 3)).to.be.equal(1);
 
-      expect(jboard.getSquareColor(1, 2)).to.be.equal('white');
-      expect(jboard.getSquareColor(0, 7)).to.be.equal('white');
+      expect(jboard.getSquareColor(1, 2)).to.be.equal(1);
+      expect(jboard.getSquareColor(0, 7)).to.be.equal(1);
 
-      expect(jboard.getSquareColor(2, 7)).to.be.equal('white');
-      expect(jboard.getSquareColor(6, 7)).to.be.equal('white');
+      expect(jboard.getSquareColor(2, 7)).to.be.equal(1);
+      expect(jboard.getSquareColor(6, 7)).to.be.equal(1);
     });
   });
 
@@ -336,16 +336,16 @@ describe('jBoard', () => {
       expect(jboard.getPieceType(1, 2)).to.be.null;
       expect(jboard.getPieceType(3, 5)).to.be.null;
 
-      expect(jboard.getPieceColor(0, 1)).to.be.equal('white');
-      expect(jboard.getPieceColor(1, 0)).to.be.equal('white');
-      expect(jboard.getPieceColor(2, 0)).to.be.equal('white');
-      expect(jboard.getPieceColor(2, 7)).to.be.equal('black');
-      expect(jboard.getPieceColor(3, 0)).to.be.equal('white');
-      expect(jboard.getPieceColor(3, 7)).to.be.equal('black');
-      expect(jboard.getPieceColor(4, 1)).to.be.equal('white');
-      expect(jboard.getPieceColor(5, 6)).to.be.equal('black');
-      expect(jboard.getPieceColor(6, 7)).to.be.equal('black');
-      expect(jboard.getPieceColor(7, 6)).to.be.equal('black');
+      expect(jboard.getPieceColor(0, 1)).to.be.equal(1);
+      expect(jboard.getPieceColor(1, 0)).to.be.equal(1);
+      expect(jboard.getPieceColor(2, 0)).to.be.equal(1);
+      expect(jboard.getPieceColor(2, 7)).to.be.equal(2);
+      expect(jboard.getPieceColor(3, 0)).to.be.equal(1);
+      expect(jboard.getPieceColor(3, 7)).to.be.equal(2);
+      expect(jboard.getPieceColor(4, 1)).to.be.equal(1);
+      expect(jboard.getPieceColor(5, 6)).to.be.equal(2);
+      expect(jboard.getPieceColor(6, 7)).to.be.equal(2);
+      expect(jboard.getPieceColor(7, 6)).to.be.equal(2);
     });
   });
 
@@ -394,28 +394,28 @@ describe('jBoard', () => {
     });
 
     it('return true if setting was successful', () => {
-      expect(jboard.setPieceColor(0, 0, 'white')).to.be.true;
-      expect(jboard.setPieceColor(1, 1, 'white')).to.be.true;
+      expect(jboard.setPieceColor(0, 0, 1)).to.be.true;
+      expect(jboard.setPieceColor(1, 1, 1)).to.be.true;
       expect(jboard.setPieceColor(7, 6, null)).to.be.true;
-      expect(jboard.setPieceColor(5, 4, 'black')).to.be.true;
+      expect(jboard.setPieceColor(5, 4, 2)).to.be.true;
     });
 
     it('set piece type and check', () => {
       expect(jboard.getPieceColor(1, 2)).to.be.null;
-      jboard.setPieceColor(1, 2, 'black');
-      expect(jboard.getPieceColor(1, 2)).to.be.equal('black');
+      jboard.setPieceColor(1, 2, 2);
+      expect(jboard.getPieceColor(1, 2)).to.be.equal(2);
 
       expect(jboard.getPieceColor(2, 4)).to.be.null;
-      jboard.setPieceColor(2, 4, 'white');
-      expect(jboard.getPieceColor(2, 4)).to.be.equal('white');
+      jboard.setPieceColor(2, 4, 1);
+      expect(jboard.getPieceColor(2, 4)).to.be.equal(1);
 
-      expect(jboard.getPieceColor(1, 1)).to.be.equal('white');
-      jboard.setPieceColor(1, 1, 'black');
-      expect(jboard.getPieceColor(1, 1)).to.be.equal('black');
+      expect(jboard.getPieceColor(1, 1)).to.be.equal(1);
+      jboard.setPieceColor(1, 1, 2);
+      expect(jboard.getPieceColor(1, 1)).to.be.equal(2);
 
-      expect(jboard.getPieceColor(5, 4)).to.be.equal('black');
-      jboard.setPieceColor(5, 4, 'white');
-      expect(jboard.getPieceColor(5, 4)).to.be.equal('white');
+      expect(jboard.getPieceColor(5, 4)).to.be.equal(2);
+      jboard.setPieceColor(5, 4, 1);
+      expect(jboard.getPieceColor(5, 4)).to.be.equal(1);
     });
   });
 
@@ -658,13 +658,13 @@ describe('jBoard', () => {
     });
 
     it('check start square if move was successful', () => {
-      expect(jboard.getPieceColor(0, 1)).to.be.equal('white');
+      expect(jboard.getPieceColor(0, 1)).to.be.equal(1);
       expect(jboard.getPieceType(0, 1)).to.be.equal('pawn');
       jboard.handleMove({ file: 0, rank: 1 }, { file: 0, rank: 3 });
       expect(jboard.getPieceColor(0, 1)).to.be.null;
       expect(jboard.getPieceType(0, 1)).to.be.null;
 
-      expect(jboard.getPieceColor(7, 3)).to.be.equal('black');
+      expect(jboard.getPieceColor(7, 3)).to.be.equal(2);
       expect(jboard.getPieceType(7, 3)).to.be.equal('pawn');
       jboard.handleMove({ file: 7, rank: 3 }, { file: 6, rank: 2 });
       expect(jboard.getPieceColor(7, 3)).to.be.null;
@@ -672,13 +672,13 @@ describe('jBoard', () => {
     });
 
     it('turn color after move', () => {
-      expect(jboard.getTurn()).to.be.equal('white');
+      expect(jboard.getTurn()).to.be.equal(1);
       jboard.handleMove({ file: 0, rank: 1 }, { file: 0, rank: 3 });
-      expect(jboard.getTurn()).to.be.equal('black');
+      expect(jboard.getTurn()).to.be.equal(2);
       jboard.handleMove({ file: 2, rank: 2 }, { file: 3, rank: 0 });
-      expect(jboard.getTurn()).to.be.equal('white');
+      expect(jboard.getTurn()).to.be.equal(1);
       jboard.handleMove({ file: 2, rank: 0 }, { file: 3, rank: 1 });
-      expect(jboard.getTurn()).to.be.equal('black');
+      expect(jboard.getTurn()).to.be.equal(2);
     });
 
     it('reset countFiftyMove after capturing', () => {
@@ -941,7 +941,7 @@ describe('jBoard', () => {
       jboard.pickSquare(4, 0);
       jboard.pickSquare(6, 0);
       expect(jboard.getPieceType(6, 0)).to.be.equal('king');
-      expect(jboard.getPieceColor(6, 0)).to.be.equal('white');
+      expect(jboard.getPieceColor(6, 0)).to.be.equal(1);
     });
 
     it('castling for black king', () => {
@@ -953,7 +953,7 @@ describe('jBoard', () => {
       jboard.pickSquare(4, 7);
       jboard.pickSquare(2, 7);
       expect(jboard.getPieceType(2, 7)).to.be.equal('king');
-      expect(jboard.getPieceColor(2, 7)).to.be.equal('black');
+      expect(jboard.getPieceColor(2, 7)).to.be.equal(2);
     });
 
     it('castling after knight and bishop moves', () => {
@@ -966,11 +966,11 @@ describe('jBoard', () => {
       jboard.pickSquare(4, 7);
       jboard.pickSquare(6, 7);
       expect(jboard.getPieceType(6, 7)).to.be.equal('king');
-      expect(jboard.getPieceColor(6, 7)).to.be.equal('black');
+      expect(jboard.getPieceColor(6, 7)).to.be.equal(2);
       jboard.pickSquare(4, 0);
       jboard.pickSquare(2, 0);
       expect(jboard.getPieceType(2, 0)).to.be.equal('king');
-      expect(jboard.getPieceColor(2, 0)).to.be.equal('white');
+      expect(jboard.getPieceColor(2, 0)).to.be.equal(1);
     });
   });
 
@@ -1156,7 +1156,7 @@ describe('jBoard', () => {
     });
 
     it('return squares, which are attacked by bishop move', () => {
-      const square = jboard.getAttackedSquares('bishop', 'black', 1, 7);
+      const square = jboard.getAttackedSquares('bishop', 2, 1, 7);
 
       expect(square[0].file).to.be.equal(2);
       expect(square[0].rank).to.be.equal(6);
@@ -1217,22 +1217,22 @@ describe('jBoard', () => {
     });
 
     it('return true if square is attacked', () => {
-      expect(jboard.isSquareAttacked('white', 2, 2)).to.be.true;
-      expect(jboard.isSquareAttacked('white', 2, 7)).to.be.true;
-      expect(jboard.isSquareAttacked('black', 4, 6)).to.be.true;
-      expect(jboard.isSquareAttacked('black', 5, 7)).to.be.true;
+      expect(jboard.isSquareAttacked(1, 2, 2)).to.be.true;
+      expect(jboard.isSquareAttacked(1, 2, 7)).to.be.true;
+      expect(jboard.isSquareAttacked(2, 4, 6)).to.be.true;
+      expect(jboard.isSquareAttacked(2, 5, 7)).to.be.true;
 
-      expect(jboard.isSquareAttacked('white', 0, 5)).to.be.true;
-      expect(jboard.isSquareAttacked('white', 1, 5)).to.be.true;
-      expect(jboard.isSquareAttacked('black', 3, 2)).to.be.true;
-      expect(jboard.isSquareAttacked('black', 5, 2)).to.be.true;
+      expect(jboard.isSquareAttacked(1, 0, 5)).to.be.true;
+      expect(jboard.isSquareAttacked(1, 1, 5)).to.be.true;
+      expect(jboard.isSquareAttacked(2, 3, 2)).to.be.true;
+      expect(jboard.isSquareAttacked(2, 5, 2)).to.be.true;
     });
 
     it('return true if square isn\'t attacked', () => {
-      expect(jboard.isSquareAttacked('black', 0, 3)).to.be.false;
-      expect(jboard.isSquareAttacked('black', 6, 3)).to.be.false;
-      expect(jboard.isSquareAttacked('white', 6, 2)).to.be.false;
-      expect(jboard.isSquareAttacked('white', 1, 0)).to.be.false;
+      expect(jboard.isSquareAttacked(2, 0, 3)).to.be.false;
+      expect(jboard.isSquareAttacked(2, 6, 3)).to.be.false;
+      expect(jboard.isSquareAttacked(1, 6, 2)).to.be.false;
+      expect(jboard.isSquareAttacked(1, 1, 0)).to.be.false;
     });
   });
 
@@ -1245,17 +1245,17 @@ describe('jBoard', () => {
     });
 
     it('return true if square is attacked by pawn', () => {
-      expect(jboard.isSquareAttackedByPawn('white', 0, 5)).to.be.true;
-      expect(jboard.isSquareAttackedByPawn('white', 1, 5)).to.be.true;
-      expect(jboard.isSquareAttackedByPawn('black', 3, 2)).to.be.true;
-      expect(jboard.isSquareAttackedByPawn('black', 5, 2)).to.be.true;
+      expect(jboard.isSquareAttackedByPawn(1, 0, 5)).to.be.true;
+      expect(jboard.isSquareAttackedByPawn(1, 1, 5)).to.be.true;
+      expect(jboard.isSquareAttackedByPawn(2, 3, 2)).to.be.true;
+      expect(jboard.isSquareAttackedByPawn(2, 5, 2)).to.be.true;
     });
 
     it('return false if square isn\'t attacked by pawn', () => {
-      expect(jboard.isSquareAttackedByPawn('white', 0, 4)).to.be.false;
-      expect(jboard.isSquareAttackedByPawn('white', 1, 4)).to.be.false;
-      expect(jboard.isSquareAttackedByPawn('black', 3, 3)).to.be.false;
-      expect(jboard.isSquareAttackedByPawn('black', 5, 3)).to.be.false;
+      expect(jboard.isSquareAttackedByPawn(1, 0, 4)).to.be.false;
+      expect(jboard.isSquareAttackedByPawn(1, 1, 4)).to.be.false;
+      expect(jboard.isSquareAttackedByPawn(2, 3, 3)).to.be.false;
+      expect(jboard.isSquareAttackedByPawn(2, 5, 3)).to.be.false;
     });
   });
 
@@ -1276,23 +1276,23 @@ describe('jBoard', () => {
     });
 
     it('both kings are not in check', () => {
-      expect(jboard.isCheck('white')).to.be.false;
-      expect(jboard.isCheck('black')).to.be.false;
+      expect(jboard.isCheck(1)).to.be.false;
+      expect(jboard.isCheck(2)).to.be.false;
     });
 
     it('white king is in check by queen', () => {
       jboard.handleMove({ file: 3, rank: 3 }, { file: 5, rank: 1 });
-      expect(jboard.isCheck('white')).to.be.true;
+      expect(jboard.isCheck(1)).to.be.true;
     });
 
     it('white king is in discovered check by bishop', () => {
       jboard.handleMove({ file: 2, rank: 2 }, { file: 3, rank: 5 });
-      expect(jboard.isCheck('white')).to.be.true;
+      expect(jboard.isCheck(1)).to.be.true;
     });
 
     it('black king is in check by pawn', () => {
       jboard.handleMove({ file: 3, rank: 5 }, { file: 3, rank: 6 });
-      expect(jboard.isCheck('black')).to.be.true;
+      expect(jboard.isCheck(2)).to.be.true;
     });
   });
 
@@ -1305,28 +1305,28 @@ describe('jBoard', () => {
 
     it('return true if there\'s checkmate', () => {
       jboard.setPositionByFEN('6rk/5Npp/8/8/8/8/8/4K3 b - - 0 1');
-      expect(jboard.isCheckmate('black')).to.be.true;
+      expect(jboard.isCheckmate(2)).to.be.true;
       jboard.setPositionByFEN('6rk/5NpP/8/8/8/8/8/4K2R b - - 0 1');
-      expect(jboard.isCheckmate('black')).to.be.true;
+      expect(jboard.isCheckmate(2)).to.be.true;
       jboard.setPositionByFEN('6rk/5Np1/7R/8/8/8/8/4K3 b - - 0 1');
-      expect(jboard.isCheckmate('black')).to.be.true;
+      expect(jboard.isCheckmate(2)).to.be.true;
       jboard.setPositionByFEN('6rk/6p1/7R/8/8/8/8/B3K3 b - - 0 1');
-      expect(jboard.isCheckmate('black')).to.be.true;
+      expect(jboard.isCheckmate(2)).to.be.true;
       jboard.setPositionByFEN('6rk/8/5r1Q/8/8/8/8/B3K3 b - - 0 1');
-      expect(jboard.isCheckmate('black')).to.be.true;
+      expect(jboard.isCheckmate(2)).to.be.true;
     });
 
     it('return false if theresn\'t checkmate', () => {
       jboard.setPositionByFEN('6rk/5NpP/8/8/8/8/8/4K3 b - - 0 1');
-      expect(jboard.isCheckmate('black')).to.be.false;
+      expect(jboard.isCheckmate(2)).to.be.false;
       jboard.setPositionByFEN('6rk/6p1/7R/8/8/8/8/4K3 b - - 0 1');
-      expect(jboard.isCheckmate('black')).to.be.false;
+      expect(jboard.isCheckmate(2)).to.be.false;
       jboard.setPositionByFEN('6rk/6p1/5p1R/8/8/8/8/B3K3 b - - 0 1');
-      expect(jboard.isCheckmate('black')).to.be.false;
+      expect(jboard.isCheckmate(2)).to.be.false;
       jboard.setPositionByFEN('6rk/8/5r1R/8/8/8/8/B3K3 b - - 0 1');
-      expect(jboard.isCheckmate('black')).to.be.false;
+      expect(jboard.isCheckmate(2)).to.be.false;
       jboard.setPositionByFEN('6rk/6b1/5r1Q/8/8/8/8/B3K3 b - - 0 1');
-      expect(jboard.isCheckmate('black')).to.be.false;
+      expect(jboard.isCheckmate(2)).to.be.false;
     });
   });
 
@@ -1339,14 +1339,14 @@ describe('jBoard', () => {
     });
 
     it('return white king position', () => {
-      const square = jboard.getKing('white');
+      const square = jboard.getKing(1);
 
       expect(square.file).to.be.equal(4);
       expect(square.rank).to.be.equal(0);
     });
 
     it('return black king position', () => {
-      const square = jboard.getKing('black');
+      const square = jboard.getKing(2);
 
       expect(square.file).to.be.equal(4);
       expect(square.rank).to.be.equal(7);
@@ -1491,21 +1491,21 @@ describe('jBoard', () => {
 
     it('get "Qk" if castling available in queenside for white ' +
       'and in kingside for black', () => {
-      jboard.castling.white = 2;
-      jboard.castling.black = 1;
+      jboard.castling[1] = 2;
+      jboard.castling[2] = 1;
       expect(jboard.getFENCastling()).to.be.equal('Qk');
     });
 
     it('get "Kq" if castling available in kingside for white ' +
       'and in queenside for black', () => {
-      jboard.castling.white = 1;
-      jboard.castling.black = 2;
+      jboard.castling[1] = 1;
+      jboard.castling[2] = 2;
       expect(jboard.getFENCastling()).to.be.equal('Kq');
     });
 
     it('get "-" if castling unavailable', () => {
-      jboard.castling.white = 0;
-      jboard.castling.black = 0;
+      jboard.castling[1] = 0;
+      jboard.castling[2] = 0;
       expect(jboard.getFENCastling()).to.be.equal('-');
     });
   });
@@ -1553,16 +1553,16 @@ describe('jBoard', () => {
 
     it('return array for correct string', () => {
       expect(JBoard.parseFENRank('rnbqk1nr')[0].type).to.be.equal('rook');
-      expect(JBoard.parseFENRank('rnbqk1nr')[0].color).to.be.equal('black');
+      expect(JBoard.parseFENRank('rnbqk1nr')[0].color).to.be.equal(2);
       expect(JBoard.parseFENRank('rn1qk1nr')[7].type).to.be.equal('rook');
-      expect(JBoard.parseFENRank('rn1qk1nr')[7].color).to.be.equal('black');
+      expect(JBoard.parseFENRank('rn1qk1nr')[7].color).to.be.equal(2);
       expect(JBoard.parseFENRank('rnbq2nr')[1].type).to.be.equal('knight');
-      expect(JBoard.parseFENRank('rnbq2nr')[1].color).to.be.equal('black');
+      expect(JBoard.parseFENRank('rnbq2nr')[1].color).to.be.equal(2);
       expect(JBoard.parseFENRank('rnbqk1nr')[6].type).to.be.equal('knight');
-      expect(JBoard.parseFENRank('rnbqk1nr')[6].color).to.be.equal('black');
+      expect(JBoard.parseFENRank('rnbqk1nr')[6].color).to.be.equal(2);
       expect(JBoard.parseFENRank('1nbqk1nr')[3].type).to.be.equal('queen');
       expect(JBoard.parseFENRank('r1Bq4')[2].type).to.be.equal('bishop');
-      expect(JBoard.parseFENRank('r1Bq4')[2].color).to.be.equal('white');
+      expect(JBoard.parseFENRank('r1Bq4')[2].color).to.be.equal(1);
     });
   });
 });
