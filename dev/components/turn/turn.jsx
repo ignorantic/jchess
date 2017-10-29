@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-class Turn extends React.Component {
+class Turn extends React.PureComponent {
   constructor(props) {
     super(props);
     Turn.propTypes = {
@@ -13,9 +13,9 @@ class Turn extends React.Component {
 
   render() {
     const { turn, flip } = this.props;
-    let fc = '';
-    if (flip) fc = ' turn_flipped';
-    const className = `turn turn_${turn}${fc}`;
+    const color = turn === 1 ? 'white' : 'black';
+    let className = `turn turn_${color}`;
+    if (flip) className += ' turn_flipped';
     return (
       <div className={className} />
     );

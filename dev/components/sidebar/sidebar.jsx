@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Button from '../button/button';
 import { setUpPosition, resetPosition, flipBoard } from '../../modules/actions/actions';
 
-class Sidebar extends React.Component {
+class Sidebar extends React.PureComponent {
   constructor(props) {
     super(props);
     Sidebar.propTypes = {

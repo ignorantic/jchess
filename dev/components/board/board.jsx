@@ -64,13 +64,11 @@ class Board extends React.Component {
     const {
       board, turn, check, checkmate, flip, focus, onPick,
     } = this.props;
-    let cc = '';
-    let fc = '';
-    const tc = ` board_${turn}`;
-    if (checkmate) cc = ' board_checkmate';
-    else if (check) cc = ' board_check';
-    if (flip) fc = ' board_flipped';
-    const className = `board${tc}${cc}${fc}`;
+    const color = turn === 1 ? 'white' : 'black';
+    let className = `board board_${color}`;
+    if (checkmate) className += ' board_checkmate';
+    else if (check) className += ' board_check';
+    if (flip) className += ' board_flipped';
     return (
       <div
         className={className}
@@ -86,7 +84,11 @@ class Board extends React.Component {
                 <Square
                   file={file}
                   rank={rank}
-                  square={rItem}
+                  color={rItem.color}
+                  pieceColor={rItem.piece.color}
+                  pieceType={rItem.piece.type}
+                  marked={rItem.marked}
+                  selected={rItem.selected}
                   key={rItem.id}
                   tabindex={tabindex}
                   onPick={onPick}

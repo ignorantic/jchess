@@ -6,7 +6,7 @@ import Sidebar from '../sidebar/sidebar';
 import FEN from '../fen/fen';
 import Turn from '../turn/turn';
 
-export default class App extends React.Component {
+export default class App extends React.PureComponent {
   constructor(props) {
     super(props);
     App.propTypes = {

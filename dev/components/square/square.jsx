@@ -1,19 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default class Square extends React.Component {
+export default class Square extends React.PureComponent {
   constructor(props) {
     super(props);
     Square.propTypes = {
       file: PropTypes.number.isRequired,
       rank: PropTypes.number.isRequired,
-      square: PropTypes.shape({
-        color: PropTypes.string,
-        piece: PropTypes.shape({
-          color: PropTypes.string,
-          type: PropTypes.string,
-        }),
-      }).isRequired,
+      color: PropTypes.number.isRequired,
+      pieceColor: PropTypes.number.isRequired,
+      pieceType: PropTypes.number.isRequired,
+      marked: PropTypes.bool.isRequired,
+      selected: PropTypes.bool.isRequired,
       tabindex: PropTypes.number.isRequired,
       onPick: PropTypes.func.isRequired,
     };
@@ -21,23 +19,23 @@ export default class Square extends React.Component {
 
   render() {
     const {
-      file, rank, square, tabindex, onPick,
+      file, rank, color, pieceColor, pieceType, marked, selected, tabindex, onPick,
     } = this.props;
-    const color = square.color === 1 ? 'white' : 'black';
-    const pieceColor = square.piece.color === 1 ? 'white' : 'black';
-    let mc = '';
-    let sc = '';
-    let pc = '';
-    const cc = `square square_${color}`;
-    if (square.piece.type) pc = ` square_${square.piece.type}_${pieceColor}`;
-    if (square.marked) mc = ` square_marked_${color}`;
-    if (square.selected) sc = ' square_selected';
-    const classes = `${cc}${pc}${mc}${sc}`;
+    const squareColor = color === 1 ? 'white' : 'black';
+    const pclr = pieceColor === 1 ? 'white' : 'black';
+    const pieces = {
+      0: 'pawn', 1: 'rook', 2: 'knight', 3: 'bishop', 4: 'queen', 5: 'king',
+    };
+    const ptp = pieces[pieceType];
+    let className = `square square_${squareColor}`;
+    if (pieceType !== null) className += ` square_${ptp}_${pclr}`;
+    if (marked) className += ` square_marked_${squareColor}`;
+    if (selected) className += ' square_selected';
 
     return (
       <button
         tabIndex={tabindex}
-        className={classes}
+        className={className}
         data-file={file}
         data-rank={rank}
         onMouseDown={() => onPick(file, rank)}

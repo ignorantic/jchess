@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Button from '../button/button';
 import { changeFEN } from '../../modules/actions/actions';
 
-class FEN extends React.Component {
+class FEN extends React.PureComponent {
   static setCaretPosition(pos) {
     const elemFEN = document.querySelector('#fen');
     elemFEN.setSelectionRange(pos, pos);
