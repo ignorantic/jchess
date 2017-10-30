@@ -475,7 +475,7 @@ describe('jBoard', () => {
    *   PICK
    */
 
-  describe('pickSquare', () => {
+  describe('touch', () => {
     let jboard;
 
     before(() => {
@@ -484,17 +484,17 @@ describe('jBoard', () => {
     });
 
     it('check selected square', () => {
-      jboard.pickSquare(1, 5);
+      jboard.touch(1, 5);
       expect(jboard.isSquareSelected(1, 5)).to.be.true;
       expect(jboard.isSquareSelected(7, 7)).to.be.false;
 
-      jboard.pickSquare(6, 7);
+      jboard.touch(6, 7);
       expect(jboard.isSquareSelected(5, 1)).to.be.false;
       expect(jboard.isSquareSelected(6, 7)).to.be.true;
     });
 
     it('check marked square', () => {
-      jboard.pickSquare(0, 1);
+      jboard.touch(0, 1);
 
       expect(jboard.isSquareMarked(0, 1)).to.be.false;
       expect(jboard.isSquareMarked(0, 2)).to.be.true;
@@ -513,7 +513,7 @@ describe('jBoard', () => {
 
     before(() => {
       jboard = new JBoard();
-      jboard.pickSquare(4, 4);
+      jboard.touch(4, 4);
     });
 
     it('reset selected square', () => {
@@ -540,11 +540,11 @@ describe('jBoard', () => {
     });
 
     it('return true or false if arguments are correct', () => {
-      jboard.pickSquare(1, 5);
+      jboard.touch(1, 5);
       expect(jboard.isSquareSelected(0, 0)).to.be.false;
       expect(jboard.isSquareSelected(1, 5)).to.be.true;
 
-      jboard.pickSquare(7, 7);
+      jboard.touch(7, 7);
       expect(jboard.isSquareSelected(1, 5)).to.be.false;
       expect(jboard.isSquareSelected(7, 7)).to.be.true;
     });
@@ -935,40 +935,40 @@ describe('jBoard', () => {
     });
 
     it('castling for white king', () => {
-      jboard.pickSquare(4, 0);
-      jboard.pickSquare(2, 0);
+      jboard.touch(4, 0);
+      jboard.touch(2, 0);
       expect(jboard.getPieceType(2, 0)).to.be.equal(null);
-      jboard.pickSquare(4, 0);
-      jboard.pickSquare(6, 0);
+      jboard.touch(4, 0);
+      jboard.touch(6, 0);
       expect(jboard.getPieceType(6, 0)).to.be.equal(5);
       expect(jboard.getPieceColor(6, 0)).to.be.equal(1);
     });
 
     it('castling for black king', () => {
-      jboard.pickSquare(4, 0);
-      jboard.pickSquare(6, 0);
-      jboard.pickSquare(4, 7);
-      jboard.pickSquare(6, 7);
+      jboard.touch(4, 0);
+      jboard.touch(6, 0);
+      jboard.touch(4, 7);
+      jboard.touch(6, 7);
       expect(jboard.getPieceType(6, 7)).to.be.equal(null);
-      jboard.pickSquare(4, 7);
-      jboard.pickSquare(2, 7);
+      jboard.touch(4, 7);
+      jboard.touch(2, 7);
       expect(jboard.getPieceType(2, 7)).to.be.equal(5);
       expect(jboard.getPieceColor(2, 7)).to.be.equal(2);
     });
 
     it('castling after knight and bishop moves', () => {
-      jboard.pickSquare(3, 5);
-      jboard.pickSquare(1, 3);
-      jboard.pickSquare(3, 0);
-      jboard.pickSquare(2, 2);
-      jboard.pickSquare(1, 3);
-      jboard.pickSquare(2, 2);
-      jboard.pickSquare(4, 7);
-      jboard.pickSquare(6, 7);
+      jboard.touch(3, 5);
+      jboard.touch(1, 3);
+      jboard.touch(3, 0);
+      jboard.touch(2, 2);
+      jboard.touch(1, 3);
+      jboard.touch(2, 2);
+      jboard.touch(4, 7);
+      jboard.touch(6, 7);
       expect(jboard.getPieceType(6, 7)).to.be.equal(5);
       expect(jboard.getPieceColor(6, 7)).to.be.equal(2);
-      jboard.pickSquare(4, 0);
-      jboard.pickSquare(2, 0);
+      jboard.touch(4, 0);
+      jboard.touch(2, 0);
       expect(jboard.getPieceType(2, 0)).to.be.equal(5);
       expect(jboard.getPieceColor(2, 0)).to.be.equal(1);
     });
@@ -1087,62 +1087,62 @@ describe('jBoard', () => {
     });
 
     it('can\'t move white pawns', () => {
-      jboard.pickSquare(0, 6);
-      jboard.pickSquare(0, 7);
+      jboard.touch(0, 6);
+      jboard.touch(0, 7);
       expect(jboard.getPieceType(0, 7)).to.be.not.equal(4);
-      jboard.pickSquare(5, 6);
-      jboard.pickSquare(5, 7);
+      jboard.touch(5, 6);
+      jboard.touch(5, 7);
       expect(jboard.getPieceType(5, 7)).to.be.not.equal(4);
-      jboard.pickSquare(7, 6);
-      jboard.pickSquare(7, 7);
+      jboard.touch(7, 6);
+      jboard.touch(7, 7);
       expect(jboard.getPieceType(7, 7)).to.be.not.equal(4);
     });
 
     it('move white pawn on "g" to make a promotion to queen', () => {
-      jboard.pickSquare(5, 6);
-      jboard.pickSquare(6, 7);
+      jboard.touch(5, 6);
+      jboard.touch(6, 7);
       expect(jboard.getPieceType(6, 7)).to.be.equal(4);
-      jboard.pickSquare(7, 6);
-      jboard.pickSquare(6, 7);
+      jboard.touch(7, 6);
+      jboard.touch(6, 7);
       expect(jboard.getPieceType(7, 6)).to.be.equal(0);
     });
 
     it('move white pawn on "h" to make a promotion to rook', () => {
-      jboard.pickSquare(7, 6);
-      jboard.pickSquare(6, 7, 1);
+      jboard.touch(7, 6);
+      jboard.touch(6, 7, 1);
       expect(jboard.getPieceType(6, 7)).to.be.equal(1);
     });
 
     it('move white pawn on "g" to make a promotion to knight', () => {
-      jboard.pickSquare(5, 6);
-      jboard.pickSquare(6, 7, 2);
+      jboard.touch(5, 6);
+      jboard.touch(6, 7, 2);
       expect(jboard.getPieceType(6, 7)).to.be.equal(2);
     });
 
     it('can\'t move black pawns', () => {
-      jboard.pickSquare(5, 6);
-      jboard.pickSquare(6, 7);
-      jboard.pickSquare(2, 1);
-      jboard.pickSquare(2, 0);
+      jboard.touch(5, 6);
+      jboard.touch(6, 7);
+      jboard.touch(2, 1);
+      jboard.touch(2, 0);
       expect(jboard.getPieceType(2, 0)).to.be.not.equal(4);
-      jboard.pickSquare(6, 1);
-      jboard.pickSquare(6, 0);
+      jboard.touch(6, 1);
+      jboard.touch(6, 0);
       expect(jboard.getPieceType(6, 0)).to.be.not.equal(4);
     });
 
     it('move black pawns to make a promotion to bishop', () => {
-      jboard.pickSquare(5, 6);
-      jboard.pickSquare(6, 7);
-      jboard.pickSquare(3, 1);
-      jboard.pickSquare(3, 0, 3);
+      jboard.touch(5, 6);
+      jboard.touch(6, 7);
+      jboard.touch(3, 1);
+      jboard.touch(3, 0, 3);
       expect(jboard.getPieceType(3, 0)).to.be.equal(3);
     });
 
     it('move black pawns to make a promotion to rook', () => {
-      jboard.pickSquare(5, 6);
-      jboard.pickSquare(6, 7);
-      jboard.pickSquare(3, 1);
-      jboard.pickSquare(2, 0, 1);
+      jboard.touch(5, 6);
+      jboard.touch(6, 7);
+      jboard.touch(3, 1);
+      jboard.touch(2, 0, 1);
       expect(jboard.getPieceType(2, 0)).to.be.equal(1);
     });
   });

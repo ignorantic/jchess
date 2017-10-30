@@ -3,23 +3,19 @@
   height: 12.5%;
   width: 12.5%;
   border-width: 0;
+  padding: 0 2px;
   outline: none;
 
   &:focus {
-    &::after,
-    &::before {
+    &::after {
       box-sizing: border-box;
       position: absolute;
       content: "";
-      left: 5%;
-      top: 5%;
-      width: 90%;
-      height: 90%;
-      border: 1px solid $clr-black;
-    }
-
-    &::after {
-      border: 1px dashed $clr-white;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      border: 4px solid $clr-focus;
     }
   }
 
@@ -142,5 +138,11 @@
       box-shadow: inset 0 0 50px -10px $clr-mate-shadow-square;
       @include piece(bk);
     }
+  }
+}
+
+.board_drag {
+  .square {
+    cursor: move;
   }
 }

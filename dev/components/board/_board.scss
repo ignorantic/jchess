@@ -1,5 +1,6 @@
 .board {
   display: flex;
+  position: relative;
   flex-direction: column-reverse;
   flex-wrap: wrap;
   height: 480px;

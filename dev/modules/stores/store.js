@@ -11,10 +11,8 @@ const initialState = {
   check: boardModel.isCheck(),
   checkmate: boardModel.isCheckmate(),
   flip: false,
-  focus: {
-    file: 0,
-    rank: 0,
-  },
+  focus: [0, 0],
+  drag: [],
 };
 
 const store = createStore(

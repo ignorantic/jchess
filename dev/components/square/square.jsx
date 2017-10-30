@@ -13,13 +13,30 @@ export default class Square extends React.PureComponent {
       marked: PropTypes.bool.isRequired,
       selected: PropTypes.bool.isRequired,
       tabindex: PropTypes.number.isRequired,
-      onPick: PropTypes.func.isRequired,
+      onFocus: PropTypes.func.isRequired,
+      onTouch: PropTypes.func.isRequired,
+      onRelease: PropTypes.func.isRequired,
     };
+    this.handleMouseUp = this.handleMouseUp.bind(this);
+  }
+
+  handleMouseUp() {
+    const {
+      file, rank, onFocus, onRelease,
+    } = this.props;
+    onRelease(file, rank);
+    const selector = `.square[data-file="${file}"][data-rank="${rank}"]`;
+    const elemNext = document.querySelector(selector);
+    if (elemNext) {
+      elemNext.focus();
+    }
+    onFocus(file, rank);
   }
 
   render() {
     const {
-      file, rank, color, pieceColor, pieceType, marked, selected, tabindex, onPick,
+      file, rank, color, pieceColor, pieceType, marked, selected, tabindex,
+      onTouch,
     } = this.props;
     const squareColor = color === 1 ? 'white' : 'black';
     const pclr = pieceColor === 1 ? 'white' : 'black';
@@ -38,7 +55,8 @@ export default class Square extends React.PureComponent {
         className={className}
         data-file={file}
         data-rank={rank}
-        onMouseDown={() => onPick(file, rank)}
+        onMouseDown={() => onTouch(file, rank, true)}
+        onMouseUp={this.handleMouseUp}
       />
     );
   }

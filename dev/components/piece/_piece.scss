@@ -1,0 +1,68 @@
+.piece {
+  position: absolute;
+  z-index: 1000;
+  height: 60px;
+  width: 60px;
+  border-width: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+@mixin piece($i) {
+  $piece: map-get($icons, $i);
+  $sprite: map-get($icons, sprite);
+  $x-position: map-get($piece, background-x) / map-get($piece, square-height) * 100;
+  $y-position: map-get($piece, background-y) / map-get($piece, square-width) * 100;
+
+  background-image: url(map-get($sprite, svg-path));
+  background-position: $x-position $y-position;
+  background-size: 1200% 1200%;
+}
+
+.piece_pawn_white {
+  @include piece(wp);
+}
+
+.piece_pawn_black {
+  @include piece(bp);
+}
+
+.piece_rook_white {
+  @include piece(wr);
+}
+
+.piece_rook_black {
+  @include piece(br);
+}
+
+.piece_knight_white {
+  @include piece(wn);
+}
+
+.piece_knight_black {
+  @include piece(bn);
+}
+
+.piece_bishop_white {
+  @include piece(wb);
+}
+
+.piece_bishop_black {
+  @include piece(bb);
+}
+
+.piece_queen_white {
+  @include piece(wq);
+}
+
+.piece_queen_black {
+  @include piece(bq);
+}
+
+.piece_king_white {
+  @include piece(wk);
+}
+
+.piece_king_black {
+  @include piece(bk);
+}

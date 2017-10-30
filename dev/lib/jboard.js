@@ -266,15 +266,17 @@ export default class JBoard {
   }
 
   /**
-   * Pick square.
+   * Touch piece or square.
    * @param {number} file - The file value.
    * @param {number} rank - The rank value.
-   * @param {number} promType
+   * @param {number} [promType]
+   * @return {boolean}
    */
-  pickSquare(file, rank, promType) {
-    if (!this.getSquare(file, rank)) return;
+  touch(file, rank, promType) {
+    let result = false;
+    if (!this.getSquare(file, rank)) return result;
     if (this.isSquareMarked(file, rank)) {
-      this.handleMove(this.select, { file, rank }, promType);
+      result = this.handleMove(this.select, { file, rank }, promType);
       this.resetSelected();
       this.resetMarked();
     } else {
@@ -282,6 +284,8 @@ export default class JBoard {
       this.selectSquare(file, rank);
       this.markMoves(file, rank);
     }
+
+    return result;
   }
 
   /**
@@ -475,7 +479,7 @@ export default class JBoard {
    * @param {number} color - Color of piece.
    * @param {Object.<string, number>} start - Start square of move.
    * @param {Object.<string, number>} stop - Stop square of move.
-   * @param {number} promType - Type of piece for pawn promotion.
+   * @param {number} [promType] - Type of piece for pawn promotion.
    */
   doMove(type, color, start, stop, promType) {
     this.handleEnPassant(start, stop);
@@ -499,7 +503,7 @@ export default class JBoard {
    * Handle move.
    * @param {Object.<number, number>} start - Start square of move.
    * @param {Object.<number, number>} stop - Stop square of move.
-   * @param {number} promType - Type of piece for pawn promotion.
+   * @param {number} [promType] - Type of piece for pawn promotion.
    */
   handleMove(start, stop, promType) {
     const type = this.getPieceType(start.file, start.rank);
