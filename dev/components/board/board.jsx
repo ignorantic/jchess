@@ -10,30 +10,20 @@ export default class Board extends React.Component {
       turn: PropTypes.number.isRequired,
       check: PropTypes.bool.isRequired,
       checkmate: PropTypes.bool.isRequired,
-      flip: PropTypes.bool.isRequired,
-      focusSquare: PropTypes.arrayOf(PropTypes.number).isRequired,
-      onTouch: PropTypes.func.isRequired,
-      onRelease: PropTypes.func.isRequired,
-      onFocus: PropTypes.func.isRequired,
-      onMouseUp: PropTypes.func.isRequired,
+      focus: PropTypes.arrayOf(PropTypes.number).isRequired,
     };
   }
 
   render() {
     const {
-      board, turn, check, checkmate, flip, focusSquare,
-      onTouch, onRelease, onFocus, onMouseUp,
+      board, turn, check, checkmate, focus,
     } = this.props;
     const color = turn === 1 ? 'white' : 'black';
-    let className = `board board_${color}`;
-    if (flip) className += ' board_flipped';
+    const className = `board board_${color}`;
     return (
       <div
         className={className}
-        onKeyDown={this.handleKeyDown}
         role="toolbar"
-        onMouseMove={this.handleMouseMove}
-
       >
         {
           board.map((fItem, file) => (
@@ -41,7 +31,8 @@ export default class Board extends React.Component {
               let tabindex = -1;
               let checkProp;
               let checkmateProp;
-              if (file === focusSquare[0] && rank === focusSquare[1]) tabindex = 0;
+              const clr = rItem.color === 1 ? 'white' : 'black';
+              if (file === focus[0] && rank === focus[1]) tabindex = 0;
               if (
                 board[file][rank].piece.type === 5
                 && board[file][rank].piece.color === turn
@@ -49,21 +40,20 @@ export default class Board extends React.Component {
                 if (checkmate) checkmateProp = true;
                 else if (check) checkProp = true;
               }
+              const position = { left: `${12.5 * file}%`, top: `${100 - (12.5 * (rank + 1))}%` };
+              const key = `square.${file}.${rank}`;
               return (
                 <Square
                   file={file}
                   rank={rank}
-                  color={rItem.color}
+                  color={clr}
                   marked={rItem.marked}
                   selected={rItem.selected}
-                  key={`square.${rItem.id}`}
+                  key={key}
                   tabindex={tabindex}
                   check={checkProp}
                   checkmate={checkmateProp}
-                  onTouch={onTouch}
-                  onRelease={onRelease}
-                  onFocus={onFocus}
-                  onMouseUp={onMouseUp}
+                  position={position}
                 />
               );
             })

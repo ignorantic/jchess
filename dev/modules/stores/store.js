@@ -11,7 +11,7 @@ const initialState = {
   check: boardModel.isCheck(),
   checkmate: boardModel.isCheckmate(),
   flip: false,
-  focusSquare: [0, 0],
+  focus: [0, 0],
   drag: [],
 };
 

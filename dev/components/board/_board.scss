@@ -1,20 +1,13 @@
 .board {
-  display: flex;
   position: absolute;
   left: 0;
   top: 0;
-  flex-direction: column-reverse;
-  flex-wrap: wrap;
-  height: 480px;
-  width: 480px;
+  height: 100%;
+  width: 100%;
   transition: transform 0.2s;
 }
 
 .board-container_flipped {
-  //.board {
-  //  flex-direction: column;
-  //  flex-wrap: wrap-reverse;
-  //}
   .board {
     transform: rotate(180deg);
   }

@@ -5,14 +5,18 @@ export function touch(file, rank, mouse) {
   return (dispatch) => {
     let drag = [];
     boardModel.touch(file, rank);
-    if (mouse && boardModel.isFriend(boardModel.getTurn(), file, rank)) drag = [file, rank];
+    if (
+      mouse
+      && boardModel.getMoves(file, rank).length > 0
+      && boardModel.isFriend(boardModel.getTurn(), file, rank)
+    ) drag = [file, rank];
     const payload = {
       board: boardModel.getBoard(),
       fen: boardModel.getFEN(),
       turn: boardModel.getTurn(),
       check: boardModel.isCheck(),
       checkmate: boardModel.isCheckmate(),
-      focusSquare: [file, rank],
+      focus: [file, rank],
       drag,
     };
     dispatch({
@@ -31,7 +35,7 @@ export function releasePiece(file, rank) {
         turn: boardModel.getTurn(),
         check: boardModel.isCheck(),
         checkmate: boardModel.isCheckmate(),
-        focusSquare: [file, rank],
+        focus: [file, rank],
         drag: [],
       };
       dispatch({
@@ -51,9 +55,14 @@ export function releasePiece(file, rank) {
 }
 
 export function changeFocus(file, rank) {
+  const selector = `.square[data-file="${file}"][data-rank="${rank}"]`;
+  const elemNext = document.querySelector(selector);
+  if (elemNext) {
+    setTimeout(() => elemNext.focus(), 0);
+  }
   return (dispatch) => {
     const payload = {
-      focusSquare: [file, rank],
+      focus: [file, rank],
     };
     dispatch({
       type: consts.CHANGE_FOCUS,

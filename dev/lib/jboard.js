@@ -385,7 +385,7 @@ export default class JBoard {
    * Return array of valid moves for piece on square.
    * @param {number} file - The file value.
    * @param {number} rank - The rank value.
-   * @returns {?Array}
+   * @returns {Array}
    */
   getMoves(file, rank) {
     switch (this.getPieceType(file, rank)) {
@@ -394,6 +394,9 @@ export default class JBoard {
       }
       case 5: {
         return this.getMovesKing(file, rank);
+      }
+      case null: {
+        return [];
       }
       default: {
         return this.getMovesPiece(file, rank);
@@ -746,10 +749,7 @@ export default class JBoard {
       }
     });
 
-    if (result.length > 0) {
-      return result;
-    }
-    return null;
+    return result;
   }
 
   /**

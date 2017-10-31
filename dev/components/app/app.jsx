@@ -17,7 +17,7 @@ export default class App extends React.PureComponent {
         check: PropTypes.bool,
         checkmate: PropTypes.bool,
         flip: PropTypes.bool,
-        focusSquare: PropTypes.array,
+        focus: PropTypes.array,
         drag: PropTypes.array,
       }).isRequired,
     };
@@ -28,7 +28,7 @@ export default class App extends React.PureComponent {
         <div className="container">
           <Turn />
           <div className="content">
-            <BoardContainer />
+            <BoardContainer id="board" />
             <FEN />
           </div>
           <Sidebar />

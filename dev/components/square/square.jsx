@@ -7,14 +7,16 @@ export default class Square extends React.PureComponent {
     Square.propTypes = {
       file: PropTypes.number.isRequired,
       rank: PropTypes.number.isRequired,
-      color: PropTypes.number.isRequired,
+      color: PropTypes.string.isRequired,
+      position: PropTypes.shape({
+        left: PropTypes.string,
+        top: PropTypes.string,
+      }).isRequired,
       marked: PropTypes.bool.isRequired,
       selected: PropTypes.bool.isRequired,
       tabindex: PropTypes.number.isRequired,
       check: PropTypes.bool,
       checkmate: PropTypes.bool,
-      onTouch: PropTypes.func.isRequired,
-      onMouseUp: PropTypes.func.isRequired,
     };
     Square.defaultProps = {
       check: false,
@@ -24,12 +26,10 @@ export default class Square extends React.PureComponent {
 
   render() {
     const {
-      file, rank, color, marked, selected, check, checkmate, tabindex,
-      onTouch, onMouseUp,
+      file, rank, color, position, marked, selected, check, checkmate, tabindex,
     } = this.props;
-    const squareColor = color === 1 ? 'white' : 'black';
-    let className = `square square_${squareColor}`;
-    if (marked) className += ` square_marked_${squareColor}`;
+    let className = `square square_${color}`;
+    if (marked) className += ` square_marked_${color}`;
     if (selected) className += ' square_selected';
     if (check) className += ' square_check';
     if (checkmate) className += ' square_checkmate';
@@ -40,8 +40,7 @@ export default class Square extends React.PureComponent {
         className={className}
         data-file={file}
         data-rank={rank}
-        onMouseDown={() => onTouch(file, rank, true)}
-        onMouseUp={() => onMouseUp(file, rank)}
+        style={position}
       />
     );
   }

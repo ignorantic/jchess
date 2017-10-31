@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import { describe, it, before, beforeEach } from 'mocha';
 import { expect } from 'chai';
-import JBoard from '../dev/lib/jboard';
+import JBoard from '../../dev/lib/jboard';
 
 describe('jBoard', () => {
   const TEST_POSITION = 'r3k2r/pp3pp1/b2P4/b1pP1n1B/3q1P1p/2n2NP1/PP2P2P/RNBQK2R w KQkq - 0 1';
@@ -1074,6 +1074,27 @@ describe('jBoard', () => {
     });
   });
 
+  describe('getAttackedSquares', () => {
+    let jboard;
+
+    before(() => {
+      jboard = new JBoard();
+      jboard.setPositionByFEN(CASTLING_POSITION);
+    });
+
+    it('return squares, which are attacked by bishop move', () => {
+      const square = jboard.getAttackedSquares(3, 2, 1, 7);
+
+      expect(square[0].file).to.be.equal(2);
+      expect(square[0].rank).to.be.equal(6);
+
+      expect(square[1].file).to.be.equal(3);
+      expect(square[1].rank).to.be.equal(5);
+
+      expect(square[2]).to.be.undefined;
+    });
+  });
+
   /*
    *   PAWN PROMOTION
    */
@@ -1144,27 +1165,6 @@ describe('jBoard', () => {
       jboard.touch(3, 1);
       jboard.touch(2, 0, 1);
       expect(jboard.getPieceType(2, 0)).to.be.equal(1);
-    });
-  });
-
-  describe('getAttackedSquares', () => {
-    let jboard;
-
-    before(() => {
-      jboard = new JBoard();
-      jboard.setPositionByFEN(CASTLING_POSITION);
-    });
-
-    it('return squares, which are attacked by bishop move', () => {
-      const square = jboard.getAttackedSquares(3, 2, 1, 7);
-
-      expect(square[0].file).to.be.equal(2);
-      expect(square[0].rank).to.be.equal(6);
-
-      expect(square[1].file).to.be.equal(3);
-      expect(square[1].rank).to.be.equal(5);
-
-      expect(square[2]).to.be.undefined;
     });
   });
 

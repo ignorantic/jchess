@@ -6,8 +6,8 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import Board from '../dev/components/board-container/board-container';
-import store from '../dev/modules/stores/store';
+import Board from '../../dev/components/board-container/board-container';
+import store from '../../dev/modules/stores/store';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -28,7 +28,7 @@ describe('<BoardContainer />', () => {
       expect(component.props().state.turn).to.be.equal(1);
       expect(component.props().state.check).to.be.false;
       expect(component.props().state.checkmate).to.be.false;
-      expect(component.props().state.focusSquare).to.be.an('array');
+      expect(component.props().state.focus).to.be.an('array');
       expect(component.props().onTouch).to.be.an('function');
       expect(component.props().onFocus).to.be.an('function');
     });
