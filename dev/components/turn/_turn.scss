@@ -12,13 +12,14 @@
     width: 20px;
     border-radius: 10px;
     left: 0;
+    transition: top 0.2s;
   }
 }
 
 .turn_white {
   &::after {
     background: $clr-white;
-    bottom: 0;
+    top: calc(100% - 20px);
   }
 }
 
@@ -33,14 +34,12 @@
   &.turn_white {
     &::after {
       top: 0;
-      bottom: auto;
     }
   }
 
   &.turn_black {
     &::after {
-      top: auto;
-      bottom: 0;
+      top: calc(100% - 20px);
     }
   }
 }

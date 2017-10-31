@@ -12,7 +12,7 @@ export function touch(file, rank, mouse) {
       turn: boardModel.getTurn(),
       check: boardModel.isCheck(),
       checkmate: boardModel.isCheckmate(),
-      focus: [file, rank],
+      focusSquare: [file, rank],
       drag,
     };
     dispatch({
@@ -31,7 +31,7 @@ export function releasePiece(file, rank) {
         turn: boardModel.getTurn(),
         check: boardModel.isCheck(),
         checkmate: boardModel.isCheckmate(),
-        focus: [file, rank],
+        focusSquare: [file, rank],
         drag: [],
       };
       dispatch({
@@ -50,19 +50,11 @@ export function releasePiece(file, rank) {
   };
 }
 
-export function dragPiece(left, top) {
-  return (dispatch) => {
-    const payload = [left, top];
-    dispatch({
-      type: consts.DRAG,
-      payload,
-    });
-  };
-}
-
 export function changeFocus(file, rank) {
   return (dispatch) => {
-    const payload = [file, rank];
+    const payload = {
+      focusSquare: [file, rank],
+    };
     dispatch({
       type: consts.CHANGE_FOCUS,
       payload,

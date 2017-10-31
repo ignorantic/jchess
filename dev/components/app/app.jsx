@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
-import Board from '../board/board';
+import BoardContainer from '../board-container/board-container';
 import Sidebar from '../sidebar/sidebar';
 import FEN from '../fen/fen';
 import Turn from '../turn/turn';
@@ -13,6 +13,12 @@ export default class App extends React.PureComponent {
       store: PropTypes.shape({
         board: PropTypes.array,
         fen: PropTypes.string,
+        turn: PropTypes.number,
+        check: PropTypes.bool,
+        checkmate: PropTypes.bool,
+        flip: PropTypes.bool,
+        focusSquare: PropTypes.array,
+        drag: PropTypes.array,
       }).isRequired,
     };
   }
@@ -22,7 +28,7 @@ export default class App extends React.PureComponent {
         <div className="container">
           <Turn />
           <div className="content">
-            <Board />
+            <BoardContainer />
             <FEN />
           </div>
           <Sidebar />

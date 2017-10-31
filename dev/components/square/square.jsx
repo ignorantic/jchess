@@ -8,46 +8,31 @@ export default class Square extends React.PureComponent {
       file: PropTypes.number.isRequired,
       rank: PropTypes.number.isRequired,
       color: PropTypes.number.isRequired,
-      pieceColor: PropTypes.number.isRequired,
-      pieceType: PropTypes.number.isRequired,
       marked: PropTypes.bool.isRequired,
       selected: PropTypes.bool.isRequired,
       tabindex: PropTypes.number.isRequired,
-      onFocus: PropTypes.func.isRequired,
+      check: PropTypes.bool,
+      checkmate: PropTypes.bool,
       onTouch: PropTypes.func.isRequired,
-      onRelease: PropTypes.func.isRequired,
+      onMouseUp: PropTypes.func.isRequired,
     };
-    this.handleMouseUp = this.handleMouseUp.bind(this);
-  }
-
-  handleMouseUp() {
-    const {
-      file, rank, onFocus, onRelease,
-    } = this.props;
-    onRelease(file, rank);
-    const selector = `.square[data-file="${file}"][data-rank="${rank}"]`;
-    const elemNext = document.querySelector(selector);
-    if (elemNext) {
-      elemNext.focus();
-    }
-    onFocus(file, rank);
+    Square.defaultProps = {
+      check: false,
+      checkmate: false,
+    };
   }
 
   render() {
     const {
-      file, rank, color, pieceColor, pieceType, marked, selected, tabindex,
-      onTouch,
+      file, rank, color, marked, selected, check, checkmate, tabindex,
+      onTouch, onMouseUp,
     } = this.props;
     const squareColor = color === 1 ? 'white' : 'black';
-    const pclr = pieceColor === 1 ? 'white' : 'black';
-    const pieces = {
-      0: 'pawn', 1: 'rook', 2: 'knight', 3: 'bishop', 4: 'queen', 5: 'king',
-    };
-    const ptp = pieces[pieceType];
     let className = `square square_${squareColor}`;
-    if (pieceType !== null) className += ` square_${ptp}_${pclr}`;
     if (marked) className += ` square_marked_${squareColor}`;
     if (selected) className += ' square_selected';
+    if (check) className += ' square_check';
+    if (checkmate) className += ' square_checkmate';
 
     return (
       <button
@@ -56,7 +41,7 @@ export default class Square extends React.PureComponent {
         data-file={file}
         data-rank={rank}
         onMouseDown={() => onTouch(file, rank, true)}
-        onMouseUp={this.handleMouseUp}
+        onMouseUp={() => onMouseUp(file, rank)}
       />
     );
   }

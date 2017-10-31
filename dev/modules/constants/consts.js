@@ -3,7 +3,6 @@ import keyMirror from 'keymirror';
 export default keyMirror({
   CHANGE_FOCUS: null,
   RELEASE: null,
-  DRAG: null,
   CHANGE_FEN: null,
   SETUP_POSITION: null,
   CLEAR_POSITION: null,

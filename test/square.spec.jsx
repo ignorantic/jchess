@@ -11,23 +11,27 @@ Enzyme.configure({ adapter: new Adapter() });
 describe('<Square />', () => {
   describe('white rook on white square', () => {
     let wrapper;
-    const onPick = sinon.spy();
+    const onTouch = sinon.spy();
+    const onFocus = sinon.spy();
+    const onRelease = sinon.spy();
 
     before(() => {
-      const square = {
-        color: 'white',
-        piece: {
-          color: 'white',
-          type: 'rook',
-        },
-      };
+      const color = 1;
+      const pieceColor = 1;
+      const pieceType = 1;
       wrapper = shallow(<Square
-        file={0}
-        rank={1}
-        square={square}
+        file={4}
+        rank={3}
+        color={color}
+        pieceColor={pieceColor}
+        pieceType={pieceType}
+        marked={false}
+        selected={false}
         key="0.1"
         tabindex={0}
-        onPick={onPick}
+        onTouch={onTouch}
+        onFocus={onFocus}
+        onRelease={onRelease}
       />);
     });
 
@@ -53,29 +57,33 @@ describe('<Square />', () => {
 
     it('simulates click events', () => {
       wrapper.find('.square').simulate('mousedown');
-      expect(onPick).to.have.property('callCount', 1);
+      expect(onTouch).to.have.property('callCount', 1);
     });
   });
 
   describe('black queen on black square', () => {
     let wrapper;
-    const onPick = sinon.spy();
+    const onTouch = sinon.spy();
+    const onFocus = sinon.spy();
+    const onRelease = sinon.spy();
 
     before(() => {
-      const square = {
-        color: 'black',
-        piece: {
-          color: 'black',
-          type: 'queen',
-        },
-      };
+      const color = 2;
+      const pieceColor = 2;
+      const pieceType = 4;
       wrapper = shallow(<Square
         file={4}
         rank={3}
-        square={square}
+        color={color}
+        pieceColor={pieceColor}
+        pieceType={pieceType}
+        marked={false}
+        selected={false}
         key="4.3"
         tabindex={0}
-        onPick={onPick}
+        onTouch={onTouch}
+        onFocus={onFocus}
+        onRelease={onRelease}
       />);
     });
 
@@ -101,7 +109,7 @@ describe('<Square />', () => {
 
     it('simulates click events', () => {
       wrapper.find('.square').simulate('mousedown');
-      expect(onPick).to.have.property('callCount', 1);
+      expect(onTouch).to.have.property('callCount', 1);
     });
   });
 });

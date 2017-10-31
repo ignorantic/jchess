@@ -5,21 +5,14 @@ export default class Piece extends React.PureComponent {
   constructor(props) {
     super(props);
     Piece.propTypes = {
-      left: PropTypes.number,
-      top: PropTypes.number,
-      hidden: PropTypes.bool.isRequired,
       color: PropTypes.number.isRequired,
       type: PropTypes.number.isRequired,
-    };
-    Piece.defaultProps = {
-      left: 0,
-      top: 0,
     };
   }
 
   render() {
     const {
-      color, type, top, left, hidden,
+      color, type,
     } = this.props;
     const pclr = color === 1 ? 'white' : 'black';
     const pieces = {
@@ -31,9 +24,7 @@ export default class Piece extends React.PureComponent {
 
     return (
       <div
-        hidden={hidden ? 'hidden' : null}
         className={className}
-        style={{ top: `${top}px`, left: `${left}px` }}
       />
     );
   }

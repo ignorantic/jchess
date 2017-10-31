@@ -10,7 +10,7 @@ const reducer = (state, action) => {
         turn: action.payload.turn,
         check: action.payload.check,
         checkmate: action.payload.checkmate,
-        focus: action.payload.focus,
+        focusSquare: action.payload.focusSquare,
         drag: action.payload.drag,
       };
     }
@@ -26,12 +26,6 @@ const reducer = (state, action) => {
         checkmate: action.payload.checkmate,
       };
     }
-    case consts.DRAG: {
-      return {
-        ...state,
-        drag: [state.drag[0], state.drag[1], action.payload[0], action.payload[1]],
-      };
-    }
     case consts.RELEASE: {
       return {
         ...state,
@@ -41,7 +35,7 @@ const reducer = (state, action) => {
     case consts.CHANGE_FOCUS: {
       return {
         ...state,
-        focus: action.payload,
+        focusSquare: action.payload.focusSquare,
       };
     }
     case consts.FLIP_BOARD: {

@@ -18,10 +18,9 @@
 
   &:focus {
     outline: {
-      style: dotted;
-      color: $clr-face;
-      width: 1px;
-      offset: -1px;
+      style: solid;
+      color: $clr-outline;
+      width: 2px;
     }
   }
 }

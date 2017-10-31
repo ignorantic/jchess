@@ -1,4 +1,4 @@
-.board {
+.position {
   display: flex;
   position: absolute;
   left: 0;
@@ -7,15 +7,16 @@
   flex-wrap: wrap;
   height: 480px;
   width: 480px;
+  pointer-events: none;
   transition: transform 0.2s;
 }
 
 .board-container_flipped {
-  //.board {
+  //.position {
   //  flex-direction: column;
   //  flex-wrap: wrap-reverse;
   //}
-  .board {
+  .position {
     transform: rotate(180deg);
   }
 }
