@@ -29,26 +29,27 @@ class BoardContainer extends React.Component {
     this.handleMouseUp = this.handleMouseUp.bind(this);
   }
 
-  handleKeyDown(event) {
+  handleArrowKey(code) {
     const {
-      focus, flip, onTouch, onFocus,
+      focus, flip, onFocus,
     } = this.props;
     let [file, rank] = focus;
+
+    const fc = flip ? -1 : 1;
+    if (code % 2) file += (fc * (code - 38));
+    else rank -= (fc * (code - 39));
+    if (file <= 7 && file >= 0 && rank <= 7 && rank >= 0) onFocus(file, rank);
+  }
+
+  handleKeyDown(event) {
+    const {
+      focus, onTouch,
+    } = this.props;
+    const [file, rank] = focus;
     const code = event.keyCode;
 
-    function handleArrowKey() {
-      const fc = flip ? -1 : 1;
-      if (code % 2) file += (fc * (code - 38));
-      else rank -= (fc * (code - 39));
-      if (file <= 7 && file >= 0 && rank <= 7 && rank >= 0) onFocus(file, rank);
-    }
-
-    function handleEnter() {
-      onTouch(file, rank, false);
-    }
-
-    if (code > 36 && code < 41) handleArrowKey();
-    else if (code === 13 || code === 32) handleEnter();
+    if (code > 36 && code < 41) this.handleArrowKey(code);
+    else if (code === 13 || code === 32) onTouch(file, rank, false);
   }
 
   handleMouseMove(event) {

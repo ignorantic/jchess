@@ -35,12 +35,13 @@ export default class Position extends React.Component {
                 0: 'pawn', 1: 'rook', 2: 'knight', 3: 'bishop', 4: 'queen', 5: 'king',
               };
               const pieceType = pieces[rItem.piece.type];
-              const position = (file === dragFile && rank === dragRank)
+              const style = (file === dragFile && rank === dragRank)
                 ? ({
                   left: flip ? `calc(100% - ${dragLeft}px - 6.25%)`
                     : `calc(${dragLeft}px - 6.25%)`,
                   top: flip ? `calc(100% - ${dragTop}px - 6.25%)`
                     : `calc(${dragTop}px - 6.25%)`,
+                  cursor: 'move',
                   transitionProperty: 'none',
                   zIndex: 100,
                 })
@@ -51,7 +52,7 @@ export default class Position extends React.Component {
                   color={pieceColor}
                   type={pieceType}
                   key={key}
-                  position={position}
+                  style={style}
                 />
               );
             })

@@ -7,16 +7,19 @@ export default class Piece extends React.PureComponent {
     Piece.propTypes = {
       color: PropTypes.string.isRequired,
       type: PropTypes.string.isRequired,
-      position: PropTypes.shape({
+      style: PropTypes.shape({
         left: PropTypes.string,
         top: PropTypes.string,
+        cursor: PropTypes.string,
+        transitionProperty: PropTypes.string,
+        zIndex: PropTypes.number,
       }).isRequired,
     };
   }
 
   render() {
     const {
-      position, color, type,
+      style, color, type,
     } = this.props;
     let className = 'piece';
     if (type !== null) className += ` piece_${type}_${color}`;
@@ -24,7 +27,7 @@ export default class Piece extends React.PureComponent {
     return (
       <div
         className={className}
-        style={position}
+        style={style}
       />
     );
   }

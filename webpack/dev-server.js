@@ -20,6 +20,7 @@ module.exports = () => ({
               sourceMap: true,
             },
           },
+          'autoprefixer-loader',
           'resolve-url-loader',
           {
             loader: 'sass-loader',

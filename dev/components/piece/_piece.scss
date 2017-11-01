@@ -21,6 +21,8 @@
   background-image: url(map-get($sprite, svg-path));
   background-position: $x-position $y-position;
   background-size: 1200% 1200%;
+
+  cursor: grab;
 }
 
 .piece_pawn_white {
