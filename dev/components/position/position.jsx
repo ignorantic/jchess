@@ -8,7 +8,8 @@ export default class Position extends React.Component {
     Position.propTypes = {
       board: PropTypes.arrayOf(PropTypes.array).isRequired,
       flip: PropTypes.bool.isRequired,
-      drag: PropTypes.arrayOf(PropTypes.number).isRequired,
+      dragFile: PropTypes.number.isRequired,
+      dragRank: PropTypes.number.isRequired,
       dragLeft: PropTypes.number.isRequired,
       dragTop: PropTypes.number.isRequired,
     };
@@ -16,10 +17,10 @@ export default class Position extends React.Component {
 
   render() {
     const {
-      board, flip, drag,
+      board, flip,
+      dragFile, dragRank,
       dragLeft, dragTop,
     } = this.props;
-    const [dragFile, dragRank] = drag;
     let className = 'position';
     if (flip) className += ' position_flipped';
     return (

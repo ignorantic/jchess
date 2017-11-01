@@ -1,6 +1,14 @@
 import consts from '../constants/consts';
 import boardModel from '../models/board-model';
 
+function setFocus(file, rank) {
+  const selector = `.square[data-file="${file}"][data-rank="${rank}"]`;
+  const elemNext = document.querySelector(selector);
+  if (elemNext) {
+    setTimeout(() => elemNext.focus(), 0);
+  }
+}
+
 export function touch(file, rank, mouse) {
   return (dispatch) => {
     let drag = [];
@@ -26,9 +34,24 @@ export function touch(file, rank, mouse) {
   };
 }
 
+export function changeFocus(file, rank) {
+  setFocus(file, rank);
+  return (dispatch) => {
+    const payload = {
+      focus: [file, rank],
+    };
+    dispatch({
+      type: consts.CHANGE_FOCUS,
+      payload,
+    });
+  };
+}
+
 export function releasePiece(file, rank) {
   return (dispatch) => {
-    if (boardModel.touch(file, rank)) {
+    if (boardModel.isSquareMarked(file, rank)) {
+      boardModel.touch(file, rank);
+      setFocus(file, rank);
       const payload = {
         board: boardModel.getBoard(),
         fen: boardModel.getFEN(),
@@ -51,23 +74,6 @@ export function releasePiece(file, rank) {
         payload,
       });
     }
-  };
-}
-
-export function changeFocus(file, rank) {
-  const selector = `.square[data-file="${file}"][data-rank="${rank}"]`;
-  const elemNext = document.querySelector(selector);
-  if (elemNext) {
-    setTimeout(() => elemNext.focus(), 0);
-  }
-  return (dispatch) => {
-    const payload = {
-      focus: [file, rank],
-    };
-    dispatch({
-      type: consts.CHANGE_FOCUS,
-      payload,
-    });
   };
 }
 

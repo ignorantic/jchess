@@ -4,14 +4,12 @@ import PropTypes from 'prop-types';
 import Board from '../board/board';
 import { touch, changeFocus, releasePiece } from '../../modules/actions/actions';
 import Position from '../position/position';
+import { rect, convCoord } from '../../lib/utils';
 
 class BoardContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      dragLeft: 0,
-      dragTop: 0,
-    };
+    this.state = { drag: [0, 0] };
     BoardContainer.propTypes = {
       id: PropTypes.string.isRequired,
       board: PropTypes.arrayOf(PropTypes.array).isRequired,
@@ -31,81 +29,52 @@ class BoardContainer extends React.Component {
     this.handleMouseUp = this.handleMouseUp.bind(this);
   }
 
-  convertCoordinates(pageX, pageY) {
-    const {
-      id, flip,
-    } = this.props;
-    const { left, top, width } = document.getElementById(id).getBoundingClientRect();
-    const file = flip
-      ? Math.floor((width - (pageX - left)) / (width / 8))
-      : Math.floor((pageX - left) / (width / 8));
-    const rank = flip
-      ? Math.floor((pageY - top) / (width / 8))
-      : Math.floor((width - (pageY - top)) / (width / 8));
-    return { file, rank };
-  }
-
   handleKeyDown(event) {
     const {
       focus, flip, onTouch, onFocus,
     } = this.props;
-    if (event.keyCode > 36 && event.keyCode < 41) {
+    let [file, rank] = focus;
+    const code = event.keyCode;
+
+    function handleArrowKey() {
       const fc = flip ? -1 : 1;
-      let nf = focus[0];
-      let nr = focus[1];
-      switch (event.keyCode) {
-        case 37:
-          nf = focus[0] - fc;
-          break;
-        case 38:
-          nr = focus[1] + fc;
-          break;
-        case 39:
-          nf = focus[0] + fc;
-          break;
-        case 40:
-          nr = focus[1] - fc;
-          break;
-        default:
-          break;
-      }
-      if (nf > 7) nf = 7;
-      if (nf < 0) nf = 0;
-      if (nr > 7) nr = 7;
-      if (nr < 0) nr = 0;
-      onFocus(nf, nr);
+      if (code % 2) file += (fc * (code - 38));
+      else rank -= (fc * (code - 39));
+      if (file <= 7 && file >= 0 && rank <= 7 && rank >= 0) onFocus(file, rank);
     }
-    if (event.keyCode === 13 || event.keyCode === 32) {
-      const [file, rank] = focus;
+
+    function handleEnter() {
       onTouch(file, rank, false);
     }
+
+    if (code > 36 && code < 41) handleArrowKey();
+    else if (code === 13 || code === 32) handleEnter();
   }
 
   handleMouseMove(event) {
-    const { left, top } = document.getElementById(this.props.id).getBoundingClientRect();
-    const dragLeft = event.pageX - left;
-    const dragTop = event.pageY - top;
-    this.setState(state => ({
-      ...state,
-      dragLeft,
-      dragTop,
-    }));
+    const { id } = this.props;
+    const { left, top } = rect(id);
+    const dl = event.pageX - left;
+    const dt = event.pageY - top;
+    this.setState({ drag: [dl, dt] });
   }
 
   handleMouseDown(event) {
     const {
+      id, flip,
       onTouch, onFocus,
     } = this.props;
-    const { file, rank } = this.convertCoordinates(event.pageX, event.pageY);
+    const { file, rank } = convCoord(id, flip, event.pageX, event.pageY);
     onTouch(file, rank, true);
     onFocus(file, rank);
   }
 
   handleMouseUp(event) {
     const {
+      id, flip,
       onRelease,
     } = this.props;
-    const { file, rank } = this.convertCoordinates(event.pageX, event.pageY);
+    const { file, rank } = convCoord(id, flip, event.pageX, event.pageY);
     onRelease(file, rank);
   }
 
@@ -113,7 +82,8 @@ class BoardContainer extends React.Component {
     const {
       id, board, turn, check, checkmate, flip, focus, drag,
     } = this.props;
-    const { dragLeft, dragTop } = this.state;
+    const [dragFile, dragRank] = drag;
+    const [dragLeft, dragTop] = this.state.drag;
     let className = 'board-container';
     if (flip) className += ' board-container_flipped';
     return (
@@ -131,15 +101,14 @@ class BoardContainer extends React.Component {
           turn={turn}
           check={check}
           checkmate={checkmate}
-          flip={flip}
           focus={focus}
-          drad={drag}
         />
         <Position
           board={board}
           turn={turn}
           flip={flip}
-          drag={drag}
+          dragFile={dragFile}
+          dragRank={dragRank}
           dragLeft={dragLeft}
           dragTop={dragTop}
         />

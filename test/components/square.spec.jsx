@@ -11,10 +11,6 @@ Enzyme.configure({ adapter: new Adapter() });
 describe('<Square />', () => {
   describe('white rook on white square', () => {
     let wrapper;
-    const onTouch = sinon.spy();
-    const onFocus = sinon.spy();
-    const onRelease = sinon.spy();
-    const onMouseUp = sinon.spy();
 
     before(() => {
       const file = 4;
@@ -34,10 +30,6 @@ describe('<Square />', () => {
         check={false}
         checkmate={false}
         position={position}
-        onTouch={onTouch}
-        onFocus={onFocus}
-        onRelease={onRelease}
-        onMouseUp={onMouseUp}
       />);
     });
 
@@ -52,19 +44,10 @@ describe('<Square />', () => {
     it('don\'t renders an ".square_black"', () => {
       expect(wrapper.find('.square_black')).to.have.length(0);
     });
-
-    it('simulates click events', () => {
-      wrapper.find('.square').simulate('mousedown');
-      expect(onTouch).to.have.property('callCount', 1);
-    });
   });
 
   describe('black queen on black square', () => {
     let wrapper;
-    const onTouch = sinon.spy();
-    const onFocus = sinon.spy();
-    const onRelease = sinon.spy();
-    const onMouseUp = sinon.spy();
 
     before(() => {
       const file = 4;
@@ -84,10 +67,6 @@ describe('<Square />', () => {
         check={false}
         checkmate={false}
         position={position}
-        onTouch={onTouch}
-        onFocus={onFocus}
-        onRelease={onRelease}
-        onMouseUp={onMouseUp}
       />);
     });
 
@@ -101,11 +80,6 @@ describe('<Square />', () => {
 
     it('don\'t renders an ".square_white"', () => {
       expect(wrapper.find('.square_white')).to.have.length(0);
-    });
-
-    it('simulates click events', () => {
-      wrapper.find('.square').simulate('mousedown');
-      expect(onTouch).to.have.property('callCount', 1);
     });
   });
 });
