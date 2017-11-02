@@ -18,6 +18,23 @@ export default class Lines extends React.Component {
       halfCount, currentLine, lines,
       onGoTo,
     } = this.props;
+    const content = () => {
+      const result = lines[currentLine].map((item, index) => {
+        if (index === 0) return null;
+        const active = index === halfCount;
+        return (
+          <Move
+            key={`move.${currentLine}.${index - 1}.${item.move}`}
+            index={index}
+            item={item}
+            currentLine={currentLine}
+            active={active}
+            onGoTo={onGoTo}
+          />
+        );
+      });
+      return result.length > 1 ? result : <p className="move move_white">...</p>;
+    };
     return (
       <div
         className="lines"
@@ -25,22 +42,7 @@ export default class Lines extends React.Component {
         <div
           className="lines__moves"
         >
-          {
-            lines[currentLine].map((item, index) => {
-              if (index === 0) return false;
-              const active = index === halfCount;
-              return (
-                <Move
-                  key={`move.${currentLine}.${index - 1}.${item.move}`}
-                  index={index}
-                  item={item}
-                  currentLine={currentLine}
-                  active={active}
-                  onGoTo={onGoTo}
-                />
-              );
-            })
-          }
+          {content()}
         </div>
       </div>
     );
