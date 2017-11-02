@@ -8,7 +8,7 @@ export default class Square extends React.PureComponent {
       file: PropTypes.number.isRequired,
       rank: PropTypes.number.isRequired,
       color: PropTypes.string.isRequired,
-      position: PropTypes.shape({
+      style: PropTypes.shape({
         left: PropTypes.string,
         top: PropTypes.string,
       }).isRequired,
@@ -26,7 +26,7 @@ export default class Square extends React.PureComponent {
 
   render() {
     const {
-      file, rank, color, position, marked, selected, check, checkmate, tabindex,
+      file, rank, color, style, marked, selected, check, checkmate, tabindex,
     } = this.props;
     let className = `square square_${color}`;
     if (marked) className += ` square_marked_${color}`;
@@ -40,7 +40,7 @@ export default class Square extends React.PureComponent {
         className={className}
         data-file={file}
         data-rank={rank}
-        style={position}
+        style={style}
       />
     );
   }

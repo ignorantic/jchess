@@ -34,17 +34,22 @@ export default class JBoard {
       4: [...rook, ...bishop],
       5: [...rook, ...bishop],
     };
+
+    this.initialFEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
   }
 
   /** Initialize fields. */
   initFields() {
     this.board = [];
     this.turn = 1;
-    this.count = 1;
+    this.fullCount = 1;
+    this.halfCount = 0;
     this.countFiftyMove = 0;
     this.select = null;
     this.enPassant = null;
     this.castling = { 1: 0, 2: 0 };
+    this.currentLine = 0;
+    this.lines = [[{ fen: this.initialFEN }]];
   }
 
   /** Initialize board array. */
@@ -78,23 +83,26 @@ export default class JBoard {
 
   /** Set up initial position. */
   setUp() {
-    this.setPositionByFEN('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+    this.resetPosition();
+    this.setPositionByFEN(this.initialFEN);
   }
 
   /**
    * Set up position by FEN.
    * @param {string} FEN
+   * @return {boolean}
    */
   setPositionByFEN(FEN) {
     const hash = JBoard.splitFEN(FEN);
-    if (hash === null) return;
+    if (hash === null) return false;
     const { ranks, tail } = hash;
     const pieceArray = JBoard.parseFENRanks(ranks);
-    if (pieceArray === null) return;
+    if (pieceArray === null) return false;
     this.setPiecesByArray(pieceArray);
     this.parseFENTurn(tail[0]);
     this.parseFENCastling(tail[1]);
     this.parseFENEnPassant(tail[2]);
+    return true;
   }
 
   /** Reset position and state of game. */
@@ -109,10 +117,14 @@ export default class JBoard {
     });
 
     this.turn = 1;
-    this.count = 1;
+    this.fullCount = 1;
+    this.halfCount = 0;
     this.countFiftyMove = 0;
     this.enPassant = null;
+    this.currentLine = 0;
     this.castling = { 1: 0, 2: 0 };
+    this.currentLine = 0;
+    this.lines = [[{ fen: this.initialFEN }]];
   }
 
   /**
@@ -165,6 +177,18 @@ export default class JBoard {
   getPieceColor(file, rank) {
     const square = this.getSquare(file, rank);
     return square && square.piece.color;
+  }
+
+  getHalfCount() {
+    return this.halfCount;
+  }
+
+  getCurrentLine() {
+    return this.currentLine;
+  }
+
+  getLines() {
+    return [].concat(this.lines);
   }
 
   /**
@@ -390,16 +414,16 @@ export default class JBoard {
   getMoves(file, rank) {
     switch (this.getPieceType(file, rank)) {
       case 0: {
-        return this.getMovesPawn(file, rank);
+        return this.getPawnMoves(file, rank);
       }
       case 5: {
-        return this.getMovesKing(file, rank);
+        return this.getKingMoves(file, rank);
       }
       case null: {
         return [];
       }
       default: {
-        return this.getMovesPiece(file, rank);
+        return this.getPieceMoves(file, rank);
       }
     }
   }
@@ -446,22 +470,28 @@ export default class JBoard {
 
   /**
    * Check are there castling moves for next turn
-   * and increase move count.
+   * and increase move fullCount.
    * @param {number} type - Type of piece.
    * @param {number} color - Color of piece.
-   * @param {number} startFile - Start file of move.
+   * @param {Object.<string, number>} start - Start square of move.
+   * @param {Object.<string, number>} stop - Stop square of move.
    */
-  checkAfterMove(type, color, startFile) {
-    this.checkCastling(color, type, startFile);
+  checkAfterMove(type, color, start, stop) {
+    this.checkCastling(color, type, start.file);
     if (color === 2) {
-      this.count += 1;
+      this.fullCount += 1;
     }
-
+    this.halfCount += 1;
+    // if (typestop.rank = 7 )
+    const promType = JBoard.isPawnPromotion(type, color, stop.rank)
+      ? this.getPieceType(stop.file, stop.rank)
+      : null;
     this.passTurn();
+    this.writeMove(start, stop, promType);
   }
 
   /**
-   * Check count of fifty-move rule.
+   * Check fullCount of fifty-move rule.
    * @param {number} type - Type of piece.
    * @param {number} color - Color of piece.
    * @param {Object.<string, number>} stopSquare - Stop square of move.
@@ -474,6 +504,13 @@ export default class JBoard {
     } else {
       this.countFiftyMove += 1;
     }
+  }
+
+  writeMove(start, stop, promType) {
+    this.lines[this.currentLine][this.halfCount] = {
+      move: JBoard.toAlgebraic(start, stop, promType),
+      fen: this.getFEN(),
+    };
   }
 
   /**
@@ -492,7 +529,7 @@ export default class JBoard {
     } else {
       this.checkFiftyMove(type, color, stop);
       // check pawn promotion
-      if (JBoard.handlePawnPromotin(type, color, stop.rank)) {
+      if (JBoard.isPawnPromotion(type, color, stop.rank)) {
         this.setPiece(stop.file, stop.rank, promType || 4, color);
       } else {
         this.setPiece(stop.file, stop.rank, type, color);
@@ -516,11 +553,18 @@ export default class JBoard {
       this.doMove(type, color, start, stop, promType);
     } else return null;
 
-    this.checkAfterMove(type, color, start.file);
+    this.checkAfterMove(type, color, start, stop);
     return true;
   }
 
-  static handlePawnPromotin(type, color, stopRank) {
+  /**
+   * Check is there pawn promotion on board.
+   * @param type
+   * @param color
+   * @param stopRank
+   * @returns {boolean}
+   */
+  static isPawnPromotion(type, color, stopRank) {
     return (
       type === 0
       && ((color === 1 && stopRank === 7)
@@ -551,20 +595,19 @@ export default class JBoard {
    * @param {number} rank
    * @returns {Array}
    */
-  getMovesPawn(file, rank) {
-    const moves = [];
+  getPawnMoves(file, rank) {
+    let moves = [];
     const pawnColor = this.getPieceColor(file, rank);
     const moveDirection = (pawnColor === 1) ? 1 : -1;
-    const trg = {
-      file,
-      rank: rank + moveDirection,
-    };
+    const trg = { file, rank: rank + moveDirection };
 
     if (JBoard.isSquare(trg)) {
       if (this.getPieceType(trg.file, trg.rank) === null) {
         moves.push({ ...trg });
-        if ((pawnColor === 1 && rank === 1) ||
-          (pawnColor === 2 && rank === 6)) {
+        if (
+          (pawnColor === 1 && rank === 1)
+          || (pawnColor === 2 && rank === 6)
+        ) {
           trg.rank = rank + (2 * moveDirection);
           if (this.getPieceType(trg.file, trg.rank) === null) {
             moves.push({ ...trg });
@@ -573,25 +616,35 @@ export default class JBoard {
       }
     }
 
-    trg.rank = rank + moveDirection;
-
-    trg.file = file - 1;
-    if (
-      this.isFoe(pawnColor, trg.file, trg.rank)
-      || (this.isEnPassant(trg))
-    ) {
-      moves.push({ ...trg });
-    }
-
-    trg.file = file + 1;
-    if (
-      this.isFoe(pawnColor, trg.file, trg.rank)
-      || (this.isEnPassant(trg))
-    ) {
-      moves.push({ ...trg });
-    }
+    moves = moves.concat(this.getPawnCaptures(file, rank + moveDirection, pawnColor));
 
     return this.filterMoves(moves, file, rank);
+  }
+
+  /**
+   * Return array of captures for pawn.
+   * @param {number} file
+   * @param {number} targetRank
+   * @param {number} color
+   * @returns {Array}
+   */
+  getPawnCaptures(file, targetRank, color) {
+    const moves = [];
+    const targets = [
+      { file: file - 1, rank: targetRank },
+      { file: file + 1, rank: targetRank },
+    ];
+
+    targets.forEach((item) => {
+      if (
+        this.isFoe(color, item.file, item.rank)
+        || (this.isEnPassant(item))
+      ) {
+        moves.push({ ...item });
+      }
+    });
+
+    return moves;
   }
 
   /**
@@ -600,8 +653,8 @@ export default class JBoard {
    * @param {number} rank
    * @returns {Array}
    */
-  getMovesKing(file, rank) {
-    const moves = this.getMovesPiece(file, rank);
+  getKingMoves(file, rank) {
+    const moves = this.getPieceMoves(file, rank);
     const castling = this.getCastlingMove(file, rank);
 
     if (castling) castling.forEach(item => moves.push(item));
@@ -687,7 +740,7 @@ export default class JBoard {
    * @param {number} rank
    * @returns {Array}
    */
-  getMovesPiece(file, rank) {
+  getPieceMoves(file, rank) {
     const piece = this.getPieceType(file, rank);
     const color = this.getPieceColor(file, rank);
 
@@ -924,6 +977,95 @@ export default class JBoard {
   }
 
   /**
+   * Return algebraic notation of square.
+   * @param {number} file
+   * @param {number} rank
+   * @returns {?string}
+   */
+  static squareToAlg(file, rank) {
+    if (!JBoard.isSquare(file, rank)) return null;
+    const shiftFile = 97;
+    const shiftRank = 1;
+    return String.fromCharCode(file + shiftFile) + (rank + shiftRank);
+  }
+
+  static toAlgebraic(start, stop, promType) {
+    if (
+      !start || !stop
+      || !JBoard.isSquare(start.file, start.rank)
+      || !JBoard.isSquare(stop.file, stop.rank)
+    ) return null;
+    const stra = JBoard.squareToAlg(start.file, start.rank);
+    const stpa = JBoard.squareToAlg(stop.file, stop.rank);
+    const pieces = [null, 'r', 'n', 'b', 'q'];
+    const pt = pieces[promType] || '';
+    return `${stra}${stpa}${pt}`;
+  }
+
+  static fromAlgebraic(str) {
+    const shiftFile = 97;
+    const shiftRank = 1;
+    if (str.length !== 2 || typeof str !== 'string' || typeof +str[1] !== 'number') return null;
+    const alg = str.toLowerCase();
+    const result = {
+      file: alg.charCodeAt(0) - shiftFile,
+      rank: alg[1] - shiftRank,
+    };
+    if (!JBoard.isSquare(result.file, result.rank)) return null;
+    return result;
+  }
+
+  move(str) {
+    if (typeof str !== 'string') return false;
+    if (str.length < 4 || str.length > 5) return false;
+    const alg = str.toLowerCase();
+    const start = JBoard.fromAlgebraic(alg.slice(0, 2));
+    const stop = JBoard.fromAlgebraic(alg.slice(2, 4));
+    const piece = alg[4];
+    let promType;
+    if (piece === undefined) promType = false;
+    else {
+      promType = JBoard.mapPieceType(piece);
+      if (!promType || promType > 4) return false;
+    }
+    if (start === null || stop === null) return false;
+    this.touch(start.file, start.rank);
+    return this.touch(stop.file, stop.rank, promType);
+  }
+
+  /**
+   * Go to the move in the line.
+   * @param {number} line
+   * @param {number} move
+   * @returns {boolean}
+   */
+  goto(line, move) {
+    if (typeof line !== 'number' || typeof move !== 'number') return false;
+    if (line !== this.currentLine || move !== this.halfCount) {
+      if (this.lines[line][0] !== undefined) this.currentLine = line;
+      if (move >= 0 && move < this.lines[line].length) this.halfCount = move;
+      return this.setPositionByFEN(this.lines[this.currentLine][this.halfCount].fen);
+    }
+    return false;
+  }
+
+  gotoNext() {
+    return this.goto(this.currentLine, this.halfCount + 1);
+  }
+
+  gotoPrev() {
+    return this.goto(this.currentLine, this.halfCount - 1);
+  }
+
+  gotoStart() {
+    return this.goto(this.currentLine, 0);
+  }
+
+  gotoEnd() {
+    return this.goto(this.currentLine, this.lines[this.currentLine].length - 1);
+  }
+
+  /**
    * Clone board.
    * @param {JBoard} src
    * @returns {JBoard}
@@ -977,44 +1119,12 @@ export default class JBoard {
    * @returns {string|null}
    */
   getFENPiece(file, rank) {
+    const pieces = ['p', 'r', 'n', 'b', 'q', 'k'];
     if (!JBoard.isSquare(file, rank)) return null;
     const piece = this.getPieceType(file, rank);
     if (piece === null) return null;
-    let FEN;
-    switch (piece) {
-      case 0: {
-        FEN = 'p';
-        break;
-      }
-      case 1: {
-        FEN = 'r';
-        break;
-      }
-      case 2: {
-        FEN = 'n';
-        break;
-      }
-      case 3: {
-        FEN = 'b';
-        break;
-      }
-      case 4: {
-        FEN = 'q';
-        break;
-      }
-      case 5: {
-        FEN = 'k';
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-
-    if (this.getPieceColor(file, rank) === 1) {
-      return FEN.toUpperCase();
-    }
-    return FEN;
+    const FEN = pieces[piece];
+    return this.getPieceColor(file, rank) === 1 ? FEN.toUpperCase() : FEN;
   }
 
   /**
@@ -1070,25 +1180,11 @@ export default class JBoard {
   getFENCastling() {
     let result = '';
 
-    if (this.castling[1] % 2 === 1) {
-      result += 'K';
-    }
-
-    if (this.castling[1] > 1) {
-      result += 'Q';
-    }
-
-    if (this.castling[2] % 2 === 1) {
-      result += 'k';
-    }
-
-    if (this.castling[2] > 1) {
-      result += 'q';
-    }
-
-    if (result) {
-      return result;
-    }
+    if (this.castling[1] % 2 === 1) result += 'K';
+    if (this.castling[1] > 1) result += 'Q';
+    if (this.castling[2] % 2 === 1) result += 'k';
+    if (this.castling[2] > 1) result += 'q';
+    if (result) return result;
 
     return '-';
   }
@@ -1103,28 +1199,16 @@ export default class JBoard {
       return '-';
     }
 
-    return JBoard.getAlgebraicByDigits(enPassant.file, enPassant.rank);
+    return JBoard.squareToAlg(enPassant.file, enPassant.rank);
   }
 
   /**
-   * Return FEN string of move count.
+   * Return FEN string of move fullCount.
    * @returns {string}
    */
   getFENCounts() {
-    const { countFiftyMove, count } = this;
-    return `${countFiftyMove} ${count}`;
-  }
-
-  /**
-   * Return algebraic notation of square.
-   * @param {number} file
-   * @param {number} rank
-   * @returns {string}
-   */
-  static getAlgebraicByDigits(file, rank) {
-    const shiftFile = 97;
-    const shiftRank = 1;
-    return String.fromCharCode(file + shiftFile) + (rank + shiftRank);
+    const { countFiftyMove, fullCount } = this;
+    return `${countFiftyMove} ${fullCount}`;
   }
 
   /**
@@ -1148,46 +1232,17 @@ export default class JBoard {
   parseFENCastling(FEN) {
     let cb = 0;
     let cw = 0;
-    let i;
-    let cK = 0;
-    let ck = 0;
-    let cQ = 0;
-    let cq = 0;
     const { length } = FEN;
 
     if (FEN === '-' || length > 4) {
       this.castling = { 1: 0, 2: 0 };
-
       return;
     }
 
-    for (i = 0; i < length; i += 1) {
-      switch (FEN[i]) {
-        case 'K': {
-          if (!cK) cw += 1;
-          cK += 1;
-          break;
-        }
-        case 'Q': {
-          if (!cQ) cw += 2;
-          cQ += 1;
-          break;
-        }
-        case 'k': {
-          if (!ck) cb += 1;
-          ck += 1;
-          break;
-        }
-        case 'q': {
-          if (!cq) cb += 2;
-          cq += 1;
-          break;
-        }
-        default: {
-          break;
-        }
-      }
-    }
+    if (FEN.includes('K')) cw += 1;
+    if (FEN.includes('Q')) cw += 2;
+    if (FEN.includes('k')) cb += 1;
+    if (FEN.includes('q')) cb += 2;
 
     this.castling = { 1: cw, 2: cb };
   }
@@ -1264,8 +1319,6 @@ export default class JBoard {
    * @returns {Array.<Object>}
    */
   static parseFENRank(FEN) {
-    let i;
-    let j;
     let n;
     let count = 0;
     const { length } = FEN;
@@ -1273,56 +1326,20 @@ export default class JBoard {
 
     if (length > 8) return null;
 
-    for (i = 0; i < length; i += 1) {
+    for (let i = 0; i < length; i += 1) {
       if (+FEN[i] > 0 && +FEN[i] < 9) {
+        // fill squares with empty
         n = +FEN[i];
-
         if (count + n < 9) {
-          for (j = 0; j < n; j += 1) {
-            result[count] = {
-              type: null,
-              color: null,
-            };
+          for (let j = 0; j < n; j += 1) {
+            result[count] = { type: null, color: null };
             count += 1;
           }
         } else return null;
       } else {
-        result[count] = {};
-        switch (FEN[i].toLowerCase()) {
-          case 'r': {
-            result[count].type = 1;
-            break;
-          }
-          case 'n': {
-            result[count].type = 2;
-            break;
-          }
-          case 'b': {
-            result[count].type = 3;
-            break;
-          }
-          case 'q': {
-            result[count].type = 4;
-            break;
-          }
-          case 'k': {
-            result[count].type = 5;
-            break;
-          }
-          case 'p': {
-            result[count].type = 0;
-            break;
-          }
-          default: {
-            return null;
-          }
-        }
-        if (FEN[i].toLowerCase() === FEN[i]) {
-          result[count].color = 2;
-        } else {
-          result[count].color = 1;
-        }
-
+        const piece = JBoard.mapPiece(FEN[i]);
+        if (piece) result[count] = piece;
+        else return null;
         count += 1;
       }
 
@@ -1332,6 +1349,33 @@ export default class JBoard {
     if (count !== 8) return null;
 
     return result;
+  }
+
+  /**
+   * Map the piece to object.
+   * @param piece
+   * @returns {?Object}
+   */
+  static mapPiece(piece) {
+    const result = {};
+    result.type = JBoard.mapPieceType(piece);
+    if (result.type === null) return null;
+    result.color = piece.toLowerCase() === piece ? 2 : 1;
+    return result;
+  }
+
+  /**
+   * Map the piece type to digit.
+   * @param piece
+   * @returns {?number}
+   */
+  static mapPieceType(piece) {
+    const pieceMap = {
+      p: 0, r: 1, n: 2, b: 3, q: 4, k: 5,
+    };
+    const key = piece.toLowerCase();
+    if (!Object.keys(pieceMap).includes(key)) return null;
+    return pieceMap[key];
   }
 
   /**
@@ -1405,12 +1449,10 @@ export default class JBoard {
    */
   setPiecesByArray(pieceSet) {
     this.turn = 1;
-    this.count = 1;
+    this.fullCount = 1;
     this.countFiftyMove = 0;
     this.enPassant = null;
     this.castling = { 1: 3, 2: 3 };
-
-    this.resetPosition();
     pieceSet.forEach((item) => {
       this.setPiece(item.file, item.rank, item.piece.type, item.piece.color);
     });

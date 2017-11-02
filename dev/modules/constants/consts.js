@@ -8,4 +8,5 @@ export default keyMirror({
   CLEAR_POSITION: null,
   UPDATE_POSITION: null,
   FLIP_BOARD: null,
+  GOTO: null,
 });

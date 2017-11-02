@@ -18,7 +18,7 @@ module.exports = () => ({
                 minimize: true,
               },
             },
-            'autoprefixer-loader',
+            'postcss-loader',
             'resolve-url-loader',
             'sass-loader',
           ],

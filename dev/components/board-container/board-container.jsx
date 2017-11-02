@@ -96,6 +96,7 @@ class BoardContainer extends React.Component {
         onMouseMove={this.handleMouseMove}
         onMouseDown={this.handleMouseDown}
         onMouseUp={this.handleMouseUp}
+        onMouseLeave={this.handleMouseUp}
       >
         <Board
           board={board}

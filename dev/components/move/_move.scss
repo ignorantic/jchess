@@ -1,0 +1,38 @@
+.move {
+  @include text;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  outline: none;
+  cursor: pointer;
+  padding: 5px;
+  margin: 0;
+
+  &_white {
+    flex-basis: 40%;
+    margin-left: 20%;
+
+    &::before {
+      position: absolute;
+      left: 5%;
+      counter-increment: moves;
+      content: counter(moves)".";
+      color: $clr-text;
+      font-weight: 100;
+    }
+  }
+
+  &_black {
+    flex-basis: 40%;
+  }
+
+  &_active {
+    color: $clr-white;
+    font-weight: 600;
+  }
+
+  &:hover,
+  &:focus  {
+    color: $clr-white;
+  }
+}

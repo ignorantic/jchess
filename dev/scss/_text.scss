@@ -8,7 +8,6 @@
 
 @mixin title {
   @include header;
-
   background: $clr-face-alt;
   margin: 10px 10px 10px 40px;
   padding: 5px 10px;

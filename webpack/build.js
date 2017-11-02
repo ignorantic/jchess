@@ -11,11 +11,28 @@ module.exports = () => ({
         use: ExtractTextPlugin.extract({
           use: [
             {
-              loader: 'css-loader',
+              loader: 'style-loader',
+              options: { sourceMap: true },
             },
-            'autoprefixer-loader',
-            'resolve-url-loader',
-            'sass-loader',
+            {
+              loader: 'css-loader',
+              options: { sourceMap: true },
+            },
+            {
+              loader: 'postcss-loader',
+              options: { sourceMap: true },
+            },
+            {
+              loader: 'resolve-url-loader',
+              options: { sourceMap: true },
+            },
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: true,
+                include: '[name].css',
+              },
+            },
           ],
           fallback: 'style-loader',
         }),

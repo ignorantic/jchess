@@ -34,7 +34,7 @@ export default class Position extends React.Component {
               const pieces = {
                 0: 'pawn', 1: 'rook', 2: 'knight', 3: 'bishop', 4: 'queen', 5: 'king',
               };
-              const pieceType = pieces[rItem.piece.type];
+              const pieceType = pieces[rItem.piece.type] || null;
               const style = (file === dragFile && rank === dragRank)
                 ? ({
                   left: flip ? `calc(100% - ${dragLeft}px - 6.25%)`

@@ -1,0 +1,27 @@
+.lines {
+  position: relative;
+  height: 70%;
+  width: 200px;
+  overflow-y: scroll;
+  border: 1px solid $clr-face;
+  margin-bottom: 10px;
+
+  &__moves {
+    display: flex;
+    flex-wrap: wrap;
+    justify-items: normal;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: $clr-base;
+  }
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    background-color: $clr-face;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $clr-face;
+  }
+}

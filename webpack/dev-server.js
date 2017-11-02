@@ -13,15 +13,22 @@ module.exports = () => ({
       {
         test: /\.(sass|scss)$/,
         use: [
-          'style-loader',
+          {
+            loader: 'style-loader',
+            options: { sourceMap: true },
+          },
           {
             loader: 'css-loader',
-            options: {
-              sourceMap: true,
-            },
+            options: { sourceMap: true },
           },
-          'autoprefixer-loader',
-          'resolve-url-loader',
+          {
+            loader: 'postcss-loader',
+            options: { sourceMap: true },
+          },
+          {
+            loader: 'resolve-url-loader',
+            options: { sourceMap: true },
+          },
           {
             loader: 'sass-loader',
             options: {

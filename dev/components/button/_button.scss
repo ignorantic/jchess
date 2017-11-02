@@ -1,14 +1,10 @@
 .button {
   font-size: 16px;
   background: $clr-face;
-  color: $clr-text-alt;
+  color: $clr-text;
   padding: 5px 10px;
   border: 1px solid $clr-face;
   outline: none;
-
-  &:not(:last-of-type) {
-    margin-bottom: 10px;
-  }
 
   &:active {
     position: relative;
@@ -19,8 +15,12 @@
   &:focus {
     outline: {
       style: solid;
-      color: $clr-text-alt;
+      color: $clr-text;
       width: 2px;
     }
+  }
+
+  &:hover {
+    color: lighten($clr-text, 10%);
   }
 }

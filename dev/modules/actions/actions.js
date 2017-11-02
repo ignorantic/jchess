@@ -24,11 +24,114 @@ export function touch(file, rank, mouse) {
       turn: boardModel.getTurn(),
       check: boardModel.isCheck(),
       checkmate: boardModel.isCheckmate(),
+      halfCount: boardModel.getHalfCount(),
+      currentLine: boardModel.getCurrentLine(),
+      lines: boardModel.getLines(),
       focus: [file, rank],
       drag,
     };
     dispatch({
       type: consts.UPDATE_POSITION,
+      payload,
+    });
+  };
+}
+
+export function goto(line, move) {
+  return (dispatch) => {
+    boardModel.goto(line, move);
+    const payload = {
+      board: boardModel.getBoard(),
+      fen: boardModel.getFEN(),
+      turn: boardModel.getTurn(),
+      check: boardModel.isCheck(),
+      checkmate: boardModel.isCheckmate(),
+      halfCount: boardModel.getHalfCount(),
+      currentLine: boardModel.getCurrentLine(),
+      lines: boardModel.getLines(),
+    };
+    dispatch({
+      type: consts.GOTO,
+      payload,
+    });
+  };
+}
+
+export function gotoPrev() {
+  return (dispatch) => {
+    boardModel.gotoPrev();
+    const payload = {
+      board: boardModel.getBoard(),
+      fen: boardModel.getFEN(),
+      turn: boardModel.getTurn(),
+      check: boardModel.isCheck(),
+      checkmate: boardModel.isCheckmate(),
+      halfCount: boardModel.getHalfCount(),
+      currentLine: boardModel.getCurrentLine(),
+      lines: boardModel.getLines(),
+    };
+    dispatch({
+      type: consts.GOTO,
+      payload,
+    });
+  };
+}
+
+export function gotoNext() {
+  return (dispatch) => {
+    boardModel.gotoNext();
+    const payload = {
+      board: boardModel.getBoard(),
+      fen: boardModel.getFEN(),
+      turn: boardModel.getTurn(),
+      check: boardModel.isCheck(),
+      checkmate: boardModel.isCheckmate(),
+      halfCount: boardModel.getHalfCount(),
+      currentLine: boardModel.getCurrentLine(),
+      lines: boardModel.getLines(),
+    };
+    dispatch({
+      type: consts.GOTO,
+      payload,
+    });
+  };
+}
+
+export function gotoStart() {
+  return (dispatch) => {
+    boardModel.gotoStart();
+    const payload = {
+      board: boardModel.getBoard(),
+      fen: boardModel.getFEN(),
+      turn: boardModel.getTurn(),
+      check: boardModel.isCheck(),
+      checkmate: boardModel.isCheckmate(),
+      halfCount: boardModel.getHalfCount(),
+      currentLine: boardModel.getCurrentLine(),
+      lines: boardModel.getLines(),
+    };
+    dispatch({
+      type: consts.GOTO,
+      payload,
+    });
+  };
+}
+
+export function gotoEnd() {
+  return (dispatch) => {
+    boardModel.gotoEnd();
+    const payload = {
+      board: boardModel.getBoard(),
+      fen: boardModel.getFEN(),
+      turn: boardModel.getTurn(),
+      check: boardModel.isCheck(),
+      checkmate: boardModel.isCheckmate(),
+      halfCount: boardModel.getHalfCount(),
+      currentLine: boardModel.getCurrentLine(),
+      lines: boardModel.getLines(),
+    };
+    dispatch({
+      type: consts.GOTO,
       payload,
     });
   };
@@ -58,6 +161,9 @@ export function releasePiece(file, rank) {
         turn: boardModel.getTurn(),
         check: boardModel.isCheck(),
         checkmate: boardModel.isCheckmate(),
+        halfCount: boardModel.getHalfCount(),
+        currentLine: boardModel.getCurrentLine(),
+        lines: boardModel.getLines(),
         focus: [file, rank],
         drag: [],
       };
@@ -86,6 +192,9 @@ export function setUpPosition() {
       turn: boardModel.getTurn(),
       check: boardModel.isCheck(),
       checkmate: boardModel.isCheckmate(),
+      halfCount: boardModel.getHalfCount(),
+      currentLine: boardModel.getCurrentLine(),
+      lines: boardModel.getLines(),
     };
     dispatch({
       type: consts.SETUP_POSITION,
@@ -103,6 +212,9 @@ export function resetPosition() {
       turn: boardModel.getTurn(),
       check: boardModel.isCheck(),
       checkmate: boardModel.isCheckmate(),
+      halfCount: boardModel.getHalfCount(),
+      currentLine: boardModel.getCurrentLine(),
+      lines: boardModel.getLines(),
     };
     dispatch({
       type: consts.CLEAR_POSITION,
@@ -120,6 +232,9 @@ export function changeFEN(newFEN) {
       turn: boardModel.getTurn(),
       check: boardModel.isCheck(),
       checkmate: boardModel.isCheckmate(),
+      halfCount: boardModel.getHalfCount(),
+      currentLine: boardModel.getCurrentLine(),
+      lines: boardModel.getLines(),
     };
     dispatch({
       type: consts.CHANGE_FEN,

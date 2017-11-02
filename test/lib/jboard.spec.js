@@ -597,7 +597,7 @@ describe('jBoard', () => {
   });
 
   /*
-   *   DO MOVE
+   *   HANDLE MOVE
    */
 
   describe('handleMove', () => {
@@ -753,7 +753,7 @@ describe('jBoard', () => {
    *   GET PAWN MOVES
    */
 
-  describe('getMovesPawn', () => {
+  describe('getPawnMoves', () => {
     let jboard;
 
     before(() => {
@@ -762,7 +762,7 @@ describe('jBoard', () => {
     });
 
     it('return two squares for pawn a2', () => {
-      const moves = jboard.getMovesPawn(0, 1);
+      const moves = jboard.getPawnMoves(0, 1);
       expect(moves[0].file).to.be.equal(0);
       expect(moves[0].rank).to.be.equal(2);
       expect(moves[1].file).to.be.equal(0);
@@ -771,7 +771,7 @@ describe('jBoard', () => {
     });
 
     it('return two squares for pawn e2', () => {
-      const moves = jboard.getMovesPawn(4, 1);
+      const moves = jboard.getPawnMoves(4, 1);
 
       expect(moves[0].file).to.be.equal(4);
       expect(moves[0].rank).to.be.equal(2);
@@ -781,7 +781,7 @@ describe('jBoard', () => {
     });
 
     it('return only square for pawn c5', () => {
-      const moves = jboard.getMovesPawn(2, 4);
+      const moves = jboard.getPawnMoves(2, 4);
 
       expect(moves[0].file).to.be.equal(2);
       expect(moves[0].rank).to.be.equal(3);
@@ -789,17 +789,17 @@ describe('jBoard', () => {
     });
 
     it('return null for pawn d5', () => {
-      const moves = jboard.getMovesPawn(3, 4);
+      const moves = jboard.getPawnMoves(3, 4);
       expect(moves[0]).to.be.undefined;
     });
 
     it('return null for pawn f4', () => {
-      const moves = jboard.getMovesPawn(5, 3);
+      const moves = jboard.getPawnMoves(5, 3);
       expect(moves[0]).to.be.undefined;
     });
 
     it('return three squares for pawn b2', () => {
-      const moves = jboard.getMovesPawn(1, 1);
+      const moves = jboard.getPawnMoves(1, 1);
 
       expect(moves[0].file).to.be.equal(1);
       expect(moves[0].rank).to.be.equal(2);
@@ -814,7 +814,7 @@ describe('jBoard', () => {
     });
 
     it('return only square for pawn h2', () => {
-      const moves = jboard.getMovesPawn(7, 1);
+      const moves = jboard.getPawnMoves(7, 1);
 
       expect(moves[0].file).to.be.equal(7);
       expect(moves[0].rank).to.be.equal(2);
@@ -822,7 +822,7 @@ describe('jBoard', () => {
     });
 
     it('return two squares for pawn h4', () => {
-      const moves = jboard.getMovesPawn(7, 3);
+      const moves = jboard.getPawnMoves(7, 3);
 
       expect(moves[0].file).to.be.equal(7);
       expect(moves[0].rank).to.be.equal(2);
@@ -838,7 +838,7 @@ describe('jBoard', () => {
    *   GET KING MOVES
    */
 
-  describe('getMovesKing', () => {
+  describe('getKingMoves', () => {
     let jboard;
 
     beforeEach(() => {
@@ -847,7 +847,7 @@ describe('jBoard', () => {
     });
 
     it('return two squares for white king', () => {
-      const moves = jboard.getMovesKing(4, 0);
+      const moves = jboard.getKingMoves(4, 0);
 
       expect(moves[0].file).to.be.equal(4);
       expect(moves[0].rank).to.be.equal(1);
@@ -868,7 +868,7 @@ describe('jBoard', () => {
     });
 
     it('return two squares for black king', () => {
-      const moves = jboard.getMovesKing(4, 7);
+      const moves = jboard.getKingMoves(4, 7);
 
       expect(moves[0].file).to.be.equal(3);
       expect(moves[0].rank).to.be.equal(7);
@@ -978,7 +978,7 @@ describe('jBoard', () => {
    *   GET PIECE MOVES
    */
 
-  describe('getMovesPiece', () => {
+  describe('getPieceMoves', () => {
     let jboard;
 
     before(() => {
@@ -987,7 +987,7 @@ describe('jBoard', () => {
     });
 
     it('return two squares for knight c3', () => {
-      const moves = jboard.getMovesPiece(2, 2);
+      const moves = jboard.getPieceMoves(2, 2);
 
       expect(moves[0].file).to.be.equal(3);
       expect(moves[0].rank).to.be.equal(4);
@@ -1017,7 +1017,7 @@ describe('jBoard', () => {
     });
 
     it('return two squares for knight f5', () => {
-      const moves = jboard.getMovesPiece(5, 4);
+      const moves = jboard.getPieceMoves(5, 4);
 
       expect(moves[0].file).to.be.equal(7);
       expect(moves[0].rank).to.be.equal(5);
@@ -1038,7 +1038,7 @@ describe('jBoard', () => {
     });
 
     it('return two squares for rook h8', () => {
-      const moves = jboard.getMovesPiece(7, 7);
+      const moves = jboard.getPieceMoves(7, 7);
 
       expect(moves[0].file).to.be.equal(7);
       expect(moves[0].rank).to.be.equal(6);
@@ -1059,7 +1059,7 @@ describe('jBoard', () => {
     });
 
     it('return two squares for bishop h5', () => {
-      const moves = jboard.getMovesPiece(7, 4);
+      const moves = jboard.getPieceMoves(7, 4);
 
       expect(moves[0].file).to.be.equal(6);
       expect(moves[0].rank).to.be.equal(3);
@@ -1165,6 +1165,160 @@ describe('jBoard', () => {
       jboard.touch(3, 1);
       jboard.touch(2, 0, 1);
       expect(jboard.getPieceType(2, 0)).to.be.equal(1);
+    });
+  });
+
+  /*
+   *   MOVE
+   */
+
+  describe('squareToAlg', () => {
+    it('return null if square is illegal', () => {
+      expect(JBoard.squareToAlg(0)).to.be.null;
+      expect(JBoard.squareToAlg(0, -1)).to.be.null;
+      expect(JBoard.squareToAlg(8, 8)).to.be.null;
+    });
+
+    it('return string if OK', () => {
+      expect(JBoard.squareToAlg(0, 0)).to.be.equal('a1');
+      expect(JBoard.squareToAlg(4, 3)).to.be.equal('e4');
+      expect(JBoard.squareToAlg(7, 7)).to.be.equal('h8');
+    });
+  });
+
+  describe('fromAlgebraic', () => {
+    it('return null if square is illegal', () => {
+      expect(JBoard.fromAlgebraic(0)).to.be.null;
+      expect(JBoard.fromAlgebraic('b')).to.be.null;
+      expect(JBoard.fromAlgebraic('7e')).to.be.null;
+      expect(JBoard.fromAlgebraic('j1')).to.be.null;
+      expect(JBoard.fromAlgebraic('e9')).to.be.null;
+    });
+
+    it('return number if OK', () => {
+      expect(JBoard.fromAlgebraic('a2').file).to.be.equal(0);
+      expect(JBoard.fromAlgebraic('a2').rank).to.be.equal(1);
+      expect(JBoard.fromAlgebraic('c7').file).to.be.equal(2);
+      expect(JBoard.fromAlgebraic('c7').rank).to.be.equal(6);
+      expect(JBoard.fromAlgebraic('f4').file).to.be.equal(5);
+      expect(JBoard.fromAlgebraic('f4').rank).to.be.equal(3);
+    });
+  });
+
+  describe('toAlgebraic', () => {
+    it('return null if arguments aren\'t correct', () => {
+      expect(JBoard.toAlgebraic({ file: 7, rank: 7 }, { file: 0, rank: 8 })).to.be.null;
+      expect(JBoard.toAlgebraic({ file: -1, rank: 7 }, { file: 0, rank: 0 })).to.be.null;
+      expect(JBoard.toAlgebraic({ file: 1, rank: 7 })).to.be.null;
+      expect(JBoard.toAlgebraic()).to.be.null;
+    });
+
+    it('return string if OK', () => {
+      expect(JBoard.toAlgebraic({ file: 1, rank: 1 }, { file: 1, rank: 2 })).to.be.equal('b2b3');
+      expect(JBoard.toAlgebraic({ file: 7, rank: 7 }, { file: 0, rank: 0 })).to.be.equal('h8a1');
+      expect(JBoard.toAlgebraic({ file: 0, rank: 6 }, { file: 0, rank: 7 }, 4))
+        .to.be.equal('a7a8q');
+    });
+  });
+
+  describe('move', () => {
+    let jboard;
+
+    beforeEach(() => {
+      jboard = new JBoard();
+      jboard.setPositionByFEN(TEST_POSITION);
+    });
+
+    it('return false if arguments aren\'t correct', () => {
+      expect(jboard.move('e4')).to.be.false;
+      expect(jboard.move('e7e5QQ')).to.be.false;
+      expect(jboard.move('e8e9')).to.be.false;
+      expect(jboard.move('a5r4')).to.be.false;
+      expect(jboard.move('d56d')).to.be.false;
+      expect(jboard.move('b7b8p')).to.be.false;
+      expect(jboard.move(null)).to.be.false;
+    });
+
+    it('return false if move is illegal', () => {
+      expect(jboard.move('e2e5')).to.be.false;
+      expect(jboard.move('e7e5')).to.be.false;
+      expect(jboard.move('a1a2')).to.be.false;
+      expect(jboard.move('e8g8')).to.be.false;
+      expect(jboard.move('d1e1')).to.be.false;
+      expect(jboard.move('d6e7')).to.be.false;
+      expect(jboard.move('e8c8')).to.be.false;
+    });
+
+    it('return true if OK', () => {
+      expect(jboard.move('e1f1')).to.be.true;
+      expect(jboard.move('f5g3')).to.be.true;
+      expect(jboard.move('f1g2')).to.be.true;
+      expect(jboard.move('e8g8')).to.be.true;
+      expect(jboard.move('d1d4')).to.be.true;
+      expect(jboard.move('c5d4')).to.be.true;
+      expect(jboard.move('g2f2')).to.be.true;
+      expect(jboard.move('c3b1')).to.be.true;
+      expect(jboard.move('d6d7')).to.be.true;
+      expect(jboard.move('a8c8')).to.be.true;
+      expect(jboard.move('d7c8n')).to.be.true;
+      expect(jboard.move('b7b5')).to.be.true;
+      expect(jboard.move('c8d6')).to.be.true;
+    });
+  });
+
+  describe('goto', () => {
+    let jboard;
+
+    beforeEach(() => {
+      jboard = new JBoard();
+      jboard.setUp();
+    });
+
+    it('return false if arguments aren\'t correct', () => {
+      expect(jboard.goto('abc', 5)).to.be.false;
+      expect(jboard.goto(0, 'xyz')).to.be.false;
+      expect(jboard.goto([0, 'xyz'])).to.be.false;
+      expect(jboard.goto({ abc: 7 })).to.be.false;
+      expect(jboard.goto(null)).to.be.false;
+    });
+
+    it('return true if OK', () => {
+      jboard.move('e2e4');
+      jboard.move('e7e5');
+      expect(jboard.goto(0, 0)).to.be.true;
+      expect(jboard.goto(0, -1)).to.be.true;
+      expect(jboard.goto(0, 1)).to.be.true;
+    });
+
+    it('check position after goto()', () => {
+      jboard.move('e2e4');
+      jboard.move('e7e5');
+      jboard.move('g1f3');
+      jboard.move('b8c6');
+      expect(jboard.goto(0, 1)).to.be.true;
+      expect(jboard.getPieceType(4, 3)).to.be.equal(0);
+      expect(jboard.getPieceType(4, 4)).to.be.null;
+      expect(jboard.getTurn()).to.be.equal(2);
+      expect(jboard.goto(0, 4)).to.be.true;
+      expect(jboard.getPieceType(2, 5)).to.be.equal(2);
+      expect(jboard.getPieceType(5, 2)).to.be.equal(2);
+      expect(jboard.getTurn()).to.be.equal(1);
+    });
+  });
+
+  describe('writeMove', () => {
+    let jboard;
+
+    beforeEach(() => {
+      jboard = new JBoard();
+      jboard.setUp();
+    });
+
+    it('writes moves to lines array', () => {
+      jboard.move('e2e4');
+      expect(jboard.lines[0][1].move).to.be.equal('e2e4');
+      jboard.move('g8f6');
+      expect(jboard.lines[0][2].move).to.be.equal('g8f6');
     });
   });
 

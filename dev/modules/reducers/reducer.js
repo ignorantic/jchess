@@ -12,10 +12,14 @@ const reducer = (state, action) => {
         checkmate: action.payload.checkmate,
         focus: action.payload.focus,
         drag: action.payload.drag,
+        halfCount: action.payload.halfCount,
+        currentLine: action.payload.currentLine,
+        lines: action.payload.lines,
       };
     }
     case consts.CLEAR_POSITION:
     case consts.SETUP_POSITION:
+    case consts.GOTO:
     case consts.CHANGE_FEN: {
       return {
         ...state,
@@ -24,6 +28,9 @@ const reducer = (state, action) => {
         turn: action.payload.turn,
         check: action.payload.check,
         checkmate: action.payload.checkmate,
+        halfCount: action.payload.halfCount,
+        currentLine: action.payload.currentLine,
+        lines: action.payload.lines,
       };
     }
     case consts.RELEASE: {

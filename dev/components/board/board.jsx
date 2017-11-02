@@ -43,7 +43,7 @@ export default class Board extends React.Component {
                 else if (check) checkProp = true;
               }
 
-              const position = { left: `${12.5 * file}%`, top: `${100 - (12.5 * (rank + 1))}%` };
+              const style = { left: `${12.5 * file}%`, top: `${100 - (12.5 * (rank + 1))}%` };
               const key = `square.${file}.${rank}`;
               return (
                 <Square
@@ -56,7 +56,7 @@ export default class Board extends React.Component {
                   tabindex={tabindex}
                   check={checkProp}
                   checkmate={checkmateProp}
-                  position={position}
+                  style={style}
                 />
               );
             })

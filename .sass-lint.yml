@@ -1,5 +1,9 @@
 options:
   formatter: stylish
+files:
+  ignore:
+    - 'dev/scss/_sprite_svg.scss'
+    - 'dev/scss/tmpl/sprite_template.scss'
 rules:
   # Extends
   extends-before-mixins: 0
