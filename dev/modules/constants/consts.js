@@ -7,6 +7,7 @@ export default keyMirror({
   SETUP_POSITION: null,
   CLEAR_POSITION: null,
   UPDATE_POSITION: null,
+  ENGINE_MOVE: null,
   FLIP_BOARD: null,
   GOTO: null,
 });

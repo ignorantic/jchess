@@ -1181,6 +1181,29 @@ describe('jBoard', () => {
     });
   });
 
+  describe('getLastMove', () => {
+    let jboard;
+
+    before(() => {
+      jboard = new JBoard();
+      jboard.setUp();
+    });
+
+    it('should return empty string', () => {
+      expect(jboard.getLastMove()).to.be.equal('');
+    });
+
+    it('should return e2e4', () => {
+      jboard.move('e2e4');
+      expect(jboard.getLastMove()).to.be.equal('e2e4');
+    });
+
+    it('should return g8f6', () => {
+      jboard.move('g8f6');
+      expect(jboard.getLastMove()).to.be.equal('g8f6');
+    });
+  });
+
   describe('goto', () => {
     let jboard;
 
@@ -1241,7 +1264,7 @@ describe('jBoard', () => {
    *   SERVICES
    */
 
-  describe('isCheck', () => {
+  describe('isInCheck', () => {
     let jboard;
 
     before(() => {
@@ -1253,28 +1276,28 @@ describe('jBoard', () => {
     });
 
     it('return false if square isn\'t correct', () => {
-      expect(jboard.isCheck('red')).to.be.false;
-      expect(jboard.isCheck('green')).to.be.false;
+      expect(jboard.isInCheck('red')).to.be.false;
+      expect(jboard.isInCheck('green')).to.be.false;
     });
 
     it('both kings are not in check', () => {
-      expect(jboard.isCheck(1)).to.be.false;
-      expect(jboard.isCheck(2)).to.be.false;
+      expect(jboard.isInCheck(1)).to.be.false;
+      expect(jboard.isInCheck(2)).to.be.false;
     });
 
     it('white king is in check by queen', () => {
       jboard.handleMove({ file: 3, rank: 3 }, { file: 5, rank: 1 });
-      expect(jboard.isCheck(1)).to.be.true;
+      expect(jboard.isInCheck(1)).to.be.true;
     });
 
     it('white king is in discovered check by bishop', () => {
       jboard.handleMove({ file: 2, rank: 2 }, { file: 3, rank: 5 });
-      expect(jboard.isCheck(1)).to.be.true;
+      expect(jboard.isInCheck(1)).to.be.true;
     });
 
     it('black king is in check by pawn', () => {
       jboard.handleMove({ file: 3, rank: 5 }, { file: 3, rank: 6 });
-      expect(jboard.isCheck(2)).to.be.true;
+      expect(jboard.isInCheck(2)).to.be.true;
     });
   });
 

@@ -7,6 +7,7 @@ const reducer = (state, action) => {
         ...state,
         board: action.payload.board,
         fen: action.payload.fen,
+        prevFen: action.payload.prevFen,
         turn: action.payload.turn,
         check: action.payload.check,
         checkmate: action.payload.checkmate,
@@ -15,6 +16,7 @@ const reducer = (state, action) => {
         halfCount: action.payload.halfCount,
         currentLine: action.payload.currentLine,
         lines: action.payload.lines,
+        lastMove: action.payload.lastMove,
       };
     }
     case consts.CLEAR_POSITION:
@@ -25,12 +27,14 @@ const reducer = (state, action) => {
         ...state,
         board: action.payload.board,
         fen: action.payload.fen,
+        prevFen: action.payload.prevFen,
         turn: action.payload.turn,
         check: action.payload.check,
         checkmate: action.payload.checkmate,
         halfCount: action.payload.halfCount,
         currentLine: action.payload.currentLine,
         lines: action.payload.lines,
+        lastMove: action.payload.lastMove,
       };
     }
     case consts.RELEASE: {
@@ -49,6 +53,21 @@ const reducer = (state, action) => {
       return {
         ...state,
         flip: !state.flip,
+      };
+    }
+    case consts.ENGINE_MOVE: {
+      return {
+        ...state,
+        board: action.payload.board,
+        fen: action.payload.fen,
+        prevFen: action.payload.prevFen,
+        turn: action.payload.turn,
+        check: action.payload.check,
+        checkmate: action.payload.checkmate,
+        halfCount: action.payload.halfCount,
+        currentLine: action.payload.currentLine,
+        lines: action.payload.lines,
+        lastMove: action.payload.lastMove,
       };
     }
     default: {

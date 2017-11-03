@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Board from '../board/board';
-import { touch, changeFocus, releasePiece } from '../../modules/actions/actions';
+import { touch, changeFocus, releasePiece, getEngineMove } from '../../modules/actions/actions';
 import Position from '../position/position';
-import { rect, convCoord } from '../../lib/utils';
+import { rect, convCoord } from '../../lib/helpers';
 
 class BoardContainer extends React.Component {
   constructor(props) {
@@ -15,6 +15,8 @@ class BoardContainer extends React.Component {
       halfCount: PropTypes.number.isRequired,
       board: PropTypes.arrayOf(PropTypes.array).isRequired,
       turn: PropTypes.number.isRequired,
+      prevFen: PropTypes.string.isRequired,
+      lastMove: PropTypes.string.isRequired,
       check: PropTypes.bool.isRequired,
       checkmate: PropTypes.bool.isRequired,
       flip: PropTypes.bool.isRequired,
@@ -23,11 +25,19 @@ class BoardContainer extends React.Component {
       onTouch: PropTypes.func.isRequired,
       onRelease: PropTypes.func.isRequired,
       onFocus: PropTypes.func.isRequired,
+      onEngineMove: PropTypes.func.isRequired,
     };
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
+  }
+
+  componentDidUpdate() {
+    const {
+      turn, prevFen, lastMove, onEngineMove,
+    } = this.props;
+    if (turn === 2) onEngineMove(prevFen, lastMove);
   }
 
   handleArrowKey(code) {
@@ -132,12 +142,15 @@ const mapStateToProps = state => ({
   check: state.check,
   checkmate: state.checkmate,
   flip: state.flip,
+  prevFen: state.prevFen,
+  lastMove: state.lastMove,
 });
 
 const mapDispatchToProps = dispatch => ({
   onTouch: (file, rank, mouse) => dispatch(touch(file, rank, mouse)),
   onRelease: (file, rank) => dispatch(releasePiece(file, rank)),
   onFocus: (file, rank) => dispatch(changeFocus(file, rank)),
+  onEngineMove: (fen, lastMove) => dispatch(getEngineMove(fen, lastMove)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BoardContainer);

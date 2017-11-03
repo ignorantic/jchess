@@ -1,5 +1,6 @@
 import consts from '../constants/consts';
 import boardModel from '../models/board-model';
+import getMoveFromServer from '../../lib/api';
 
 function setFocus(file, rank) {
   const selector = `.square[data-file="${file}"][data-rank="${rank}"]`;
@@ -21,12 +22,14 @@ export function touch(file, rank, mouse) {
     const payload = {
       board: boardModel.getBoard(),
       fen: boardModel.getFEN(),
+      prevFen: boardModel.getPrevFEN(),
       turn: boardModel.getTurn(),
-      check: boardModel.isCheck(),
+      check: boardModel.isInCheck(),
       checkmate: boardModel.isCheckmate(),
       halfCount: boardModel.getHalfCount(),
       currentLine: boardModel.getCurrentLine(),
       lines: boardModel.getLines(),
+      lastMove: boardModel.getLastMove(),
       focus: [file, rank],
       drag,
     };
@@ -43,12 +46,14 @@ export function goto(line, move) {
     const payload = {
       board: boardModel.getBoard(),
       fen: boardModel.getFEN(),
+      prevFen: boardModel.getPrevFEN(),
       turn: boardModel.getTurn(),
-      check: boardModel.isCheck(),
+      check: boardModel.isInCheck(),
       checkmate: boardModel.isCheckmate(),
       halfCount: boardModel.getHalfCount(),
       currentLine: boardModel.getCurrentLine(),
       lines: boardModel.getLines(),
+      lastMove: boardModel.getLastMove(),
     };
     dispatch({
       type: consts.GOTO,
@@ -63,12 +68,14 @@ export function gotoPrev() {
     const payload = {
       board: boardModel.getBoard(),
       fen: boardModel.getFEN(),
+      prevFen: boardModel.getPrevFEN(),
       turn: boardModel.getTurn(),
-      check: boardModel.isCheck(),
+      check: boardModel.isInCheck(),
       checkmate: boardModel.isCheckmate(),
       halfCount: boardModel.getHalfCount(),
       currentLine: boardModel.getCurrentLine(),
       lines: boardModel.getLines(),
+      lastMove: boardModel.getLastMove(),
     };
     dispatch({
       type: consts.GOTO,
@@ -83,12 +90,14 @@ export function gotoNext() {
     const payload = {
       board: boardModel.getBoard(),
       fen: boardModel.getFEN(),
+      prevFen: boardModel.getPrevFEN(),
       turn: boardModel.getTurn(),
-      check: boardModel.isCheck(),
+      check: boardModel.isInCheck(),
       checkmate: boardModel.isCheckmate(),
       halfCount: boardModel.getHalfCount(),
       currentLine: boardModel.getCurrentLine(),
       lines: boardModel.getLines(),
+      lastMove: boardModel.getLastMove(),
     };
     dispatch({
       type: consts.GOTO,
@@ -103,12 +112,14 @@ export function gotoStart() {
     const payload = {
       board: boardModel.getBoard(),
       fen: boardModel.getFEN(),
+      prevFen: boardModel.getPrevFEN(),
       turn: boardModel.getTurn(),
-      check: boardModel.isCheck(),
+      check: boardModel.isInCheck(),
       checkmate: boardModel.isCheckmate(),
       halfCount: boardModel.getHalfCount(),
       currentLine: boardModel.getCurrentLine(),
       lines: boardModel.getLines(),
+      lastMove: boardModel.getLastMove(),
     };
     dispatch({
       type: consts.GOTO,
@@ -123,12 +134,14 @@ export function gotoEnd() {
     const payload = {
       board: boardModel.getBoard(),
       fen: boardModel.getFEN(),
+      prevFen: boardModel.getPrevFEN(),
       turn: boardModel.getTurn(),
-      check: boardModel.isCheck(),
+      check: boardModel.isInCheck(),
       checkmate: boardModel.isCheckmate(),
       halfCount: boardModel.getHalfCount(),
       currentLine: boardModel.getCurrentLine(),
       lines: boardModel.getLines(),
+      lastMove: boardModel.getLastMove(),
     };
     dispatch({
       type: consts.GOTO,
@@ -158,12 +171,14 @@ export function releasePiece(file, rank) {
       const payload = {
         board: boardModel.getBoard(),
         fen: boardModel.getFEN(),
+        prevFen: boardModel.getPrevFEN(),
         turn: boardModel.getTurn(),
-        check: boardModel.isCheck(),
+        check: boardModel.isInCheck(),
         checkmate: boardModel.isCheckmate(),
         halfCount: boardModel.getHalfCount(),
         currentLine: boardModel.getCurrentLine(),
         lines: boardModel.getLines(),
+        lastMove: boardModel.getLastMove(),
         focus: [file, rank],
         drag: [],
       };
@@ -189,12 +204,14 @@ export function setUpPosition() {
     const payload = {
       board: boardModel.getBoard(),
       fen: boardModel.getFEN(),
+      prevFen: boardModel.getPrevFEN(),
       turn: boardModel.getTurn(),
-      check: boardModel.isCheck(),
+      check: boardModel.isInCheck(),
       checkmate: boardModel.isCheckmate(),
       halfCount: boardModel.getHalfCount(),
       currentLine: boardModel.getCurrentLine(),
       lines: boardModel.getLines(),
+      lastMove: boardModel.getLastMove(),
     };
     dispatch({
       type: consts.SETUP_POSITION,
@@ -209,12 +226,14 @@ export function resetPosition() {
     const payload = {
       board: boardModel.getBoard(),
       fen: boardModel.getFEN(),
+      prevFen: boardModel.getPrevFEN(),
       turn: boardModel.getTurn(),
-      check: boardModel.isCheck(),
+      check: boardModel.isInCheck(),
       checkmate: boardModel.isCheckmate(),
       halfCount: boardModel.getHalfCount(),
       currentLine: boardModel.getCurrentLine(),
       lines: boardModel.getLines(),
+      lastMove: boardModel.getLastMove(),
     };
     dispatch({
       type: consts.CLEAR_POSITION,
@@ -229,12 +248,14 @@ export function changeFEN(newFEN) {
     const payload = {
       board: boardModel.getBoard(),
       fen: boardModel.getFEN(),
+      prevFen: boardModel.getPrevFEN(),
       turn: boardModel.getTurn(),
-      check: boardModel.isCheck(),
+      check: boardModel.isInCheck(),
       checkmate: boardModel.isCheckmate(),
       halfCount: boardModel.getHalfCount(),
       currentLine: boardModel.getCurrentLine(),
       lines: boardModel.getLines(),
+      lastMove: boardModel.getLastMove(),
     };
     dispatch({
       type: consts.CHANGE_FEN,
@@ -249,4 +270,29 @@ export function flipBoard() {
       type: consts.FLIP_BOARD,
     });
   };
+}
+
+export function getEngineMove(fen, lastMove) {
+  return dispatch => (
+    getMoveFromServer(fen, lastMove)
+      .then((bestMove) => {
+        boardModel.move(bestMove);
+        const payload = {
+          board: boardModel.getBoard(),
+          fen: boardModel.getFEN(),
+          prevFen: boardModel.getPrevFEN(),
+          turn: boardModel.getTurn(),
+          check: boardModel.isInCheck(),
+          checkmate: boardModel.isCheckmate(),
+          halfCount: boardModel.getHalfCount(),
+          currentLine: boardModel.getCurrentLine(),
+          lines: boardModel.getLines(),
+          lastMove: boardModel.getLastMove(),
+        };
+        dispatch({
+          type: consts.ENGINE_MOVE,
+          payload,
+        });
+      })
+  );
 }

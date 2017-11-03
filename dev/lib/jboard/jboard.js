@@ -79,6 +79,9 @@ export default class JBoard {
     this.turn = fu.parseFENTurn(tail[0]);
     this.castling = fu.parseFENCastling(tail[1]);
     this.enPassant = fu.parseFENEnPassant(tail[2], this.board);
+    this.countFiftyMove = +tail[3];
+    this.fullCount = +tail[4];
+    this.halfCount = ((this.fullCount * 2) + this.turn) - 3;
     return true;
   }
 
@@ -486,14 +489,14 @@ export default class JBoard {
   }
 
   /**
-   * Do move on the board.
+   * Make move on the board.
    * @param {number} type - Type of piece.
    * @param {number} color - Color of piece.
    * @param {{file: number, rank: number}} start - Start square of move.
    * @param {{file: number, rank: number}} stop - Stop square of move.
    * @param {number} [promType] - Type of piece for pawn promotion.
    */
-  doMove(type, color, start, stop, promType) {
+  makeMove(type, color, start, stop, promType) {
     this.handleEnPassant(start, stop);
     // check castling
     if (type === 5 && Math.abs(start.file - stop.file) === 2) {
@@ -522,7 +525,7 @@ export default class JBoard {
     const color = this.getPieceColor(start.file, start.rank);
 
     if (this.checkBeforeMove(start, stop, color)) {
-      this.doMove(type, color, start, stop, promType);
+      this.makeMove(type, color, start, stop, promType);
     } else return null;
 
     this.checkAfterMove(type, color, start, stop);
@@ -540,7 +543,7 @@ export default class JBoard {
     if (checkBoard.handleMove(start, stop, 4)) {
       const { file, rank } = start;
       const color = this.getPieceColor(file, rank);
-      return !checkBoard.isCheck(color);
+      return !checkBoard.isInCheck(color);
     }
 
     return false;
@@ -629,7 +632,7 @@ export default class JBoard {
     if (!(file === 4 && (rank === 0 || rank === 7))) return null;
     const color = (rank === 0) ? 1 : 2;
     if (this.castling[color] === 0) return null;
-    if (this.isCheck(color)) return null;
+    if (this.isInCheck(color)) return null;
     const result = [];
 
     if (
@@ -726,7 +729,7 @@ export default class JBoard {
    * @param {number} [clr]
    * @returns {boolean}
    */
-  isCheck(clr) {
+  isInCheck(clr) {
     const color = clr || this.turn;
     const king = this.getKing(color);
     if (king) {
@@ -744,7 +747,7 @@ export default class JBoard {
    */
   isCheckmate(clr) {
     const color = clr || this.turn;
-    if (!this.isCheck(color)) return false;
+    if (!this.isInCheck(color)) return false;
     const moves = this.getAllMoves(color);
     return !moves.length;
   }
@@ -812,7 +815,13 @@ export default class JBoard {
     }
     if (start === null || stop === null) return false;
     this.touch(start.file, start.rank);
-    return this.touch(stop.file, stop.rank, promType);
+    const resutl = this.touch(stop.file, stop.rank, promType);
+    this.resetSelected();
+    return resutl;
+  }
+
+  getLastMove() {
+    return this.lines[this.currentLine][this.halfCount].move || '';
   }
 
   /**
@@ -872,6 +881,11 @@ export default class JBoard {
       this.board, this.turn, this.castling, this.enPassant,
       this.countFiftyMove, this.fullCount,
     );
+  }
+
+  getPrevFEN() {
+    if (this.halfCount === 0) return this.initialFEN;
+    return this.lines[this.currentLine][this.halfCount - 1].fen;
   }
 
   /**
