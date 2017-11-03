@@ -1,4 +1,4 @@
-import JBoard from '../../lib/jboard';
+import JBoard from '../../lib/jboard/jboard';
 
 const chessModel = new JBoard();
 chessModel.setUp();

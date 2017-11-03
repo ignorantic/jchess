@@ -18,8 +18,7 @@ export default class Board extends React.Component {
     const {
       board, turn, check, checkmate, focus,
     } = this.props;
-    const color = turn === 1 ? 'white' : 'black';
-    const className = `board board_${color}`;
+    const className = 'board';
     return (
       <div
         className={className}

@@ -1,17 +1,20 @@
 .fen {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
-  margin: auto auto 20px;
 }
 
 .fen__label {
+  flex-grow: 1;
+  display: flex;
   @include text;
-
   color: $clr-text;
   font-weight: 600;
 }
 
 .fen__input {
-  width: calc(100% - 75px);
+  flex-grow: 1;
   height: 20px;
   font-size: 13px;
   outline: none;

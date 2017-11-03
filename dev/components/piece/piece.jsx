@@ -22,7 +22,7 @@ export default class Piece extends React.PureComponent {
       style, color, type,
     } = this.props;
     let className = 'piece';
-    if (type !== null) className += ` piece_${type}_${color}`;
+    if (type !== null) className += ` piece_${color} piece_${type}_${color}`;
 
     return (
       <div

@@ -1,6 +1,6 @@
 .board-container {
   position: relative;
-  height: 520px;
-  width: 520px;
-  margin: 40px auto;
+  height: $sz-board;
+  width: $sz-board;
+  margin: 40px auto 20px;
 }

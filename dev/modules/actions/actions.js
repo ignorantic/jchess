@@ -16,7 +16,7 @@ export function touch(file, rank, mouse) {
     if (
       mouse
       && boardModel.getMoves(file, rank).length > 0
-      && boardModel.isFriend(boardModel.getTurn(), file, rank)
+      && boardModel.isFriend(file, rank)
     ) drag = [file, rank];
     const payload = {
       board: boardModel.getBoard(),

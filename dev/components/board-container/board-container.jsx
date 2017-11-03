@@ -12,6 +12,7 @@ class BoardContainer extends React.Component {
     this.state = { drag: [0, 0] };
     BoardContainer.propTypes = {
       id: PropTypes.string.isRequired,
+      halfCount: PropTypes.number.isRequired,
       board: PropTypes.arrayOf(PropTypes.array).isRequired,
       turn: PropTypes.number.isRequired,
       check: PropTypes.bool.isRequired,
@@ -81,12 +82,14 @@ class BoardContainer extends React.Component {
 
   render() {
     const {
-      id, board, turn, check, checkmate, flip, focus, drag,
+      id, board, halfCount, turn, check, checkmate, flip, focus, drag,
     } = this.props;
     const [dragFile, dragRank] = drag;
     const [dragLeft, dragTop] = this.state.drag;
     let className = 'board-container';
     if (flip) className += ' board-container_flipped';
+    const color = turn === 1 ? 'white' : 'black';
+    className += ` board-container_${color}`;
     return (
       <div
         id={id}
@@ -113,6 +116,7 @@ class BoardContainer extends React.Component {
           dragRank={dragRank}
           dragLeft={dragLeft}
           dragTop={dragTop}
+          halfCount={halfCount}
         />
       </div>
     );
@@ -121,6 +125,7 @@ class BoardContainer extends React.Component {
 
 const mapStateToProps = state => ({
   board: state.board,
+  halfCount: state.halfCount,
   focus: state.focus,
   drag: state.drag,
   turn: state.turn,
