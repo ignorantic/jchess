@@ -9,7 +9,7 @@
     "lint": "yarn run eslint && yarn run sass-lint",
     "imagemin": "imagemin build/img/**/* -o build/img",
     "svg-sprite": "gulp svgSprite",
-    "production": "NODE_ENV=production webpack --progress --env production && yarn run imagemin",
+    "production": "NODE_ENV=production yarn run svg-sprite && webpack --progress --env production && yarn run imagemin",
     "build": "yarn run svg-sprite && webpack --progress --env build",
     "start": "yarn run svg-sprite && webpack-dev-server --progress --env development",
     "static": "static build"

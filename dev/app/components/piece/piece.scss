@@ -1,0 +1,95 @@
+@import "~scss/vars";
+@import "~scss/mixins";
+@import "~scss/sprite-svg";
+
+.piece {
+  display: none;
+  position: absolute;
+  border-width: 0;
+  transition: left 0.2s, top 0.2s;
+  z-index: 20;
+}
+
+.board-container_flipped {
+  .piece {
+    transform: rotate(180deg);
+  }
+}
+
+.piece_black,
+.piece_white {
+  display: block;
+  height: 12.5%;
+  width: 12.5%;
+}
+
+.board-container_white {
+  .piece_white {
+    cursor: grab;
+  }
+}
+
+.board-container_black {
+  .piece_black {
+    cursor: grab;
+  }
+}
+
+@mixin piece($i) {
+  $piece: map-get($icons, $i);
+  $sprite: map-get($icons, sprite);
+  $x-position: map-get($piece, background-x) / map-get($piece, square-height) * 100;
+  $y-position: map-get($piece, background-y) / map-get($piece, square-width) * 100;
+
+  background-image: url(map-get($sprite, svg-path));
+  background-position: $x-position $y-position;
+  background-size: 1200% 1200%;
+}
+
+.piece_pawn_white {
+  @include piece(wp);
+}
+
+.piece_pawn_black {
+  @include piece(bp);
+}
+
+.piece_rook_white {
+  @include piece(wr);
+}
+
+.piece_rook_black {
+  @include piece(br);
+}
+
+.piece_knight_white {
+  @include piece(wn);
+}
+
+.piece_knight_black {
+  @include piece(bn);
+}
+
+.piece_bishop_white {
+  @include piece(wb);
+}
+
+.piece_bishop_black {
+  @include piece(bb);
+}
+
+.piece_queen_white {
+  @include piece(wq);
+}
+
+.piece_queen_black {
+  @include piece(bq);
+}
+
+.piece_king_white {
+  @include piece(wk);
+}
+
+.piece_king_black {
+  @include piece(bk);
+}

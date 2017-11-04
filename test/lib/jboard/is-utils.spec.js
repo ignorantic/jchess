@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-expressions */
 import { describe, it, before } from 'mocha';
 import { expect } from 'chai';
-import JBoard from '../../../dev/lib/jboard/jboard';
-import * as is from '../../../dev/lib/jboard/is-utils';
+import JBoard from '../../../dev/app/lib/jboard/jboard';
+import * as is from '../../../dev/app/lib/jboard/is-utils';
 
 describe('is-utils', () => {
   describe('isEnPassant', () => {

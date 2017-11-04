@@ -1,0 +1,63 @@
+@import "~scss/vars";
+
+
+.square {
+  position: absolute;
+  height: 12.5%;
+  width: 12.5%;
+  border-width: 0;
+  padding: 0 2px;
+  outline: none;
+  z-index: 10;
+
+  &:focus {
+    &::after {
+      box-sizing: border-box;
+      position: absolute;
+      content: "";
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      border: 4px solid $clr-focus;
+    }
+  }
+
+}
+
+.square_white {
+  background: $clr-white-square;
+  box-shadow: inset 0 0 50px -10px $clr-shadow-square;
+}
+
+.square_black {
+  background: $clr-black-square;
+  box-shadow: inset 0 0 50px -10px $clr-shadow-square;
+}
+
+.square_selected {
+  background: $clr-selected-black-square;
+  box-shadow: inset 0 0 50px -10px $clr-selected-shadow-square;
+}
+
+.square_marked_white {
+  background: $clr-marked-white-square;
+  box-shadow: inset 0 0 50px -10px $clr-marked-shadow-square;
+  cursor: pointer;
+}
+
+.square_marked_black {
+  background: $clr-marked-black-square;
+  box-shadow: inset 0 0 50px -10px $clr-marked-shadow-square;
+  cursor: pointer;
+}
+
+.square_check {
+  background: $clr-check-square;
+  box-shadow: inset 0 0 50px -10px $clr-check-shadow-square;
+}
+
+.square_checkmate {
+  background: $clr-mate-square;
+  box-shadow: inset 0 0 50px -10px $clr-mate-shadow-square;
+}

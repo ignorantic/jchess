@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import { describe, it, before, beforeEach } from 'mocha';
 import { expect } from 'chai';
-import JBoard from '../../../dev/lib/jboard/jboard';
+import JBoard from '../../../dev/app/lib/jboard/jboard';
 
 describe('jBoard', () => {
   const TEST_POSITION = 'r3k2r/pp3pp1/b2P4/b1pP1n1B/3q1P1p/2n2NP1/PP2P2P/RNBQK2R w KQkq - 0 1';

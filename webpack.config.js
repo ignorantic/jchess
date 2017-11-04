@@ -16,6 +16,10 @@ const common = {
 
   resolve: {
     extensions: ['.webpack.js', '.web.js', '.js', '.json', '.jsx'],
+    alias: {
+      scss: path.resolve(__dirname, 'dev/scss'),
+      img: path.resolve(__dirname, 'dev/img'),
+    },
   },
 
   output: {
@@ -90,8 +94,8 @@ const common = {
       configFile: '.sass-lint.yml',
       glob: 'dev/**/*.s?(a|c)ss',
       ignoreFiles: [
-        path.resolve(__dirname, 'dev/scss/_sprite_svg.scss'),
-        path.resolve(__dirname, 'dev/scss/tmpl/sprite_template.scss'),
+        path.resolve(__dirname, 'dev/scss/sprite-svg.scss'),
+        path.resolve(__dirname, 'dev/scss/sprite-tmpl.scss'),
       ],
     }),
   ],

@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-expressions */
 import { describe, it, before } from 'mocha';
 import { expect } from 'chai';
-import JBoard from '../../../dev/lib/jboard/jboard';
-import * as attack from '../../../dev/lib/jboard/attack';
+import JBoard from '../../../dev/app/lib/jboard/jboard';
+import * as attack from '../../../dev/app/lib/jboard/attack';
 
 describe('attack', () => {
   const CASTLING_POSITION = 'r3k2r/pp3ppp/3B4/8/8/8/PPP2PPP/R2nK2R w KQkq - 0 1';

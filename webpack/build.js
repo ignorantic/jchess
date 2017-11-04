@@ -9,11 +9,8 @@ module.exports = () => ({
       {
         test: /\.(sass|scss)$/,
         use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
           use: [
-            {
-              loader: 'style-loader',
-              options: { sourceMap: true },
-            },
             {
               loader: 'css-loader',
               options: { sourceMap: true },
@@ -34,7 +31,6 @@ module.exports = () => ({
               },
             },
           ],
-          fallback: 'style-loader',
         }),
       },
     ],

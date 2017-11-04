@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import * as nt from '../../../dev/lib/jboard/notation';
+import * as nt from '../../../dev/app/lib/jboard/notation';
 
 describe('Notation', () => {
   describe('squareToAlg', () => {

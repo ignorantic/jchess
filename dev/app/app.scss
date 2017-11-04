@@ -1,0 +1,23 @@
+@import "~scss/vars";
+
+html {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  background: $clr-face-alt;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.content {
+  position: relative;
+}
+

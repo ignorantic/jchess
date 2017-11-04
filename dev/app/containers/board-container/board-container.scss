@@ -1,0 +1,8 @@
+@import "~scss/vars";
+
+.board-container {
+  position: relative;
+  height: $sz-board;
+  width: $sz-board;
+  margin: 40px 40px 20px;
+}

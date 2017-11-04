@@ -1,16 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import store from '../modules/stores/store';
-import App from '../components/app/app';
-import './index.scss';
+import App from '../app/app';
+import '../scss/vendors.scss';
 import '../img/favicon.png';
 
 document.addEventListener('DOMContentLoaded', () => {
   const render = (Component) => {
     ReactDOM.render(
       <AppContainer>
-        <Component store={store} />
+        <Component />
       </AppContainer>,
       document.getElementById('root'),
     );
@@ -19,6 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
   render(App);
 
   if (module.hot) {
-    module.hot.accept('../components/app/app', () => render(App));
+    module.hot.accept('../app/app', () => render(App));
   }
 });

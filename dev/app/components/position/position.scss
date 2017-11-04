@@ -1,0 +1,13 @@
+.position {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.board-container_flipped {
+  .position {
+    transform: rotate(180deg);
+  }
+}

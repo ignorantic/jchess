@@ -1,0 +1,47 @@
+@import "~scss/vars";
+
+.turn {
+  position: absolute;
+  left: -30px;
+  top: 0;
+  height: $sz-board;
+
+  &::after {
+    content: "";
+    position: absolute;
+    box-sizing: border-box;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    left: 0;
+    transition: top 0.2s, background 0.2s;
+  }
+}
+
+.turn_white {
+  &::after {
+    background: $clr-white;
+    top: calc(100% - 15px);
+  }
+}
+
+.turn_black {
+  &::after {
+    background: $clr-black;
+    top: 0;
+  }
+}
+
+.turn_flipped {
+  &.turn_white {
+    &::after {
+      top: 0;
+    }
+  }
+
+  &.turn_black {
+    &::after {
+      top: calc(100% - 20px);
+    }
+  }
+}
