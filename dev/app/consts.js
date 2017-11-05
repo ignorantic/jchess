@@ -1,13 +1,20 @@
 import keyMirror from 'keymirror';
 
-export default keyMirror({
+const ACTIONS = keyMirror({
   CHANGE_FOCUS: null,
+  FLIP_BOARD: null,
   RELEASE: null,
-  CHANGE_FEN: null,
+  DRAG: null,
+
   SETUP_POSITION: null,
   CLEAR_POSITION: null,
   UPDATE_POSITION: null,
-  ENGINE_MOVE: null,
-  FLIP_BOARD: null,
   GOTO: null,
+  CHANGE_FEN: null,
+
+  GET_ENGINE_MOVE_REQUEST: null,
+  GET_ENGINE_MOVE_SUCCESS: null,
+  GET_ENGINE_MOVE_FAILURE: null,
 });
+
+export default ACTIONS;

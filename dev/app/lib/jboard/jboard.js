@@ -108,6 +108,29 @@ export default class JBoard {
   }
 
   /**
+   * Return game object
+   * @return {{
+   *   board: Array.<Array>, fen: string, prevFen: string,
+   *   turn: number, check: boolean, checkmate: boolean, halfCount: number,
+   *   currentLine: number, lines: Array.<Array>, lastMove: string,
+   * }}
+   */
+  getGame() {
+    return {
+      board: this.getBoard(),
+      fen: this.getFEN(),
+      prevFen: this.getPrevFEN(),
+      turn: this.getTurn(),
+      check: this.isInCheck(),
+      checkmate: this.isCheckmate(),
+      halfCount: this.getHalfCount(),
+      currentLine: this.getCurrentLine(),
+      lines: this.getLines(),
+      lastMove: this.getLastMove(),
+    };
+  }
+
+  /**
    * Return board array.
    * @returns {Array.<Array>}
    */

@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import Button from '../../components/button/button';
 import Lines from '../../components/lines/lines';
 import { flipBoard } from '../../actions/ui-action';
+import getEngineMove from '../../actions/engine-actions';
 import { setUpPosition, resetPosition, goto, gotoPrev, gotoNext,
-  gotoStart, gotoEnd, getEngineMove } from '../../actions/game-actions';
+  gotoStart, gotoEnd } from '../../actions/game-actions';
 import './sidebar.scss';
 
 class Sidebar extends React.PureComponent {

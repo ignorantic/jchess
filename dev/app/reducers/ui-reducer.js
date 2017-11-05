@@ -1,4 +1,4 @@
-import consts from '../consts';
+import ACTIONS from '../consts';
 
 const initialState = {
   flip: false,
@@ -8,25 +8,25 @@ const initialState = {
 
 const ui = (state = initialState, action) => {
   switch (action.type) {
-    case consts.UPDATE_POSITION: {
+    case ACTIONS.DRAG: {
       return {
         ...state,
-        ...action.payload.ui,
+        ...action.payload,
       };
     }
-    case consts.RELEASE: {
+    case ACTIONS.RELEASE: {
       return {
         ...state,
         drag: null,
       };
     }
-    case consts.CHANGE_FOCUS: {
+    case ACTIONS.CHANGE_FOCUS: {
       return {
         ...state,
         focus: action.payload,
       };
     }
-    case consts.FLIP_BOARD: {
+    case ACTIONS.FLIP_BOARD: {
       return {
         ...state,
         flip: !state.flip,

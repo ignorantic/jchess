@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Board from '../../components/board/board';
 import Turn from '../../components/turn/turn';
 import Position from '../../components/position/position';
-import { getEngineMove } from '../../actions/game-actions';
+import getEngineMove from '../../actions/engine-actions';
 import { touch, releasePiece, changeFocus } from '../../actions/ui-action';
 import { rect, convCoord } from '../../lib/helpers';
 import './board-container.scss';
@@ -29,6 +29,9 @@ class BoardContainer extends React.Component {
         focus: PropTypes.arrayOf(PropTypes.number),
         drag: PropTypes.arrayOf(PropTypes.number),
       }).isRequired,
+      engine: PropTypes.shape({
+        status: PropTypes.string,
+      }).isRequired,
       onTouch: PropTypes.func.isRequired,
       onRelease: PropTypes.func.isRequired,
       onFocus: PropTypes.func.isRequired,
@@ -41,13 +44,28 @@ class BoardContainer extends React.Component {
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
   }
 
-  componentDidUpdate() {
+  componentWillReceiveProps(newProps) {
     const {
       game: {
         turn, prevFen, lastMove,
-      }, onEngineMove,
+      },
+      engine: {
+        status: newStatus,
+      },
+    } = newProps;
+    const {
+      engine: {
+        status: oldStatus,
+      },
+      onEngineMove,
     } = this.props;
-    if (turn === 2) onEngineMove(prevFen, lastMove);
+    if (
+      turn === 2
+      && oldStatus !== 'waiting'
+      && (newStatus === 'ready' || newStatus === 'error')
+    ) {
+      onEngineMove(prevFen, lastMove);
+    }
   }
 
   handleArrowKey(code) {
@@ -120,6 +138,7 @@ class BoardContainer extends React.Component {
       ui: {
         flip, focus, drag,
       },
+      engine: { status },
     } = this.props;
     let dragFile;
     let dragRank;
@@ -152,6 +171,7 @@ class BoardContainer extends React.Component {
           focus={focus}
         />
         <Position
+          status={status}
           board={board}
           turn={turn}
           flip={flip}
@@ -169,6 +189,7 @@ class BoardContainer extends React.Component {
 const mapStateToProps = state => ({
   game: state.game,
   ui: state.ui,
+  engine: state.engine,
 });
 
 const mapDispatchToProps = dispatch => ({

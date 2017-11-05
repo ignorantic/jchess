@@ -1,20 +1,5 @@
-import consts from '../consts';
+import ACTIONS from '../consts';
 import boardModel from '../board-model';
-
-function getGame() {
-  return {
-    board: boardModel.getBoard(),
-    fen: boardModel.getFEN(),
-    prevFen: boardModel.getPrevFEN(),
-    turn: boardModel.getTurn(),
-    check: boardModel.isInCheck(),
-    checkmate: boardModel.isCheckmate(),
-    halfCount: boardModel.getHalfCount(),
-    currentLine: boardModel.getCurrentLine(),
-    lines: boardModel.getLines(),
-    lastMove: boardModel.getLastMove(),
-  };
-}
 
 function setFocus(file, rank) {
   const selector = `.square[data-file="${file}"][data-rank="${rank}"]`;
@@ -24,6 +9,7 @@ function setFocus(file, rank) {
   }
 }
 
+/* TODO: separate ui and game ACTIONS */
 export function touch(file, rank, mouse) {
   return (dispatch) => {
     let drag = null;
@@ -33,16 +19,18 @@ export function touch(file, rank, mouse) {
       && boardModel.getMoves(file, rank).length > 0
       && boardModel.isFriend(file, rank)
     ) drag = [file, rank];
-    const payload = {
-      game: getGame(),
-      ui: {
-        focus: [file, rank],
-        drag,
-      },
+    const gamePayload = boardModel.getGame();
+    const uiPayload = {
+      focus: [file, rank],
+      drag,
     };
     dispatch({
-      type: consts.UPDATE_POSITION,
-      payload,
+      type: ACTIONS.UPDATE_POSITION,
+      payload: gamePayload,
+    });
+    dispatch({
+      type: ACTIONS.DRAG,
+      payload: uiPayload,
     });
   };
 }
@@ -52,7 +40,7 @@ export function changeFocus(file, rank) {
   return (dispatch) => {
     const payload = [file, rank];
     dispatch({
-      type: consts.CHANGE_FOCUS,
+      type: ACTIONS.CHANGE_FOCUS,
       payload,
     });
   };
@@ -63,33 +51,22 @@ export function releasePiece(file, rank) {
     if (boardModel.isSquareMarked(file, rank)) {
       boardModel.touch(file, rank);
       setFocus(file, rank);
-      const payload = {
-        game: getGame(),
-        ui: {
-          focus: [file, rank],
-          drag: null,
-        },
-      };
+      const payload = boardModel.getGame();
       dispatch({
-        type: consts.UPDATE_POSITION,
-        payload,
-      });
-    } else {
-      const payload = {
-        ui: { drag: null },
-      };
-      dispatch({
-        type: consts.RELEASE,
+        type: ACTIONS.UPDATE_POSITION,
         payload,
       });
     }
+    dispatch({
+      type: ACTIONS.RELEASE,
+    });
   };
 }
 
 export function flipBoard() {
   return (dispatch) => {
     dispatch({
-      type: consts.FLIP_BOARD,
+      type: ACTIONS.FLIP_BOARD,
     });
   };
 }

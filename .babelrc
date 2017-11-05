@@ -20,6 +20,7 @@
         "react"
       ],
       "plugins": [
+        "array-includes",
         "transform-class-properties",
         "transform-object-assign",
         "transform-object-rest-spread"
@@ -31,6 +32,7 @@
         "react"
       ],
       "plugins": [
+        "array-includes",
         "transform-class-properties",
         "transform-object-assign",
         "transform-object-rest-spread"
