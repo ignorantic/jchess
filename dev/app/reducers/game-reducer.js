@@ -4,12 +4,14 @@ import boardModel from '../board-model';
 const initialState = {
   board: [[]],
   fen: boardModel.initialFEN,
+  prevFen: boardModel.initialFEN,
   turn: 1,
   check: false,
   checkmate: false,
   halfCount: 0,
   currentLine: 0,
   lines: [[]],
+  lastMove: '',
 };
 
 const game = (state = initialState, action) => {

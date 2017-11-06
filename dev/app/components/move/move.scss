@@ -7,30 +7,23 @@ body {
 
 .move {
   @include text;
+  position: relative;
   background: transparent;
   border: 0;
   text-align: left;
+  font-size: 0.8rem;
   outline: none;
   cursor: pointer;
   padding: 5px;
   margin: 0;
 
   &_white {
-    flex-basis: 40%;
-    margin-left: 20%;
-
     &::before {
-      position: absolute;
-      left: 5%;
       counter-increment: moves;
-      content: counter(moves)".";
-      color: $clr-text;
-      font-weight: 100;
+      content: counter(moves)". ";
+      color: $clr-text-alt;
+      font-weight: 700;
     }
-  }
-
-  &_black {
-    flex-basis: 40%;
   }
 
   &_active {

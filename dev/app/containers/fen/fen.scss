@@ -13,7 +13,8 @@
   height: 20px;
   font-size: 13px;
   outline: none;
-  border: 0;
+  border-width: 0;
+  border-radius: 2px;
   background: $clr-face;
   color: $clr-text;
   padding-left: 5px;

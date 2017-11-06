@@ -11,6 +11,9 @@ const ACTIONS = keyMirror({
   GOTO: null,
   CHANGE_FEN: null,
 
+  TOGGLE_WHITE: null,
+  TOGGLE_BLACK: null,
+
   GET_ENGINE_MOVE_REQUEST: null,
   GET_ENGINE_MOVE_SUCCESS: null,
   GET_ENGINE_MOVE_FAILURE: null,

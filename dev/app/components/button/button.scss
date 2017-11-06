@@ -4,6 +4,7 @@
   font-size: 16px;
   background: $clr-face;
   color: $clr-text;
+  border-radius: 2px;
   padding: 5px 10px;
   border: 1px solid $clr-face;
   outline: none;
@@ -15,14 +16,10 @@
   }
 
   &:focus {
-    outline: {
-      style: solid;
-      color: $clr-outline;
-      width: 1px;
-    }
+    border-color: $clr-outline;
   }
 
   &:hover {
-    color: lighten($clr-text, 10%);
+    background: lighten($clr-face, 2%);
   }
 }

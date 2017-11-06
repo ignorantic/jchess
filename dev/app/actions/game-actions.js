@@ -1,13 +1,17 @@
 import ACTIONS from '../consts';
 import boardModel from '../board-model';
-import getEngineMove from './engine-actions';
+import { getEngineMove } from './engine-actions';
 import { drag } from './ui-action';
 
 export function setUpPosition() {
   return (dispatch) => {
     dispatch({ type: ACTIONS.GET_ENGINE_MOVE_SUCCESS });
     boardModel.setUp();
-    const payload = boardModel.getGame();
+    const payload = {
+      ...boardModel.getGame(),
+      prevFen: boardModel.initialFEN,
+      lastMove: '',
+    };
     dispatch({
       type: ACTIONS.UPDATE_POSITION,
       payload,
@@ -19,7 +23,11 @@ export function resetPosition() {
   return (dispatch) => {
     dispatch({ type: ACTIONS.GET_ENGINE_MOVE_SUCCESS });
     boardModel.resetPosition();
-    const payload = boardModel.getGame();
+    const payload = {
+      ...boardModel.getGame(),
+      prevFen: boardModel.initialFEN,
+      lastMove: '',
+    };
     dispatch({
       type: ACTIONS.UPDATE_POSITION,
       payload,
@@ -59,7 +67,11 @@ export function move(file, rank) {
       if (play[boardModel.turn] === true && status !== 'waiting') {
         dispatch(getEngineMove(fen, lastMove));
       }
-      const payload = boardModel.getGame();
+      const payload = {
+        ...boardModel.getGame(),
+        lastMove,
+        prevFen: fen,
+      };
       dispatch({
         type: ACTIONS.MOVE,
         payload,

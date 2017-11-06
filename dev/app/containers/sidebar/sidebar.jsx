@@ -2,8 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from '../../components/button/button';
-import Lines from '../../components/movelist/movelist';
+import Movelist from '../../components/movelist/movelist';
 import { flipBoard } from '../../actions/ui-action';
+import { toggleWhite, toggleBlack } from '../../actions/engine-actions';
 import { setUpPosition, resetPosition, goto, gotoPrev, gotoNext,
   gotoStart, gotoEnd } from '../../actions/game-actions';
 import './sidebar.scss';
@@ -19,6 +20,8 @@ class Sidebar extends React.PureComponent {
         lastMove: PropTypes.string,
         lines: PropTypes.arrayOf(PropTypes.array),
       }).isRequired,
+      whitePlayer: PropTypes.bool.isRequired,
+      blackPlayer: PropTypes.bool.isRequired,
       onNewClick: PropTypes.func.isRequired,
       onClearClick: PropTypes.func.isRequired,
       onFlipClick: PropTypes.func.isRequired,
@@ -27,18 +30,23 @@ class Sidebar extends React.PureComponent {
       onGoToNext: PropTypes.func.isRequired,
       onGoToStart: PropTypes.func.isRequired,
       onGoToEnd: PropTypes.func.isRequired,
+      onToggleWhite: PropTypes.func.isRequired,
+      onToggleBlack: PropTypes.func.isRequired,
     };
   }
 
   render() {
     const {
-      game,
+      game, whitePlayer, blackPlayer,
       onNewClick, onClearClick, onFlipClick,
       onGoTo, onGoToPrev, onGoToNext, onGoToStart, onGoToEnd,
+      onToggleWhite, onToggleBlack,
     } = this.props;
     const {
       halfCount, currentLine, lines,
     } = game;
+    const whiteToggle = whitePlayer ? 'Engine' : 'Human';
+    const blackToggle = blackPlayer ? 'Engine' : 'Human';
 
     return (
       <aside className="sidebar">
@@ -57,7 +65,21 @@ class Sidebar extends React.PureComponent {
           label="Flip board"
           onClick={onFlipClick}
         />
-        <Lines
+        <div className="sidebar__players">
+          <Button
+            className="sidebar__white"
+            key="white"
+            label={whiteToggle}
+            onClick={onToggleWhite}
+          />
+          <Button
+            className="sidebar__black"
+            key="black"
+            label={blackToggle}
+            onClick={onToggleBlack}
+          />
+        </div>
+        <Movelist
           halfCount={halfCount}
           currentLine={currentLine}
           lines={lines}
@@ -94,6 +116,8 @@ class Sidebar extends React.PureComponent {
 
 const mapStateToProps = state => ({
   game: state.game,
+  whitePlayer: state.engine.play[1],
+  blackPlayer: state.engine.play[2],
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -105,6 +129,8 @@ const mapDispatchToProps = dispatch => ({
   onGoToNext: () => dispatch(gotoNext()),
   onGoToStart: () => dispatch(gotoStart()),
   onGoToEnd: () => dispatch(gotoEnd()),
+  onToggleWhite: () => dispatch(toggleWhite()),
+  onToggleBlack: () => dispatch(toggleBlack()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

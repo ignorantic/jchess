@@ -3,7 +3,7 @@ import getMoveFromServer from '../lib/api';
 import { select, move } from './game-actions';
 import { ANToSquare } from '../lib/jboard/an';
 
-export default function getEngineMove(fen, lastMove) {
+export function getEngineMove(fen, lastMove) {
   return (dispatch, getState) => {
     dispatch({ type: ACTIONS.GET_ENGINE_MOVE_REQUEST });
     return getMoveFromServer(fen, lastMove)
@@ -19,5 +19,25 @@ export default function getEngineMove(fen, lastMove) {
       .catch(() => {
         dispatch({ type: ACTIONS.GET_ENGINE_MOVE_FAILURE });
       });
+  };
+}
+
+export function toggleWhite() {
+  return (dispatch, getState) => {
+    dispatch({ type: ACTIONS.TOGGLE_WHITE });
+    const { game: { prevFen, turn, lastMove }, engine: { status, play } } = getState();
+    if (play[turn] === true && status !== 'waiting') {
+      dispatch(getEngineMove(prevFen, lastMove));
+    }
+  };
+}
+
+export function toggleBlack() {
+  return (dispatch, getState) => {
+    dispatch({ type: ACTIONS.TOGGLE_BLACK });
+    const { game: { prevFen, turn, lastMove }, engine: { status, play } } = getState();
+    if (play[turn] === true && status !== 'waiting') {
+      dispatch(getEngineMove(prevFen, lastMove));
+    }
   };
 }

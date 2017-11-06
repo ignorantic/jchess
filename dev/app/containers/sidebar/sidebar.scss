@@ -11,18 +11,34 @@
     margin-bottom: 10px;
   }
 
+  &__text {
+    @include text;
+    margin-bottom: 25px;
+  }
+
+  &__players {
+    display: flex;
+    justify-content: space-between;
+
+    .button {
+      width: 48%;
+    }
+  }
+
   &__controls {
     display: flex;
     justify-content: space-between;
+
+    .button {
+      width: 22%;
+    }
   }
-}
 
-.sidebar__text {
-  @include text;
-  margin-bottom: 25px;
-}
+  &__white {
+    color: $clr-white;
+  }
 
-.sidebar__widget {
-  margin-bottom: 15px;
-  overflow: hidden;
+  &__black {
+    color: $clr-black;
+  }
 }

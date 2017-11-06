@@ -3,7 +3,7 @@ import ACTIONS from '../consts';
 const initialState = {
   status: 'ready',
   play: {
-    1: true,
+    1: false,
     2: true,
   },
 };
@@ -26,6 +26,24 @@ const engine = (state = initialState, action) => {
       return {
         ...state,
         status: 'error',
+      };
+    }
+    case ACTIONS.TOGGLE_WHITE: {
+      return {
+        ...state,
+        play: {
+          ...state.play,
+          1: !state.play[1],
+        },
+      };
+    }
+    case ACTIONS.TOGGLE_BLACK: {
+      return {
+        ...state,
+        play: {
+          ...state.play,
+          2: !state.play[2],
+        },
       };
     }
     default: {
