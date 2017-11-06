@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import Board from '../../components/board/board';
 import Turn from '../../components/turn/turn';
 import Position from '../../components/position/position';
-import getEngineMove from '../../actions/engine-actions';
-import { touch, releasePiece, changeFocus } from '../../actions/ui-action';
+import { move } from '../../actions/game-actions';
+import { select, releasePiece, changeFocus } from '../../actions/ui-action';
 import { rect, convCoord } from '../../lib/helpers';
 import './board-container.scss';
 
@@ -19,8 +19,6 @@ class BoardContainer extends React.Component {
         board: PropTypes.arrayOf(PropTypes.array),
         halfCount: PropTypes.number,
         turn: PropTypes.number,
-        prevFen: PropTypes.string,
-        lastMove: PropTypes.string,
         check: PropTypes.bool,
         checkmate: PropTypes.bool,
       }).isRequired,
@@ -32,10 +30,10 @@ class BoardContainer extends React.Component {
       engine: PropTypes.shape({
         status: PropTypes.string,
       }).isRequired,
-      onTouch: PropTypes.func.isRequired,
+      onMove: PropTypes.func.isRequired,
+      onSelect: PropTypes.func.isRequired,
       onRelease: PropTypes.func.isRequired,
       onFocus: PropTypes.func.isRequired,
-      onEngineMove: PropTypes.func.isRequired,
     };
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
@@ -44,29 +42,6 @@ class BoardContainer extends React.Component {
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
   }
 
-  componentWillReceiveProps(newProps) {
-    const {
-      game: {
-        turn, prevFen, lastMove,
-      },
-      engine: {
-        status: newStatus,
-      },
-    } = newProps;
-    const {
-      engine: {
-        status: oldStatus,
-      },
-      onEngineMove,
-    } = this.props;
-    if (
-      turn === 2
-      && oldStatus !== 'waiting'
-      && (newStatus === 'ready' || newStatus === 'error')
-    ) {
-      onEngineMove(prevFen, lastMove);
-    }
-  }
 
   handleArrowKey(code) {
     const {
@@ -83,12 +58,19 @@ class BoardContainer extends React.Component {
 
   handleKeyDown(event) {
     const {
-      ui: { focus: [file, rank] }, onTouch,
+      game: { board }, ui: { focus: [file, rank] }, onSelect, onMove, onFocus,
     } = this.props;
     const code = event.keyCode;
 
     if (code > 36 && code < 41) this.handleArrowKey(code);
-    else if (code === 13 || code === 32) onTouch(file, rank, false);
+    else if (code === 13 || code === 32) {
+      if (board[file][rank].marked === true) {
+        onMove(file, rank);
+        onFocus(file, rank);
+      } else {
+        onSelect(file, rank, false);
+      }
+    }
   }
 
   handleMouseMove(event) {
@@ -101,11 +83,18 @@ class BoardContainer extends React.Component {
 
   handleMouseDown(event) {
     const {
-      id, ui: { flip },
-      onTouch, onFocus,
+      id,
+      game: { board },
+      ui: { flip },
+      onMove, onSelect, onFocus,
     } = this.props;
     const { file, rank } = convCoord(id, flip, event.pageX, event.pageY);
-    onTouch(file, rank, true);
+    if (board[file][rank].marked === true) {
+      onMove(file, rank);
+      onFocus(file, rank);
+    } else {
+      onSelect(file, rank, true);
+    }
     onFocus(file, rank);
   }
 
@@ -193,10 +182,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onTouch: (file, rank, mouse) => dispatch(touch(file, rank, mouse)),
+  onMove: (file, rank) => dispatch(move(file, rank)),
+  onSelect: (file, rank, mouse) => dispatch(select(file, rank, mouse)),
   onRelease: (file, rank) => dispatch(releasePiece(file, rank)),
   onFocus: (file, rank) => dispatch(changeFocus(file, rank)),
-  onEngineMove: (fen, lastMove) => dispatch(getEngineMove(fen, lastMove)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BoardContainer);

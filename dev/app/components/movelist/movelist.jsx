@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Move from '../move/move';
-import './lines.scss';
+import './movelist.scss';
 
-export default class Lines extends React.Component {
+export default class Movelist extends React.Component {
   constructor(props) {
     super(props);
-    Lines.propTypes = {
+    Movelist.propTypes = {
       halfCount: PropTypes.number.isRequired,
       currentLine: PropTypes.number.isRequired,
       lines: PropTypes.arrayOf(PropTypes.array).isRequired,
@@ -38,10 +38,10 @@ export default class Lines extends React.Component {
     };
     return (
       <div
-        className="lines"
+        className="movelist"
       >
         <div
-          className="lines__moves"
+          className="movelist__moves"
         >
           {content()}
         </div>

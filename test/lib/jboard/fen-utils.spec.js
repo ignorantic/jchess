@@ -2,7 +2,7 @@
 import { describe, it, before } from 'mocha';
 import { expect } from 'chai';
 import JBoard from '../../../dev/app/lib/jboard/jboard';
-import * as fu from '../../../dev/app/lib/jboard/fen-utils';
+import * as fu from '../../../dev/app/lib/jboard/fen';
 
 describe('FEN utils', () => {
   const TEST_POSITION = 'r3k2r/pp3pp1/b2P4/b1pP1n1B/3q1P1p/2n2NP1/PP2P2P/RNBQK2R w KQkq - 0 1';
@@ -96,7 +96,7 @@ describe('FEN utils', () => {
       jboard.setUp();
     });
 
-    it('return null if square is empty', () => {
+    it('return null if square utils empty', () => {
       expect(fu.getFENPiece(0, 4, jboard.board)).to.be.null;
       expect(fu.getFENPiece(4, 5, jboard.board)).to.be.null;
       expect(fu.getFENPiece(6, 3, jboard.board)).to.be.null;

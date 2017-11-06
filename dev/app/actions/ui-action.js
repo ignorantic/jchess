@@ -1,4 +1,5 @@
 import ACTIONS from '../consts';
+import { move, updatePosition } from './game-actions';
 import boardModel from '../board-model';
 
 function setFocus(file, rank) {
@@ -9,25 +10,20 @@ function setFocus(file, rank) {
   }
 }
 
-/* TODO: separate ui and game ACTIONS */
-export function touch(file, rank, mouse) {
+export function select(file, rank, mouse) {
   return (dispatch) => {
     let drag = null;
-    boardModel.touch(file, rank);
+    boardModel.select(file, rank);
     if (
       mouse
       && boardModel.getMoves(file, rank).length > 0
       && boardModel.isFriend(file, rank)
     ) drag = [file, rank];
-    const gamePayload = boardModel.getGame();
     const uiPayload = {
       focus: [file, rank],
       drag,
     };
-    dispatch({
-      type: ACTIONS.UPDATE_POSITION,
-      payload: gamePayload,
-    });
+    dispatch(updatePosition());
     dispatch({
       type: ACTIONS.DRAG,
       payload: uiPayload,
@@ -49,13 +45,8 @@ export function changeFocus(file, rank) {
 export function releasePiece(file, rank) {
   return (dispatch) => {
     if (boardModel.isSquareMarked(file, rank)) {
-      boardModel.touch(file, rank);
-      setFocus(file, rank);
-      const payload = boardModel.getGame();
-      dispatch({
-        type: ACTIONS.UPDATE_POSITION,
-        payload,
-      });
+      dispatch(move(file, rank));
+      dispatch(changeFocus(file, rank));
     }
     dispatch({
       type: ACTIONS.RELEASE,

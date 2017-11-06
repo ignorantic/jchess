@@ -1,9 +1,27 @@
 import ACTIONS from '../consts';
+import getEngineMove from './engine-actions';
 import boardModel from '../board-model';
 
-export function goto(line, move) {
+export function move(file, rank) {
+  return (dispatch, getState) => {
+    if (boardModel.move(file, rank)) {
+      const { game: { fen, turn }, engine: { status } } = getState();
+      const lastMove = boardModel.getLastMove();
+      if (turn === 1 && status === 'ready') {
+        dispatch(getEngineMove(fen, lastMove));
+      }
+      const payload = boardModel.getGame();
+      dispatch({
+        type: ACTIONS.MOVE,
+        payload,
+      });
+    }
+  };
+}
+
+export function goto(line, moveNum) {
   return (dispatch) => {
-    boardModel.goto(line, move);
+    boardModel.goto(line, moveNum);
     const payload = boardModel.getGame();
     dispatch({
       type: ACTIONS.GOTO,
@@ -61,7 +79,7 @@ export function setUpPosition() {
     boardModel.setUp();
     const payload = boardModel.getGame();
     dispatch({
-      type: ACTIONS.SETUP_POSITION,
+      type: ACTIONS.UPDATE_POSITION,
       payload,
     });
   };
@@ -72,7 +90,17 @@ export function resetPosition() {
     boardModel.resetPosition();
     const payload = boardModel.getGame();
     dispatch({
-      type: ACTIONS.CLEAR_POSITION,
+      type: ACTIONS.UPDATE_POSITION,
+      payload,
+    });
+  };
+}
+
+export function updatePosition() {
+  return (dispatch) => {
+    const payload = boardModel.getGame();
+    dispatch({
+      type: ACTIONS.UPDATE_POSITION,
       payload,
     });
   };

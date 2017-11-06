@@ -6,8 +6,7 @@ const ACTIONS = keyMirror({
   RELEASE: null,
   DRAG: null,
 
-  SETUP_POSITION: null,
-  CLEAR_POSITION: null,
+  MOVE: null,
   UPDATE_POSITION: null,
   GOTO: null,
   CHANGE_FEN: null,

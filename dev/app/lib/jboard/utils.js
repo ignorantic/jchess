@@ -20,7 +20,7 @@ export function isSquare(a, b) {
 }
 
 /**
- * Check is there pawn promotion on board.
+ * Check utils there pawn promotion on board.
  * @param type
  * @param color
  * @param stopRank
@@ -88,7 +88,7 @@ export function isEmpty(board, file, rank) {
 }
 
 /**
- * Check is the capturing en-passant possible.
+ * Check utils the capturing en-passant possible.
  * @param {{file: number, rank: number}} square
  * @param {?{file: number, rank: number}} enPassant
  * @returns {boolean}
@@ -96,4 +96,98 @@ export function isEmpty(board, file, rank) {
 export function isEnPassant(square, enPassant) {
   if (!enPassant) return false;
   return enPassant.file === square.file && enPassant.rank === square.rank;
+}
+
+const rook = [
+  { file: 0, rank: 1 }, { file: 1, rank: 0 },
+  { file: 0, rank: -1 }, { file: -1, rank: 0 },
+];
+
+const bishop = [
+  { file: 1, rank: 1 }, { file: 1, rank: -1 },
+  { file: -1, rank: -1 }, { file: -1, rank: 1 },
+];
+
+const knight = [
+  { file: 1, rank: 2 }, { file: 2, rank: 1 },
+  { file: 2, rank: -1 }, { file: 1, rank: -2 },
+  { file: -1, rank: -2 }, { file: -2, rank: -1 },
+  { file: -2, rank: 1 }, { file: -1, rank: 2 },
+];
+
+const moves = {
+  1: [...rook],
+  2: [...knight],
+  3: [...bishop],
+  4: [...rook, ...bishop],
+  5: [...rook, ...bishop],
+};
+
+/**
+ * Return array of square under attack by the piece.
+ * @param {Array} board
+ * @param {number} piece - Type of piece.
+ * @param {number} color - Color of piece.
+ * @param {number} file - File of square.
+ * @param {number} rank - Rank of square.
+ * @returns {?Array}
+ */
+export function getAttackedSquares(board, piece, color, file, rank) {
+  const count = (piece === 5 || piece === 2) ? 1 : 7;
+  const result = [];
+
+  moves[piece].forEach((item) => {
+    let i = 0;
+    while (i < count) {
+      i += 1;
+      const trg = {
+        file: file + (i * item.file),
+        rank: rank + (i * item.rank),
+      };
+
+      if (isSquare(trg)) {
+        if (isFriend(board, color, trg.file, trg.rank)) {
+          break;
+        } else {
+          result.push({ ...trg });
+        }
+      } else {
+        break;
+      }
+
+      if (isFoe(board, color, trg.file, trg.rank)) {
+        break;
+      }
+    }
+  });
+
+  return result;
+}
+
+/**
+ * Is this square under attack?
+ * @param {Array} board
+ * @param {number} color - Color of active side.
+ * @param {number} file - File of square.
+ * @param {number} rank - Rank of square.
+ * @returns {boolean}
+ */
+export function isSquareAttacked(board, color, file, rank) {
+  function isSquareAttackedByPawn() {
+    const targetRank = (color === 1) ? rank + 1 : rank - 1;
+    const targetFile = [file - 1, file + 1];
+
+    return targetFile.some(item => (
+      isSquare(item, targetRank) && isFoesPawn(board, color, item, targetRank)
+    ));
+  }
+
+  function isSquareAttackedByPiece() {
+    return Object.keys(moves).some((type) => {
+      const squares = getAttackedSquares(board, +type, color, file, rank);
+      return squares.some(item => board[item.file][item.rank].piece.type === +type);
+    });
+  }
+
+  return isSquareAttackedByPawn() || isSquareAttackedByPiece();
 }

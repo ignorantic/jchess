@@ -18,7 +18,7 @@ describe('<BoardContainer />', () => {
         state,
       });
       const mapDispatchToProps = dispatch => ({
-        onTouch: () => dispatch(() => {}),
+        onSelect: () => dispatch(() => {}),
         onFocus: () => dispatch(() => {}),
       });
       const ConnectedBoard = connect(mapStateToProps, mapDispatchToProps)(Board);
@@ -29,7 +29,7 @@ describe('<BoardContainer />', () => {
       expect(component.props().state.check).to.be.false;
       expect(component.props().state.checkmate).to.be.false;
       expect(component.props().state.focus).to.be.an('array');
-      expect(component.props().onTouch).to.be.an('function');
+      expect(component.props().onSelect).to.be.an('function');
       expect(component.props().onFocus).to.be.an('function');
     });
   });

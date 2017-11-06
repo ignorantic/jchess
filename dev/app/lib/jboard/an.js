@@ -1,4 +1,4 @@
-import { isSquare } from './is-utils';
+import { isSquare } from './utils';
 
 /**
  * Return algebraic notation of square.
@@ -6,7 +6,7 @@ import { isSquare } from './is-utils';
  * @param {number} rank
  * @returns {?string}
  */
-export function squareToAlg(file, rank) {
+export function squareToAN(file, rank) {
   if (!isSquare(file, rank)) return null;
   const shiftFile = 97;
   const shiftRank = 1;
@@ -18,7 +18,7 @@ export function squareToAlg(file, rank) {
  * @param {string} str
  * @return {?{file: number, rank: number}}
  */
-export function algToSquare(str) {
+export function ANToSquare(str) {
   const shiftFile = 97;
   const shiftRank = 1;
   if (str.length !== 2 || typeof str !== 'string' || typeof +str[1] !== 'number') return null;
@@ -38,14 +38,14 @@ export function algToSquare(str) {
  * @param {number} [promType] - Type of piece for pawn promotion.
  * @return {?string}
  */
-export function toAlgebraic(start, stop, promType) {
+export function toAN(start, stop, promType) {
   if (
     !start || !stop
     || !isSquare(start.file, start.rank)
     || !isSquare(stop.file, stop.rank)
   ) return null;
-  const stra = squareToAlg(start.file, start.rank);
-  const stpa = squareToAlg(stop.file, stop.rank);
+  const stra = squareToAN(start.file, start.rank);
+  const stpa = squareToAN(stop.file, stop.rank);
   const pieces = [null, 'r', 'n', 'b', 'q'];
   const pt = pieces[promType] || '';
   return `${stra}${stpa}${pt}`;

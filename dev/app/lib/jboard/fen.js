@@ -1,5 +1,5 @@
-import * as nt from './notation';
-import * as utl from './is-utils';
+import { squareToAN, mapPiece } from './an';
+import { isSquare } from './utils';
 
 /**
  * Splite FEN string.
@@ -46,7 +46,7 @@ export function parseFENRank(FEN) {
         }
       } else return null;
     } else {
-      const piece = nt.mapPiece(FEN[i]);
+      const piece = mapPiece(FEN[i]);
       if (piece) result[count] = piece;
       else return null;
       count += 1;
@@ -208,7 +208,7 @@ export function getFENEnPassant(enPassant) {
     return '-';
   }
 
-  return nt.squareToAlg(enPassant.file, enPassant.rank);
+  return squareToAN(enPassant.file, enPassant.rank);
 }
 
 /**
@@ -233,7 +233,7 @@ export function getFENTurn(turn) {
  */
 export function getFENPiece(file, rank, board) {
   const pieces = ['p', 'r', 'n', 'b', 'q', 'k'];
-  if (!utl.isSquare(file, rank)) return null;
+  if (!isSquare(file, rank)) return null;
   const piece = board[file][rank].piece.type;
   if (piece === null) return null;
   const FEN = pieces[piece];

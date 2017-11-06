@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from '../../components/button/button';
-import Lines from '../../components/lines/lines';
+import Lines from '../../components/movelist/movelist';
 import { flipBoard } from '../../actions/ui-action';
 import getEngineMove from '../../actions/engine-actions';
 import { setUpPosition, resetPosition, goto, gotoPrev, gotoNext,
