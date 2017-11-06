@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Button from '../../components/button/button';
 import Lines from '../../components/movelist/movelist';
 import { flipBoard } from '../../actions/ui-action';
-import getEngineMove from '../../actions/engine-actions';
 import { setUpPosition, resetPosition, goto, gotoPrev, gotoNext,
   gotoStart, gotoEnd } from '../../actions/game-actions';
 import './sidebar.scss';
@@ -28,7 +27,6 @@ class Sidebar extends React.PureComponent {
       onGoToNext: PropTypes.func.isRequired,
       onGoToStart: PropTypes.func.isRequired,
       onGoToEnd: PropTypes.func.isRequired,
-      onEngineMove: PropTypes.func.isRequired,
     };
   }
 
@@ -36,10 +34,10 @@ class Sidebar extends React.PureComponent {
     const {
       game,
       onNewClick, onClearClick, onFlipClick,
-      onGoTo, onGoToPrev, onGoToNext, onGoToStart, onGoToEnd, onEngineMove,
+      onGoTo, onGoToPrev, onGoToNext, onGoToStart, onGoToEnd,
     } = this.props;
     const {
-      halfCount, currentLine, lines, prevFen, lastMove,
+      halfCount, currentLine, lines,
     } = game;
 
     return (
@@ -81,10 +79,6 @@ class Sidebar extends React.PureComponent {
             onClick={onGoToPrev}
           />
           <Button
-            label="*"
-            onClick={() => onEngineMove(prevFen, lastMove)}
-          />
-          <Button
             label=">"
             onClick={onGoToNext}
           />
@@ -111,7 +105,6 @@ const mapDispatchToProps = dispatch => ({
   onGoToNext: () => dispatch(gotoNext()),
   onGoToStart: () => dispatch(gotoStart()),
   onGoToEnd: () => dispatch(gotoEnd()),
-  onEngineMove: (fen, lastMove) => dispatch(getEngineMove(fen, lastMove)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

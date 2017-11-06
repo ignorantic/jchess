@@ -1,13 +1,62 @@
 import ACTIONS from '../consts';
-import getEngineMove from './engine-actions';
 import boardModel from '../board-model';
+import getEngineMove from './engine-actions';
+import { drag } from './ui-action';
+
+export function setUpPosition() {
+  return (dispatch) => {
+    dispatch({ type: ACTIONS.GET_ENGINE_MOVE_SUCCESS });
+    boardModel.setUp();
+    const payload = boardModel.getGame();
+    dispatch({
+      type: ACTIONS.UPDATE_POSITION,
+      payload,
+    });
+  };
+}
+
+export function resetPosition() {
+  return (dispatch) => {
+    dispatch({ type: ACTIONS.GET_ENGINE_MOVE_SUCCESS });
+    boardModel.resetPosition();
+    const payload = boardModel.getGame();
+    dispatch({
+      type: ACTIONS.UPDATE_POSITION,
+      payload,
+    });
+  };
+}
+
+export function updatePosition() {
+  return (dispatch) => {
+    const payload = boardModel.getGame();
+    dispatch({
+      type: ACTIONS.UPDATE_POSITION,
+      payload,
+    });
+  };
+}
+
+export function select(file, rank, mouse) {
+  return (dispatch) => {
+    let dragPayload = null;
+    boardModel.select(file, rank);
+    if (
+      mouse
+      && boardModel.getMoves(file, rank).length > 0
+      && boardModel.isFriend(file, rank)
+    ) dragPayload = [file, rank];
+    dispatch(drag(dragPayload));
+    dispatch(updatePosition());
+  };
+}
 
 export function move(file, rank) {
   return (dispatch, getState) => {
-    if (boardModel.move(file, rank)) {
-      const { game: { fen, turn }, engine: { status } } = getState();
-      const lastMove = boardModel.getLastMove();
-      if (turn === 1 && status === 'ready') {
+    const lastMove = boardModel.move(file, rank);
+    if (lastMove !== null) {
+      const { game: { fen }, engine: { status, play } } = getState();
+      if (play[boardModel.turn] === true && status !== 'waiting') {
         dispatch(getEngineMove(fen, lastMove));
       }
       const payload = boardModel.getGame();
@@ -69,38 +118,6 @@ export function gotoEnd() {
     const payload = boardModel.getGame();
     dispatch({
       type: ACTIONS.GOTO,
-      payload,
-    });
-  };
-}
-
-export function setUpPosition() {
-  return (dispatch) => {
-    boardModel.setUp();
-    const payload = boardModel.getGame();
-    dispatch({
-      type: ACTIONS.UPDATE_POSITION,
-      payload,
-    });
-  };
-}
-
-export function resetPosition() {
-  return (dispatch) => {
-    boardModel.resetPosition();
-    const payload = boardModel.getGame();
-    dispatch({
-      type: ACTIONS.UPDATE_POSITION,
-      payload,
-    });
-  };
-}
-
-export function updatePosition() {
-  return (dispatch) => {
-    const payload = boardModel.getGame();
-    dispatch({
-      type: ACTIONS.UPDATE_POSITION,
       payload,
     });
   };

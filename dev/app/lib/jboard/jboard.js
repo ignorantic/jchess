@@ -26,6 +26,7 @@ export default class JBoard {
     this.currentLine = 0;
     this.initialFEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
     this.lines = [[{ fen: this.initialFEN }]];
+    this.lastMove = '';
   }
 
   /** Initialize board array. */
@@ -93,7 +94,7 @@ export default class JBoard {
 
     this.board.forEach((item, file) => {
       item.forEach((square, rank) => {
-        this.removePiece(file, rank);
+        this.removePiece({ file, rank });
       });
     });
 
@@ -127,10 +128,6 @@ export default class JBoard {
       currentLine: this.getCurrentLine(),
       lines: this.getLines(),
     };
-  }
-
-  getLastMove() {
-    return this.lines[this.currentLine][this.halfCount].move || '';
   }
 
   /**
@@ -199,38 +196,35 @@ export default class JBoard {
 
   /**
    * Set piece on square.
-   * @param {number} file - The file value.
-   * @param {number} rank - The rank value.
+   * @param {{file: number, rank: number}} square - The square.
    * @param {number|null} type - Type of piece.
    * @returns {boolean}
    */
-  setPieceType(file, rank, type) {
-    this.board[file][rank].piece.type = type;
+  setPieceType(square, type) {
+    this.board[square.file][square.rank].piece.type = type;
     return true;
   }
 
   /**
    * Set color of piece on square.
-   * @param {number} file - The file value.
-   * @param {number} rank - The rank value.
+   * @param {{file: number, rank: number}} square - The square.
    * @param {number|null} color - Color of piece.
    * @returns {boolean}
    */
-  setPieceColor(file, rank, color) {
-    this.board[file][rank].piece.color = color;
+  setPieceColor(square, color) {
+    this.board[square.file][square.rank].piece.color = color;
     return true;
   }
 
   /**
    * Set piece and its color on square.
-   * @param {number} file - The file value.
-   * @param {number} rank - The rank value.
+   * @param {{file: number, rank: number}} square - The square.
    * @param {number} type - Type of piece.
    * @param {number} color - Color of piece.
    * @returns {boolean}
    */
-  setPiece(file, rank, type, color) {
-    this.board[file][rank].piece = {
+  setPiece(square, type, color) {
+    this.board[square.file][square.rank].piece = {
       type,
       color,
     };
@@ -248,7 +242,7 @@ export default class JBoard {
     if (this.getPieceType(start.file, start.rank) === 0) {
       if (isEnPassant(stop, this.enPassant)) {
         // capture en-passant
-        this.removePiece(stop.file, start.rank);
+        this.removePiece({ file: stop.file, rank: start.rank });
       } else if (Math.abs(start.rank - stop.rank) === 2) {
         // check en-passant for next turn
         this.checkEnPassant(stop);
@@ -289,14 +283,16 @@ export default class JBoard {
    * @param {number} file - The file value.
    * @param {number} rank - The rank value.
    * @param {number} [promType]
-   * @return {boolean}
+   * @return {?string}
    */
   move(file, rank, promType) {
-    if (!isSquare(file, rank)) return false;
-    return (
+    if (!isSquare(file, rank)) return null;
+    if (
       this.isSquareMarked(file, rank)
       && this.handleMove(this.selected, { file, rank }, promType)
-    );
+    ) return this.lastMove;
+
+    return null;
   }
 
   /**
@@ -504,8 +500,9 @@ export default class JBoard {
    * @param {number} promType
    */
   writeMove(start, stop, promType) {
+    this.lastMove = toAN(start, stop, promType);
     this.lines[this.currentLine][this.halfCount] = {
-      move: toAN(start, stop, promType),
+      move: this.lastMove,
       fen: this.getFEN(),
     };
   }
@@ -527,12 +524,12 @@ export default class JBoard {
       this.checkFiftyMove(type, color, stop);
       // check pawn promotion
       if (isPawnPromotion(type, color, stop.rank)) {
-        this.setPiece(stop.file, stop.rank, promType || 4, color);
+        this.setPiece(stop, promType || 4, color);
       } else {
-        this.setPiece(stop.file, stop.rank, type, color);
+        this.setPiece(stop, type, color);
       }
 
-      this.removePiece(start.file, start.rank);
+      this.removePiece(start);
     }
   }
 
@@ -541,6 +538,7 @@ export default class JBoard {
    * @param {{file: number, rank: number}} start - Start square of move.
    * @param {{file: number, rank: number}} stop - Stop square of move.
    * @param {number} [promType] - Type of piece for pawn promotion.
+   * @return {boolean}
    */
   handleMove(start, stop, promType) {
     const type = this.getPieceType(start.file, start.rank);
@@ -548,7 +546,7 @@ export default class JBoard {
 
     if (this.checkBeforeMove(start, stop, color)) {
       this.makeMove(type, color, start, stop, promType);
-    } else return null;
+    } else return false;
 
     this.checkAfterMove(type, color, start, stop);
     return true;
@@ -710,10 +708,10 @@ export default class JBoard {
     const color = rank ? 2 : 1;
     const startFile = file === 2 ? 0 : 7;
     const stopFile = file === 2 ? 3 : 5;
-    this.setPiece(file, rank, 5, color);
-    this.removePiece(4, rank);
-    this.setPiece(stopFile, rank, 1, color);
-    this.removePiece(startFile, rank);
+    this.setPiece({ file, rank }, 5, color);
+    this.removePiece({ file: 4, rank });
+    this.setPiece({ file: stopFile, rank }, 1, color);
+    this.removePiece({ file: startFile, rank });
   }
 
   /**
@@ -809,22 +807,21 @@ export default class JBoard {
 
   /**
    * Remove piece from square.
-   * @param {number} file
-   * @param {number} rank
+   * @param {{file: number, rank: number}} square - The square.
    */
-  removePiece(file, rank) {
-    this.setPieceType(file, rank, null);
-    this.setPieceColor(file, rank, null);
+  removePiece(square) {
+    this.setPieceType(square, null);
+    this.setPieceColor(square, null);
   }
 
   /**
    * Do move via algebraic notation.
    * @param {string} str
-   * @return {boolean}
+   * @return {?string}
    */
   moveAN(str) {
-    if (typeof str !== 'string') return false;
-    if (str.length < 4 || str.length > 5) return false;
+    if (typeof str !== 'string') return null;
+    if (str.length < 4 || str.length > 5) return null;
     const alg = str.toLowerCase();
     const start = ANToSquare(alg.slice(0, 2));
     const stop = ANToSquare(alg.slice(2, 4));
@@ -833,13 +830,13 @@ export default class JBoard {
     if (piece === undefined) promType = false;
     else {
       promType = mapPieceType(piece);
-      if (!promType || promType > 4) return false;
+      if (!promType || promType > 4) return null;
     }
-    if (start === null || stop === null) return false;
+    if (start === null || stop === null) return null;
     this.select(start.file, start.rank);
-    const resutl = this.move(stop.file, stop.rank, promType);
+    const result = this.move(stop.file, stop.rank, promType);
     this.resetSelected();
-    return resutl;
+    return result;
   }
 
   /**
@@ -912,7 +909,7 @@ export default class JBoard {
     this.enPassant = null;
     this.castling = { 1: 3, 2: 3 };
     pieceSet.forEach((item) => {
-      this.setPiece(item.file, item.rank, item.piece.type, item.piece.color);
+      this.setPiece(item, item.piece.type, item.piece.color);
     });
   }
 

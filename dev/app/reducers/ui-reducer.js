@@ -11,7 +11,7 @@ const ui = (state = initialState, action) => {
     case ACTIONS.DRAG: {
       return {
         ...state,
-        ...action.payload,
+        drag: action.payload,
       };
     }
     case ACTIONS.RELEASE: {

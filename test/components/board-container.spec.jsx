@@ -6,8 +6,8 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import Board from '../../dev/components/board-container/board-container';
-import store from '../../dev/modules/stores/store';
+import Board from '../../dev/app/containers/board-container/board-container';
+import store from '../../dev/app/configure-store';
 
 Enzyme.configure({ adapter: new Adapter() });
 

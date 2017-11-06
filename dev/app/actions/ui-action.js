@@ -1,6 +1,5 @@
 import ACTIONS from '../consts';
-import { move, updatePosition } from './game-actions';
-import boardModel from '../board-model';
+import { move } from './game-actions';
 
 function setFocus(file, rank) {
   const selector = `.square[data-file="${file}"][data-rank="${rank}"]`;
@@ -8,27 +7,6 @@ function setFocus(file, rank) {
   if (elemNext) {
     setTimeout(() => elemNext.focus(), 0);
   }
-}
-
-export function select(file, rank, mouse) {
-  return (dispatch) => {
-    let drag = null;
-    boardModel.select(file, rank);
-    if (
-      mouse
-      && boardModel.getMoves(file, rank).length > 0
-      && boardModel.isFriend(file, rank)
-    ) drag = [file, rank];
-    const uiPayload = {
-      focus: [file, rank],
-      drag,
-    };
-    dispatch(updatePosition());
-    dispatch({
-      type: ACTIONS.DRAG,
-      payload: uiPayload,
-    });
-  };
 }
 
 export function changeFocus(file, rank) {
@@ -42,9 +20,18 @@ export function changeFocus(file, rank) {
   };
 }
 
-export function releasePiece(file, rank) {
+export function drag(payload) {
   return (dispatch) => {
-    if (boardModel.isSquareMarked(file, rank)) {
+    dispatch({
+      type: ACTIONS.DRAG,
+      payload,
+    });
+  };
+}
+
+export function releasePiece(file, rank) {
+  return (dispatch, getState) => {
+    if (getState().game.board[file][rank].marked) {
       dispatch(move(file, rank));
       dispatch(changeFocus(file, rank));
     }

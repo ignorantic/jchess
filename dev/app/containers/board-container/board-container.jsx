@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import Board from '../../components/board/board';
 import Turn from '../../components/turn/turn';
 import Position from '../../components/position/position';
-import { move } from '../../actions/game-actions';
-import { select, releasePiece, changeFocus } from '../../actions/ui-action';
+import { select, move } from '../../actions/game-actions';
+import { releasePiece, changeFocus } from '../../actions/ui-action';
 import { rect, convCoord } from '../../lib/helpers';
 import './board-container.scss';
 

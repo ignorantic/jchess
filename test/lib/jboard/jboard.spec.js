@@ -234,19 +234,19 @@ describe('jBoard', () => {
     });
 
     it('check square h2 after setup', () => {
-      jboard.setPiece(7, 1, 0, 1);
+      jboard.setPiece({ file: 7, rank: 1 }, 0, 1);
       expect(jboard.board[7][1].piece.type).to.be.equal(0);
       expect(jboard.board[7][1].piece.color).to.be.equal(1);
     });
 
     it('check square c3 after setup', () => {
-      jboard.setPiece(2, 2, 2, 1);
+      jboard.setPiece({ file: 2, rank: 2 }, 2, 1);
       expect(jboard.board[2][2].piece.type).to.be.equal(2);
       expect(jboard.board[2][2].piece.color).to.be.equal(1);
     });
 
     it('check square e4 after setup', () => {
-      jboard.setPiece(4, 3, 1, 2);
+      jboard.setPiece({ file: 4, rank: 3 }, 1, 2);
       expect(jboard.board[4][3].piece.type).to.be.equal(1);
       expect(jboard.board[4][3].piece.color).to.be.equal(2);
     });
@@ -270,26 +270,18 @@ describe('jBoard', () => {
       expect(jboard.getSquareColor(0, -1)).to.be.null;
     });
 
-    it('return "black" for (0, 0), etc', () => {
+    it('return "2"', () => {
       expect(jboard.getSquareColor(0, 0)).to.be.equal(2);
       expect(jboard.getSquareColor(0, 2)).to.be.equal(2);
-
-      expect(jboard.getSquareColor(1, 1)).to.be.equal(2);
-      expect(jboard.getSquareColor(7, 7)).to.be.equal(2);
-
       expect(jboard.getSquareColor(5, 7)).to.be.equal(2);
       expect(jboard.getSquareColor(3, 7)).to.be.equal(2);
     });
 
-    it('return "white" for (0, 1), etc', () => {
+    it('return "1"', () => {
       expect(jboard.getSquareColor(0, 1)).to.be.equal(1);
       expect(jboard.getSquareColor(0, 3)).to.be.equal(1);
-
       expect(jboard.getSquareColor(1, 2)).to.be.equal(1);
       expect(jboard.getSquareColor(0, 7)).to.be.equal(1);
-
-      expect(jboard.getSquareColor(2, 7)).to.be.equal(1);
-      expect(jboard.getSquareColor(6, 7)).to.be.equal(1);
     });
   });
 
@@ -306,13 +298,8 @@ describe('jBoard', () => {
       expect(jboard.getPieceType(4, 4)).to.be.null;
 
       expect(jboard.getPieceType(0, 0)).to.be.equal(1);
-      expect(jboard.getPieceType(7, 7)).to.be.equal(1);
-      expect(jboard.getPieceType(1, 0)).to.be.equal(2);
-      expect(jboard.getPieceType(6, 7)).to.be.equal(2);
       expect(jboard.getPieceType(5, 7)).to.be.equal(3);
-      expect(jboard.getPieceType(1, 1)).to.be.equal(0);
       expect(jboard.getPieceType(6, 6)).to.be.equal(0);
-      expect(jboard.getPieceType(3, 0)).to.be.equal(4);
       expect(jboard.getPieceType(4, 7)).to.be.equal(5);
     });
   });
@@ -326,9 +313,7 @@ describe('jBoard', () => {
     });
 
     it('return null if arguments aren\'t correct', () => {
-      expect(jboard.getPieceColor(0, 8)).to.be.null;
       expect(jboard.getPieceColor(8, 0)).to.be.null;
-      expect(jboard.getPieceColor(-1, 0)).to.be.null;
       expect(jboard.getPieceColor(0, -1)).to.be.null;
     });
 
@@ -336,16 +321,10 @@ describe('jBoard', () => {
       expect(jboard.getPieceType(1, 2)).to.be.null;
       expect(jboard.getPieceType(3, 5)).to.be.null;
 
-      expect(jboard.getPieceColor(0, 1)).to.be.equal(1);
-      expect(jboard.getPieceColor(1, 0)).to.be.equal(1);
       expect(jboard.getPieceColor(2, 0)).to.be.equal(1);
       expect(jboard.getPieceColor(2, 7)).to.be.equal(2);
       expect(jboard.getPieceColor(3, 0)).to.be.equal(1);
       expect(jboard.getPieceColor(3, 7)).to.be.equal(2);
-      expect(jboard.getPieceColor(4, 1)).to.be.equal(1);
-      expect(jboard.getPieceColor(5, 6)).to.be.equal(2);
-      expect(jboard.getPieceColor(6, 7)).to.be.equal(2);
-      expect(jboard.getPieceColor(7, 6)).to.be.equal(2);
     });
   });
 
@@ -361,28 +340,14 @@ describe('jBoard', () => {
     });
 
     it('return true if setting was successful', () => {
-      expect(jboard.setPieceType(0, 0, 0)).to.be.true;
-      expect(jboard.setPieceType(1, 1, 2)).to.be.true;
-      expect(jboard.setPieceType(7, 6, null)).to.be.true;
-      expect(jboard.setPieceType(5, 4, 3)).to.be.true;
+      expect(jboard.setPieceType({ file: 1, rank: 1 }, 2)).to.be.true;
+      expect(jboard.setPieceType({ file: 5, rank: 6 }, null)).to.be.true;
     });
 
     it('set piece type and check', () => {
-      expect(jboard.getPieceType(1, 2)).to.be.null;
-      jboard.setPieceType(1, 2, 0);
-      expect(jboard.getPieceType(1, 2)).to.be.equal(0);
-
-      expect(jboard.getPieceType(2, 4)).to.be.null;
-      jboard.setPieceType(2, 4, 4);
-      expect(jboard.getPieceType(2, 4)).to.be.equal(4);
-
       expect(jboard.getPieceType(1, 1)).to.be.equal(2);
-      jboard.setPieceType(1, 1, 3);
+      jboard.setPieceType({ file: 1, rank: 1 }, 3);
       expect(jboard.getPieceType(1, 1)).to.be.equal(3);
-
-      expect(jboard.getPieceType(2, 4)).to.be.equal(4);
-      jboard.setPieceType(2, 4, 5);
-      expect(jboard.getPieceType(2, 4)).to.be.equal(5);
     });
   });
 
@@ -394,28 +359,14 @@ describe('jBoard', () => {
     });
 
     it('return true if setting was successful', () => {
-      expect(jboard.setPieceColor(0, 0, 1)).to.be.true;
-      expect(jboard.setPieceColor(1, 1, 1)).to.be.true;
-      expect(jboard.setPieceColor(7, 6, null)).to.be.true;
-      expect(jboard.setPieceColor(5, 4, 2)).to.be.true;
+      expect(jboard.setPieceColor({ file: 0, rank: 0 }, 1)).to.be.true;
+      expect(jboard.setPieceColor({ file: 7, rank: 6 }, null)).to.be.true;
     });
 
     it('set piece type and check', () => {
-      expect(jboard.getPieceColor(1, 2)).to.be.null;
-      jboard.setPieceColor(1, 2, 2);
-      expect(jboard.getPieceColor(1, 2)).to.be.equal(2);
-
       expect(jboard.getPieceColor(2, 4)).to.be.null;
-      jboard.setPieceColor(2, 4, 1);
+      jboard.setPieceColor({ file: 2, rank: 4 }, 1);
       expect(jboard.getPieceColor(2, 4)).to.be.equal(1);
-
-      expect(jboard.getPieceColor(1, 1)).to.be.equal(1);
-      jboard.setPieceColor(1, 1, 2);
-      expect(jboard.getPieceColor(1, 1)).to.be.equal(2);
-
-      expect(jboard.getPieceColor(5, 4)).to.be.equal(2);
-      jboard.setPieceColor(5, 4, 1);
-      expect(jboard.getPieceColor(5, 4)).to.be.equal(1);
     });
   });
 
@@ -596,25 +547,25 @@ describe('jBoard', () => {
       jboard.setPositionByFEN(TEST_POSITION);
     });
 
-    it('return null if arguments aren\'t correct', () => {
-      expect(jboard.handleMove({ file: 0, rank: 5 }, { file: 8, rank: 7 })).to.be.null;
-      expect(jboard.handleMove({ file: 0, rank: -1 }, { file: 7, rank: 7 })).to.be.null;
-      expect(jboard.handleMove({ file: 0, rank: 0 }, { file: 6, rank: 9 })).to.be.null;
-      expect(jboard.handleMove({ file: 10, rank: 8 }, { file: 18, rank: 8 })).to.be.null;
+    it('return false if arguments aren\'t correct', () => {
+      expect(jboard.handleMove({ file: 0, rank: 5 }, { file: 8, rank: 7 })).to.be.false;
+      expect(jboard.handleMove({ file: 0, rank: -1 }, { file: 7, rank: 7 })).to.be.false;
+      expect(jboard.handleMove({ file: 0, rank: 0 }, { file: 6, rank: 9 })).to.be.false;
+      expect(jboard.handleMove({ file: 10, rank: 8 }, { file: 18, rank: 8 })).to.be.false;
     });
 
-    it('return null if there utils no piece on start square', () => {
-      expect(jboard.handleMove({ file: 0, rank: 2 }, { file: 4, rank: 3 })).to.be.null;
-      expect(jboard.handleMove({ file: 3, rank: 2 }, { file: 7, rank: 7 })).to.be.null;
-      expect(jboard.handleMove({ file: 6, rank: 7 }, { file: 4, rank: 6 })).to.be.null;
-      expect(jboard.handleMove({ file: 5, rank: 5 }, { file: 2, rank: 0 })).to.be.null;
+    it('return false if there utils no piece on start square', () => {
+      expect(jboard.handleMove({ file: 0, rank: 2 }, { file: 4, rank: 3 })).to.be.false;
+      expect(jboard.handleMove({ file: 3, rank: 2 }, { file: 7, rank: 7 })).to.be.false;
+      expect(jboard.handleMove({ file: 6, rank: 7 }, { file: 4, rank: 6 })).to.be.false;
+      expect(jboard.handleMove({ file: 5, rank: 5 }, { file: 2, rank: 0 })).to.be.false;
     });
 
-    it('return null if start piece color equal stop piece color', () => {
-      expect(jboard.handleMove({ file: 7, rank: 1 }, { file: 6, rank: 2 })).to.be.null;
-      expect(jboard.handleMove({ file: 2, rank: 0 }, { file: 1, rank: 1 })).to.be.null;
-      expect(jboard.handleMove({ file: 3, rank: 7 }, { file: 4, rank: 7 })).to.be.null;
-      expect(jboard.handleMove({ file: 5, rank: 4 }, { file: 6, rank: 6 })).to.be.null;
+    it('return false if start piece color equal stop piece color', () => {
+      expect(jboard.handleMove({ file: 7, rank: 1 }, { file: 6, rank: 2 })).to.be.false;
+      expect(jboard.handleMove({ file: 2, rank: 0 }, { file: 1, rank: 1 })).to.be.false;
+      expect(jboard.handleMove({ file: 3, rank: 7 }, { file: 4, rank: 7 })).to.be.false;
+      expect(jboard.handleMove({ file: 5, rank: 4 }, { file: 6, rank: 6 })).to.be.false;
     });
 
     it('return true if move was successful', () => {
@@ -1144,63 +1095,40 @@ describe('jBoard', () => {
       jboard.setPositionByFEN(TEST_POSITION);
     });
 
-    it('return false if arguments aren\'t correct', () => {
-      expect(jboard.moveAN('e4')).to.be.false;
-      expect(jboard.moveAN('e7e5QQ')).to.be.false;
-      expect(jboard.moveAN('e8e9')).to.be.false;
-      expect(jboard.moveAN('a5r4')).to.be.false;
-      expect(jboard.moveAN('d56d')).to.be.false;
-      expect(jboard.moveAN('b7b8p')).to.be.false;
-      expect(jboard.moveAN(null)).to.be.false;
+    it('return null if arguments aren\'t correct', () => {
+      expect(jboard.moveAN('e4')).to.be.null;
+      expect(jboard.moveAN('e7e5QQ')).to.be.null;
+      expect(jboard.moveAN('e8e9')).to.be.null;
+      expect(jboard.moveAN('a5r4')).to.be.null;
+      expect(jboard.moveAN('d56d')).to.be.null;
+      expect(jboard.moveAN('b7b8p')).to.be.null;
+      expect(jboard.moveAN(null)).to.be.null;
     });
 
-    it('return false if move utils illegal', () => {
-      expect(jboard.moveAN('e2e5')).to.be.false;
-      expect(jboard.moveAN('e7e5')).to.be.false;
-      expect(jboard.moveAN('a1a2')).to.be.false;
-      expect(jboard.moveAN('e8g8')).to.be.false;
-      expect(jboard.moveAN('d1e1')).to.be.false;
-      expect(jboard.moveAN('d6e7')).to.be.false;
-      expect(jboard.moveAN('e8c8')).to.be.false;
+    it('return null if move utils illegal', () => {
+      expect(jboard.moveAN('e2e5')).to.be.null;
+      expect(jboard.moveAN('e7e5')).to.be.null;
+      expect(jboard.moveAN('a1a2')).to.be.null;
+      expect(jboard.moveAN('e8g8')).to.be.null;
+      expect(jboard.moveAN('d1e1')).to.be.null;
+      expect(jboard.moveAN('d6e7')).to.be.null;
+      expect(jboard.moveAN('e8c8')).to.be.null;
     });
 
-    it('return true if OK', () => {
-      expect(jboard.moveAN('e1f1')).to.be.true;
-      expect(jboard.moveAN('f5g3')).to.be.true;
-      expect(jboard.moveAN('f1g2')).to.be.true;
-      expect(jboard.moveAN('e8g8')).to.be.true;
-      expect(jboard.moveAN('d1d4')).to.be.true;
-      expect(jboard.moveAN('c5d4')).to.be.true;
-      expect(jboard.moveAN('g2f2')).to.be.true;
-      expect(jboard.moveAN('c3b1')).to.be.true;
-      expect(jboard.moveAN('d6d7')).to.be.true;
-      expect(jboard.moveAN('a8c8')).to.be.true;
-      expect(jboard.moveAN('d7c8n')).to.be.true;
-      expect(jboard.moveAN('b7b5')).to.be.true;
-      expect(jboard.moveAN('c8d6')).to.be.true;
-    });
-  });
-
-  describe('getLastMove', () => {
-    let jboard;
-
-    before(() => {
-      jboard = new JBoard();
-      jboard.setUp();
-    });
-
-    it('should return empty string', () => {
-      expect(jboard.getLastMove()).to.be.equal('');
-    });
-
-    it('should return e2e4', () => {
-      jboard.moveAN('e2e4');
-      expect(jboard.getLastMove()).to.be.equal('e2e4');
-    });
-
-    it('should return g8f6', () => {
-      jboard.moveAN('g8f6');
-      expect(jboard.getLastMove()).to.be.equal('g8f6');
+    it('return string if OK', () => {
+      expect(typeof jboard.moveAN('e1f1')).to.be.equal('string');
+      expect(typeof jboard.moveAN('f5g3')).to.be.equal('string');
+      expect(typeof jboard.moveAN('f1g2')).to.be.equal('string');
+      expect(typeof jboard.moveAN('e8g8')).to.be.equal('string');
+      expect(typeof jboard.moveAN('d1d4')).to.be.equal('string');
+      expect(typeof jboard.moveAN('c5d4')).to.be.equal('string');
+      expect(typeof jboard.moveAN('g2f2')).to.be.equal('string');
+      expect(typeof jboard.moveAN('c3b1')).to.be.equal('string');
+      expect(typeof jboard.moveAN('d6d7')).to.be.equal('string');
+      expect(typeof jboard.moveAN('a8c8')).to.be.equal('string');
+      expect(typeof jboard.moveAN('d7c8n')).to.be.equal('string');
+      expect(typeof jboard.moveAN('b7b5')).to.be.equal('string');
+      expect(typeof jboard.moveAN('c8d6')).to.be.equal('string');
     });
   });
 
