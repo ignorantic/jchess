@@ -17,6 +17,25 @@ export default class Move extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.node.scrollIntoView(false);
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.active === true) {
+      const {
+        top: thisTop,
+        bottom: thisBottom,
+      } = this.node.getBoundingClientRect();
+      const {
+        top: containerTop,
+        bottom: containerBottom,
+      } = this.node.parentElement.parentElement.getBoundingClientRect();
+      if (thisTop < containerTop) this.node.scrollIntoView(true);
+      if (thisBottom > containerBottom) this.node.scrollIntoView(false);
+    }
+  }
+
   render() {
     const {
       index, currentLine, item, active, onGoTo,
@@ -28,10 +47,11 @@ export default class Move extends React.Component {
       <button
         className={className}
         data-index={index}
+        ref={(node) => { this.node = node; }}
         onClick={() => onGoTo(currentLine, index)}
       >
         <span>
-          {item.move}
+          {item.fan}
         </span>
       </button>
     );

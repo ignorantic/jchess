@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from '../../components/button/button';
-import { changeFEN } from '../../actions/game-actions';
+import { changeFEN } from '../../actions/actions';
 import './fen.scss';
 
 class FEN extends React.PureComponent {

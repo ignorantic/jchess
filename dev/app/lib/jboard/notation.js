@@ -6,7 +6,7 @@ import { isSquare } from './utils';
  * @param {number} rank
  * @returns {?string}
  */
-export function squareToAN(file, rank) {
+export function squareToUCI(file, rank) {
   if (!isSquare(file, rank)) return null;
   const shiftFile = 97;
   const shiftRank = 1;
@@ -15,14 +15,14 @@ export function squareToAN(file, rank) {
 
 /**
  * Return square via algebraic notation.
- * @param {string} str
+ * @param {string} move
  * @return {?{file: number, rank: number}}
  */
-export function ANToSquare(str) {
+export function UCIToSquare(move) {
   const shiftFile = 97;
   const shiftRank = 1;
-  if (str.length !== 2 || typeof str !== 'string' || typeof +str[1] !== 'number') return null;
-  const alg = str.toLowerCase();
+  if (move.length !== 2 || typeof move !== 'string' || typeof +move[1] !== 'number') return null;
+  const alg = move.toLowerCase();
   const result = {
     file: alg.charCodeAt(0) - shiftFile,
     rank: alg[1] - shiftRank,
@@ -32,20 +32,58 @@ export function ANToSquare(str) {
 }
 
 /**
+ * Helper for functions UCIToSAN and UCIToFAN.
+ * Return string of move in figurine algebraic notation.
+ * @param {Array.<Array>} board
+ * @param {string} move
+ * @param {Array.<string>} pieces
+ * @return {string}
+ */
+export function UCIToAN(board, move, pieces) {
+  const stop = move.slice(2, 4);
+  const stopSquare = UCIToSquare(move.slice(2, 4));
+  const pieceNum = board[stopSquare.file][stopSquare.rank].piece.type;
+  const piece = pieces[pieceNum].toUpperCase();
+  return `${piece}${stop}`;
+}
+
+/**
+ * Return string of move in standart algebraic notation.
+ * @param {Array.<Array>} board
+ * @param {string} move
+ * @return {string}
+ */
+export function UCIToSAN(board, move) {
+  const pieces = ['', 'r', 'n', 'b', 'q', 'k'];
+  return UCIToAN(board, move, pieces);
+}
+
+/**
+ * Return string of move in figurine algebraic notation.
+ * @param {Array.<Array>} board
+ * @param {string} move
+ * @return {string}
+ */
+export function UCIToFAN(board, move) {
+  const pieces = ['', '\u265C', '\u265E', '\u265D', '\u265B', '\u265A'];
+  return UCIToAN(board, move, pieces);
+}
+
+/**
  * Return algebraic notation of move.
  * @param {{file: number, rank: number}} start - Start square of move.
  * @param {{file: number, rank: number}} stop - Stop square of move.
  * @param {number} [promType] - Type of piece for pawn promotion.
  * @return {?string}
  */
-export function toAN(start, stop, promType) {
+export function toUCI(start, stop, promType) {
   if (
     !start || !stop
     || !isSquare(start.file, start.rank)
     || !isSquare(stop.file, stop.rank)
   ) return null;
-  const stra = squareToAN(start.file, start.rank);
-  const stpa = squareToAN(stop.file, stop.rank);
+  const stra = squareToUCI(start.file, start.rank);
+  const stpa = squareToUCI(stop.file, stop.rank);
   const pieces = [null, 'r', 'n', 'b', 'q'];
   const pt = pieces[promType] || '';
   return `${stra}${stpa}${pt}`;

@@ -1087,7 +1087,7 @@ describe('jBoard', () => {
    *   MOVEAN
    */
 
-  describe('moveAN', () => {
+  describe('moveUCI', () => {
     let jboard;
 
     beforeEach(() => {
@@ -1096,39 +1096,39 @@ describe('jBoard', () => {
     });
 
     it('return null if arguments aren\'t correct', () => {
-      expect(jboard.moveAN('e4')).to.be.null;
-      expect(jboard.moveAN('e7e5QQ')).to.be.null;
-      expect(jboard.moveAN('e8e9')).to.be.null;
-      expect(jboard.moveAN('a5r4')).to.be.null;
-      expect(jboard.moveAN('d56d')).to.be.null;
-      expect(jboard.moveAN('b7b8p')).to.be.null;
-      expect(jboard.moveAN(null)).to.be.null;
+      expect(jboard.moveUCI('e4')).to.be.null;
+      expect(jboard.moveUCI('e7e5QQ')).to.be.null;
+      expect(jboard.moveUCI('e8e9')).to.be.null;
+      expect(jboard.moveUCI('a5r4')).to.be.null;
+      expect(jboard.moveUCI('d56d')).to.be.null;
+      expect(jboard.moveUCI('b7b8p')).to.be.null;
+      expect(jboard.moveUCI(null)).to.be.null;
     });
 
     it('return null if move utils illegal', () => {
-      expect(jboard.moveAN('e2e5')).to.be.null;
-      expect(jboard.moveAN('e7e5')).to.be.null;
-      expect(jboard.moveAN('a1a2')).to.be.null;
-      expect(jboard.moveAN('e8g8')).to.be.null;
-      expect(jboard.moveAN('d1e1')).to.be.null;
-      expect(jboard.moveAN('d6e7')).to.be.null;
-      expect(jboard.moveAN('e8c8')).to.be.null;
+      expect(jboard.moveUCI('e2e5')).to.be.null;
+      expect(jboard.moveUCI('e7e5')).to.be.null;
+      expect(jboard.moveUCI('a1a2')).to.be.null;
+      expect(jboard.moveUCI('e8g8')).to.be.null;
+      expect(jboard.moveUCI('d1e1')).to.be.null;
+      expect(jboard.moveUCI('d6e7')).to.be.null;
+      expect(jboard.moveUCI('e8c8')).to.be.null;
     });
 
     it('return string if OK', () => {
-      expect(typeof jboard.moveAN('e1f1')).to.be.equal('string');
-      expect(typeof jboard.moveAN('f5g3')).to.be.equal('string');
-      expect(typeof jboard.moveAN('f1g2')).to.be.equal('string');
-      expect(typeof jboard.moveAN('e8g8')).to.be.equal('string');
-      expect(typeof jboard.moveAN('d1d4')).to.be.equal('string');
-      expect(typeof jboard.moveAN('c5d4')).to.be.equal('string');
-      expect(typeof jboard.moveAN('g2f2')).to.be.equal('string');
-      expect(typeof jboard.moveAN('c3b1')).to.be.equal('string');
-      expect(typeof jboard.moveAN('d6d7')).to.be.equal('string');
-      expect(typeof jboard.moveAN('a8c8')).to.be.equal('string');
-      expect(typeof jboard.moveAN('d7c8n')).to.be.equal('string');
-      expect(typeof jboard.moveAN('b7b5')).to.be.equal('string');
-      expect(typeof jboard.moveAN('c8d6')).to.be.equal('string');
+      expect(typeof jboard.moveUCI('e1f1')).to.be.equal('string');
+      expect(typeof jboard.moveUCI('f5g3')).to.be.equal('string');
+      expect(typeof jboard.moveUCI('f1g2')).to.be.equal('string');
+      expect(typeof jboard.moveUCI('e8g8')).to.be.equal('string');
+      expect(typeof jboard.moveUCI('d1d4')).to.be.equal('string');
+      expect(typeof jboard.moveUCI('c5d4')).to.be.equal('string');
+      expect(typeof jboard.moveUCI('g2f2')).to.be.equal('string');
+      expect(typeof jboard.moveUCI('c3b1')).to.be.equal('string');
+      expect(typeof jboard.moveUCI('d6d7')).to.be.equal('string');
+      expect(typeof jboard.moveUCI('a8c8')).to.be.equal('string');
+      expect(typeof jboard.moveUCI('d7c8n')).to.be.equal('string');
+      expect(typeof jboard.moveUCI('b7b5')).to.be.equal('string');
+      expect(typeof jboard.moveUCI('c8d6')).to.be.equal('string');
     });
   });
 
@@ -1149,18 +1149,18 @@ describe('jBoard', () => {
     });
 
     it('return true if OK', () => {
-      jboard.moveAN('e2e4');
-      jboard.moveAN('e7e5');
+      jboard.moveUCI('e2e4');
+      jboard.moveUCI('e7e5');
       expect(jboard.goto(0, 0)).to.be.true;
       expect(jboard.goto(0, -1)).to.be.true;
       expect(jboard.goto(0, 1)).to.be.true;
     });
 
     it('check position after goto()', () => {
-      jboard.moveAN('e2e4');
-      jboard.moveAN('e7e5');
-      jboard.moveAN('g1f3');
-      jboard.moveAN('b8c6');
+      jboard.moveUCI('e2e4');
+      jboard.moveUCI('e7e5');
+      jboard.moveUCI('g1f3');
+      jboard.moveUCI('b8c6');
       expect(jboard.goto(0, 1)).to.be.true;
       expect(jboard.getPieceType(4, 3)).to.be.equal(0);
       expect(jboard.getPieceType(4, 4)).to.be.null;
@@ -1181,9 +1181,9 @@ describe('jBoard', () => {
     });
 
     it('writes moves to lines array', () => {
-      jboard.moveAN('e2e4');
+      jboard.moveUCI('e2e4');
       expect(jboard.lines[0][1].move).to.be.equal('e2e4');
-      jboard.moveAN('g8f6');
+      jboard.moveUCI('g8f6');
       expect(jboard.lines[0][2].move).to.be.equal('g8f6');
     });
   });

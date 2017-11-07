@@ -16,6 +16,12 @@ const initialState = {
 
 const game = (state = initialState, action) => {
   switch (action.type) {
+    case ACTIONS.SELECT: {
+      return {
+        ...state,
+        ...action.gamePayload,
+      };
+    }
     case ACTIONS.MOVE:
     case ACTIONS.UPDATE_POSITION:
     case ACTIONS.GOTO:

@@ -1,4 +1,4 @@
-import { squareToAN, mapPiece } from './an';
+import { squareToUCI, mapPiece } from './notation';
 import { isSquare } from './utils';
 
 /**
@@ -208,7 +208,7 @@ export function getFENEnPassant(enPassant) {
     return '-';
   }
 
-  return squareToAN(enPassant.file, enPassant.rank);
+  return squareToUCI(enPassant.file, enPassant.rank);
 }
 
 /**

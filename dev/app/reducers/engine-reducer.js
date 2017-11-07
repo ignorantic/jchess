@@ -31,6 +31,7 @@ const engine = (state = initialState, action) => {
     case ACTIONS.TOGGLE_WHITE: {
       return {
         ...state,
+        status: 'ready',
         play: {
           ...state.play,
           1: !state.play[1],
@@ -40,6 +41,7 @@ const engine = (state = initialState, action) => {
     case ACTIONS.TOGGLE_BLACK: {
       return {
         ...state,
+        status: 'ready',
         play: {
           ...state.play,
           2: !state.play[2],

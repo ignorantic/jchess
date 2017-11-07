@@ -28,12 +28,11 @@ export default class Board extends React.Component {
         {
           board.map((fItem, file) => (
             fItem.map((rItem, rank) => {
-              let tabindex = -1;
               let checkProp;
               let checkmateProp;
 
               const clr = rItem.color === 1 ? 'white' : 'black';
-              if (file === focus[0] && rank === focus[1]) tabindex = 0;
+              const isFocused = file === focus[0] && rank === focus[1];
 
               if (
                 board[file][rank].piece.type === 5
@@ -53,10 +52,10 @@ export default class Board extends React.Component {
                   marked={rItem.marked}
                   selected={rItem.selected}
                   key={key}
-                  tabindex={tabindex}
                   check={checkProp}
                   checkmate={checkmateProp}
                   style={style}
+                  focused={isFocused}
                 />
               );
             })

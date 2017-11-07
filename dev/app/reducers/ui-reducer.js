@@ -8,10 +8,10 @@ const initialState = {
 
 const ui = (state = initialState, action) => {
   switch (action.type) {
-    case ACTIONS.DRAG: {
+    case ACTIONS.SELECT: {
       return {
         ...state,
-        drag: action.payload,
+        drag: action.uiPayload,
       };
     }
     case ACTIONS.RELEASE: {

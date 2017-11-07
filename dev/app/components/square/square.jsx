@@ -15,7 +15,7 @@ export default class Square extends React.PureComponent {
       }).isRequired,
       marked: PropTypes.bool.isRequired,
       selected: PropTypes.bool.isRequired,
-      tabindex: PropTypes.number.isRequired,
+      focused: PropTypes.bool.isRequired,
       check: PropTypes.bool,
       checkmate: PropTypes.bool,
     };
@@ -25,10 +25,17 @@ export default class Square extends React.PureComponent {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.focused === true) {
+      this.node.focus();
+    }
+  }
+
   render() {
     const {
-      file, rank, color, style, marked, selected, check, checkmate, tabindex,
+      file, rank, color, style, marked, selected, check, checkmate, focused,
     } = this.props;
+    const tabindex = focused ? 0 : -1;
     let className = `square square_${color}`;
     if (marked) className += ` square_marked_${color}`;
     if (selected) className += ' square_selected';
@@ -42,6 +49,7 @@ export default class Square extends React.PureComponent {
         data-file={file}
         data-rank={rank}
         style={style}
+        ref={(node) => { this.node = node; }}
       />
     );
   }

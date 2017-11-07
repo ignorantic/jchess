@@ -3,10 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from '../../components/button/button';
 import Movelist from '../../components/movelist/movelist';
-import { flipBoard } from '../../actions/ui-action';
-import { toggleWhite, toggleBlack } from '../../actions/engine-actions';
-import { setUpPosition, resetPosition, goto, gotoPrev, gotoNext,
-  gotoStart, gotoEnd } from '../../actions/game-actions';
+import { flipBoard, toggleWhite, toggleBlack, setUpPosition, resetPosition, goto,
+  gotoPrev, gotoNext, gotoStart, gotoEnd } from '../../actions/actions';
 import './sidebar.scss';
 
 class Sidebar extends React.PureComponent {

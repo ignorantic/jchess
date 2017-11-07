@@ -1,4 +1,4 @@
-import { toAN, ANToSquare, mapPieceType } from './an';
+import { toUCI, UCIToSquare, mapPieceType, UCIToSAN, UCIToFAN } from './notation';
 import { splitFEN, parseFENCastling, parseFENRanks, parseFENEnPassant, parseFENTurn,
   generateFEN } from './fen';
 import { isSquare, isFoe, isFriend, isFoesPawn, isPawnPromotion, isSquareAttacked, isEmpty,
@@ -500,9 +500,11 @@ export default class JBoard {
    * @param {number} promType
    */
   writeMove(start, stop, promType) {
-    this.lastMove = toAN(start, stop, promType);
+    this.lastMove = toUCI(start, stop, promType);
     this.lines[this.currentLine][this.halfCount] = {
       move: this.lastMove,
+      san: UCIToSAN(this.board, this.lastMove),
+      fan: UCIToFAN(this.board, this.lastMove),
       fen: this.getFEN(),
     };
   }
@@ -819,12 +821,12 @@ export default class JBoard {
    * @param {string} str
    * @return {?string}
    */
-  moveAN(str) {
+  moveUCI(str) {
     if (typeof str !== 'string') return null;
     if (str.length < 4 || str.length > 5) return null;
     const alg = str.toLowerCase();
-    const start = ANToSquare(alg.slice(0, 2));
-    const stop = ANToSquare(alg.slice(2, 4));
+    const start = UCIToSquare(alg.slice(0, 2));
+    const stop = UCIToSquare(alg.slice(2, 4));
     const piece = alg[4];
     let promType;
     if (piece === undefined) promType = false;

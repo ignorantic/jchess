@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import Board from '../../components/board/board';
 import Turn from '../../components/turn/turn';
 import Position from '../../components/position/position';
-import { select, move } from '../../actions/game-actions';
-import { releasePiece, changeFocus } from '../../actions/ui-action';
+import { select, move, releasePiece, changeFocus, switchTurn } from '../../actions/actions';
 import { rect, convCoord } from '../../lib/helpers';
 import './board-container.scss';
 
@@ -25,6 +24,7 @@ class BoardContainer extends React.Component {
       ui: PropTypes.shape({
         flip: PropTypes.bool,
         focus: PropTypes.arrayOf(PropTypes.number),
+        focused: PropTypes.bool,
         drag: PropTypes.arrayOf(PropTypes.number),
       }).isRequired,
       engine: PropTypes.shape({
@@ -34,6 +34,7 @@ class BoardContainer extends React.Component {
       onSelect: PropTypes.func.isRequired,
       onRelease: PropTypes.func.isRequired,
       onFocus: PropTypes.func.isRequired,
+      onSwitchTurn: PropTypes.func.isRequired,
     };
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
@@ -42,6 +43,9 @@ class BoardContainer extends React.Component {
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.game.turn !== this.props.game.turn) this.props.onSwitchTurn();
+  }
 
   handleArrowKey(code) {
     const {
@@ -125,7 +129,7 @@ class BoardContainer extends React.Component {
         board, halfCount, turn, check, checkmate,
       },
       ui: {
-        flip, focus, drag,
+        flip, focus, focused, drag,
       },
       engine: { status },
     } = this.props;
@@ -158,6 +162,7 @@ class BoardContainer extends React.Component {
           check={check}
           checkmate={checkmate}
           focus={focus}
+          focused={focused}
         />
         <Position
           status={status}
@@ -186,6 +191,7 @@ const mapDispatchToProps = dispatch => ({
   onSelect: (file, rank, mouse) => dispatch(select(file, rank, mouse)),
   onRelease: (file, rank) => dispatch(releasePiece(file, rank)),
   onFocus: (file, rank) => dispatch(changeFocus(file, rank)),
+  onSwitchTurn: () => dispatch(switchTurn()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BoardContainer);

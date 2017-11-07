@@ -1,55 +1,70 @@
 /* eslint-disable no-unused-expressions */
-import { describe, it } from 'mocha';
+import { describe, it, before } from 'mocha';
 import { expect } from 'chai';
-import * as nt from '../../../dev/app/lib/jboard/an';
+import JBoard from '../../../dev/app/lib/jboard/jboard';
+import { squareToUCI, UCIToSquare, toUCI, UCIToSAN } from '../../../dev/app/lib/jboard/notation';
 
 describe('Notation', () => {
-  describe('squareToAlg', () => {
+  describe('squareToUCI', () => {
     it('return null if square utils illegal', () => {
-      expect(nt.squareToAN(0)).to.be.null;
-      expect(nt.squareToAN(0, -1)).to.be.null;
-      expect(nt.squareToAN(8, 8)).to.be.null;
+      expect(squareToUCI(0)).to.be.null;
+      expect(squareToUCI(0, -1)).to.be.null;
+      expect(squareToUCI(8, 8)).to.be.null;
     });
 
     it('return string if OK', () => {
-      expect(nt.squareToAN(0, 0)).to.be.equal('a1');
-      expect(nt.squareToAN(4, 3)).to.be.equal('e4');
-      expect(nt.squareToAN(7, 7)).to.be.equal('h8');
+      expect(squareToUCI(0, 0)).to.be.equal('a1');
+      expect(squareToUCI(4, 3)).to.be.equal('e4');
+      expect(squareToUCI(7, 7)).to.be.equal('h8');
     });
   });
 
-  describe('algToSquare', () => {
+  describe('UCIToSquare', () => {
     it('return null if square utils illegal', () => {
-      expect(nt.ANToSquare(0)).to.be.null;
-      expect(nt.ANToSquare('b')).to.be.null;
-      expect(nt.ANToSquare('7e')).to.be.null;
-      expect(nt.ANToSquare('j1')).to.be.null;
-      expect(nt.ANToSquare('e9')).to.be.null;
+      expect(UCIToSquare(0)).to.be.null;
+      expect(UCIToSquare('b')).to.be.null;
+      expect(UCIToSquare('7e')).to.be.null;
+      expect(UCIToSquare('j1')).to.be.null;
+      expect(UCIToSquare('e9')).to.be.null;
     });
 
     it('return number if OK', () => {
-      expect(nt.ANToSquare('a2').file).to.be.equal(0);
-      expect(nt.ANToSquare('a2').rank).to.be.equal(1);
-      expect(nt.ANToSquare('c7').file).to.be.equal(2);
-      expect(nt.ANToSquare('c7').rank).to.be.equal(6);
-      expect(nt.ANToSquare('f4').file).to.be.equal(5);
-      expect(nt.ANToSquare('f4').rank).to.be.equal(3);
+      expect(UCIToSquare('a2').file).to.be.equal(0);
+      expect(UCIToSquare('a2').rank).to.be.equal(1);
+      expect(UCIToSquare('c7').file).to.be.equal(2);
+      expect(UCIToSquare('c7').rank).to.be.equal(6);
+      expect(UCIToSquare('f4').file).to.be.equal(5);
+      expect(UCIToSquare('f4').rank).to.be.equal(3);
     });
   });
 
-  describe('toAlgebraic', () => {
+  describe('toUCI', () => {
     it('return null if arguments aren\'t correct', () => {
-      expect(nt.toAN({ file: 7, rank: 7 }, { file: 0, rank: 8 })).to.be.null;
-      expect(nt.toAN({ file: -1, rank: 7 }, { file: 0, rank: 0 })).to.be.null;
-      expect(nt.toAN({ file: 1, rank: 7 })).to.be.null;
-      expect(nt.toAN()).to.be.null;
+      expect(toUCI({ file: 7, rank: 7 }, { file: 0, rank: 8 })).to.be.null;
+      expect(toUCI({ file: -1, rank: 7 }, { file: 0, rank: 0 })).to.be.null;
+      expect(toUCI({ file: 1, rank: 7 })).to.be.null;
+      expect(toUCI()).to.be.null;
     });
 
     it('return string if OK', () => {
-      expect(nt.toAN({ file: 1, rank: 1 }, { file: 1, rank: 2 })).to.be.equal('b2b3');
-      expect(nt.toAN({ file: 7, rank: 7 }, { file: 0, rank: 0 })).to.be.equal('h8a1');
-      expect(nt.toAN({ file: 0, rank: 6 }, { file: 0, rank: 7 }, 4))
+      expect(toUCI({ file: 1, rank: 1 }, { file: 1, rank: 2 })).to.be.equal('b2b3');
+      expect(toUCI({ file: 7, rank: 7 }, { file: 0, rank: 0 })).to.be.equal('h8a1');
+      expect(toUCI({ file: 0, rank: 6 }, { file: 0, rank: 7 }, 4))
         .to.be.equal('a7a8q');
+    });
+  });
+
+  describe('UCIToSAN', () => {
+    let jboard;
+
+    before(() => {
+      jboard = new JBoard();
+      jboard.setUp();
+    });
+
+    it('return string if OK', () => {
+      jboard.moveUCI('g1f3');
+      expect(UCIToSAN(jboard.board, 'g1f3')).to.be.equal('Nf3');
     });
   });
 });

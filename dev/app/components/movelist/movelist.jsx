@@ -39,6 +39,7 @@ export default class Movelist extends React.Component {
     return (
       <div
         className="movelist"
+        ref={(node) => { this.movelist = node; }}
       >
         <div
           className="movelist__moves"

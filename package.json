@@ -11,7 +11,7 @@
     "svg-sprite": "gulp svgSprite",
     "production": "yarn run svg-sprite && NODE_ENV=production webpack --progress --env production && yarn run imagemin",
     "build": "yarn run svg-sprite && webpack --progress --env build",
-    "start": "yarn run svg-sprite && webpack-dev-server --progress --env development",
+    "start": "webpack-dev-server --progress --env development",
     "static": "static build"
   },
   "devDependencies": {

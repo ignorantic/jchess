@@ -11,28 +11,33 @@ body {
   background: transparent;
   border: 0;
   text-align: left;
-  font-size: 0.8rem;
+  font-size: 1.1rem;
   outline: none;
   cursor: pointer;
-  padding: 5px;
+  padding: 0 5px 0 0;
   margin: 0;
+  transition: all 0.2s;
 
-  &_white {
-    &::before {
-      counter-increment: moves;
-      content: counter(moves)". ";
-      color: $clr-text-alt;
-      font-weight: 700;
-    }
+  &_active,
+  &:hover,
+  &:focus {
+    color: $clr-white;
   }
 
   &_active {
-    color: $clr-white;
+    text-shadow: 0 0 20px $clr-black;
     font-weight: 600;
   }
 
-  &:hover,
-  &:focus  {
-    color: $clr-white;
+  &_white {
+    &::before {
+      font-family: $ff;
+      counter-increment: moves;
+      content: counter(moves)". ";
+      color: $clr-text-alt;
+      font-size: 1rem;
+      text-shadow: none;
+      font-weight: 500;
+    }
   }
 }
