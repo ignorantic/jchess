@@ -62,9 +62,66 @@ describe('Notation', () => {
       jboard.setUp();
     });
 
-    it('return string if OK', () => {
+    it('should return "Nf3"', () => {
+      jboard.setUp();
       jboard.moveUCI('g1f3');
-      expect(UCIToSAN(jboard.board, 'g1f3')).to.be.equal('Nf3');
+      expect(UCIToSAN(jboard.initialFEN, 'g1f3')).to.be.equal('Nf3');
+    });
+
+    it('should return "Neg6"', () => {
+      const fen = '5n1k/2b1n1pp/p7/5p2/1Pp1p3/P3P1P1/1q3P1P/3R1RK1 b - - 0 1';
+      jboard.setPositionByFEN(fen);
+      jboard.moveUCI('e7g6');
+      expect(UCIToSAN(fen, 'e7g6')).to.be.equal('Neg6');
+    });
+
+    it('should return "Nfg6"', () => {
+      const fen = '5n1k/2b1n1pp/p7/5p2/1Pp1p3/P3P1P1/1q3P1P/3R1RK1 b - - 0 1';
+      jboard.setPositionByFEN(fen);
+      jboard.moveUCI('f8g6');
+      expect(UCIToSAN(fen, 'f8g6')).to.be.equal('Nfg6');
+    });
+
+    it('should return "Ng6"', () => {
+      const fen = 'Q4n1k/2b1n1pp/p7/5p2/1Pp1p3/P3P1P1/1q3P1P/3R1RK1 b - - 0 1';
+      jboard.setPositionByFEN(fen);
+      jboard.moveUCI('e7g6');
+      expect(UCIToSAN(fen, 'e7g6')).to.be.equal('Ng6');
+    });
+
+    it('should return "Bd6"', () => {
+      const fen = 'Q4b1k/2b3pp/p7/5p2/1Pp1p3/P3P1P1/1q3P1P/3R1RK1 b - - 0 1';
+      jboard.setPositionByFEN(fen);
+      jboard.moveUCI('c7d6');
+      expect(UCIToSAN(fen, 'c7d6')).to.be.equal('Bd6');
+    });
+
+    it('should return "Rde1"', () => {
+      const fen = '5n1k/2b1n1pp/p7/5p2/1Pp1p3/P3P1P1/1q3P1P/3R1RK1 w - - 0 1';
+      jboard.setPositionByFEN(fen);
+      jboard.moveUCI('d1e1');
+      expect(UCIToSAN(fen, 'd1e1')).to.be.equal('Rde1');
+    });
+
+    it('should return "Rfe1"', () => {
+      const fen = '5n1k/2b1n1pp/p7/5p2/1Pp1p3/P3P1P1/1q3P1P/3R1RK1 w - - 0 1';
+      jboard.setPositionByFEN(fen);
+      jboard.moveUCI('f1e1');
+      expect(UCIToSAN(fen, 'f1e1')).to.be.equal('Rfe1');
+    });
+
+    it('should return "R6d2"', () => {
+      const fen = '5n1k/2b1n1pp/p2R4/5p2/1Pp1p3/P3P1P1/1q3P1P/3R2K1 w - - 0 1';
+      jboard.setPositionByFEN(fen);
+      jboard.moveUCI('d6d2');
+      expect(UCIToSAN(fen, 'd6d2')).to.be.equal('R6d2');
+    });
+
+    it('should return "Nc3d5"', () => {
+      const fen = '5n1k/2N1N1pp/p2R4/5p2/1Pp1p3/P1N1N1P1/1q3P1P/3R2K1 w - - 0 1';
+      jboard.setPositionByFEN(fen);
+      jboard.moveUCI('c3d5');
+      expect(UCIToSAN(fen, 'c3d5')).to.be.equal('Nc3d5');
     });
   });
 });

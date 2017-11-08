@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "test": "NODE_ENV=test mocha test/**/*.spec.jsx --compilers babel-register",
+    "test": "NODE_ENV=test mocha test/**/*.spec.js --compilers js:babel-register",
     "sass-lint": "sass-lint -c .sass-lint.yml 'dev/**/*.scss' -v -q",
     "eslint": "eslint dev/lib dev/index dev/components",
     "lint": "yarn run eslint && yarn run sass-lint",

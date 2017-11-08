@@ -1,7 +1,7 @@
 import ACTIONS from '../consts';
 import boardModel from '../board-model';
 import getMoveFromServer from '../lib/api';
-import { UCIToSquare } from '../lib/jboard/notation';
+import { UCIToSquare, UCIToSAN, UCIToFAN } from '../lib/jboard/notation';
 
 export function setUpPosition() {
   return (dispatch) => {
@@ -11,6 +11,8 @@ export function setUpPosition() {
       ...boardModel.getGame(),
       prevFen: boardModel.initialFEN,
       lastMove: '',
+      halfCount: 0,
+      lines: [[{ fen: boardModel.initialFEN }]],
     };
     dispatch({
       type: ACTIONS.UPDATE_POSITION,
@@ -27,6 +29,8 @@ export function resetPosition() {
       ...boardModel.getGame(),
       prevFen: boardModel.initialFEN,
       lastMove: '',
+      halfCount: 0,
+      lines: [[{ fen: boardModel.initialFEN }]],
     };
     dispatch({
       type: ACTIONS.UPDATE_POSITION,
@@ -36,9 +40,14 @@ export function resetPosition() {
 }
 
 export function goto(line, moveNum) {
-  return (dispatch) => {
-    boardModel.goto(line, moveNum);
-    const payload = boardModel.getGame();
+  return (dispatch, getState) => {
+    const { game: { lines } } = getState();
+    boardModel.setPositionByFEN(lines[line][moveNum].fen);
+    const payload = {
+      ...boardModel.getGame(),
+      currentLine: line,
+      halfCount: moveNum,
+    };
     dispatch({
       type: ACTIONS.GOTO,
       payload,
@@ -47,9 +56,14 @@ export function goto(line, moveNum) {
 }
 
 export function gotoPrev() {
-  return (dispatch) => {
-    boardModel.gotoPrev();
-    const payload = boardModel.getGame();
+  return (dispatch, getState) => {
+    const { game: { halfCount, currentLine, lines } } = getState();
+    if (lines[currentLine][halfCount - 1] === undefined) return;
+    boardModel.setPositionByFEN(lines[currentLine][halfCount - 1].fen);
+    const payload = {
+      ...boardModel.getGame(),
+      halfCount: halfCount - 1,
+    };
     dispatch({
       type: ACTIONS.GOTO,
       payload,
@@ -58,9 +72,14 @@ export function gotoPrev() {
 }
 
 export function gotoNext() {
-  return (dispatch) => {
-    boardModel.gotoNext();
-    const payload = boardModel.getGame();
+  return (dispatch, getState) => {
+    const { game: { halfCount, currentLine, lines } } = getState();
+    if (lines[currentLine][halfCount + 1] === undefined) return;
+    boardModel.setPositionByFEN(lines[currentLine][halfCount + 1].fen);
+    const payload = {
+      ...boardModel.getGame(),
+      halfCount: halfCount + 1,
+    };
     dispatch({
       type: ACTIONS.GOTO,
       payload,
@@ -69,9 +88,13 @@ export function gotoNext() {
 }
 
 export function gotoStart() {
-  return (dispatch) => {
-    boardModel.gotoStart();
-    const payload = boardModel.getGame();
+  return (dispatch, getState) => {
+    const { game: { currentLine, lines } } = getState();
+    boardModel.setPositionByFEN(lines[currentLine][0].fen);
+    const payload = {
+      ...boardModel.getGame(),
+      halfCount: 0,
+    };
     dispatch({
       type: ACTIONS.GOTO,
       payload,
@@ -80,9 +103,14 @@ export function gotoStart() {
 }
 
 export function gotoEnd() {
-  return (dispatch) => {
-    boardModel.gotoEnd();
-    const payload = boardModel.getGame();
+  return (dispatch, getState) => {
+    const { game: { currentLine, lines } } = getState();
+    const { length } = lines[currentLine];
+    boardModel.setPositionByFEN(lines[currentLine][length - 1].fen);
+    const payload = {
+      ...boardModel.getGame(),
+      halfCount: length - 1,
+    };
     dispatch({
       type: ACTIONS.GOTO,
       payload,
@@ -91,66 +119,76 @@ export function gotoEnd() {
 }
 
 export function changeFEN(newFEN) {
-  return (dispatch) => {
-    boardModel.setPositionByFEN(newFEN);
-    const payload = {
-      ...boardModel.getGame(),
-      prevFen: newFEN,
-      lastMove: '',
-    };
-    dispatch({
-      type: ACTIONS.CHANGE_FEN,
-      payload,
-    });
+  boardModel.setPositionByFEN(newFEN);
+  const payload = {
+    ...boardModel.getGame(),
+    prevFen: newFEN,
+    lastMove: '',
+    halfCount: 0,
+    lines: [[{ fen: newFEN }]],
+  };
+  return {
+    type: ACTIONS.CHANGE_FEN,
+    payload,
   };
 }
 
 export function changeFocus(file, rank) {
-  return (dispatch) => {
-    const payload = [file, rank];
-    dispatch({
-      type: ACTIONS.CHANGE_FOCUS,
-      payload,
-    });
+  const payload = [file, rank];
+  return {
+    type: ACTIONS.CHANGE_FOCUS,
+    payload,
   };
 }
 
 export function select(file, rank, mouse) {
-  return (dispatch) => {
-    let uiPayload = null;
-    boardModel.select(file, rank);
-    if (
-      mouse
-      && boardModel.getMoves(file, rank).length > 0
-      && boardModel.isFriend(file, rank)
-    ) uiPayload = [file, rank];
-    const gamePayload = boardModel.getGame();
-    dispatch({
-      type: ACTIONS.SELECT,
-      uiPayload,
-      gamePayload,
-    });
+  let uiPayload = null;
+  boardModel.select(file, rank);
+  if (
+    mouse
+    && boardModel.getMoves(file, rank).length > 0
+    && boardModel.isFriend(file, rank)
+  ) uiPayload = [file, rank];
+  const gamePayload = boardModel.getGame();
+  return {
+    type: ACTIONS.SELECT,
+    uiPayload,
+    gamePayload,
   };
 }
 
 export function flipBoard() {
-  return (dispatch) => {
-    dispatch({
-      type: ACTIONS.FLIP_BOARD,
-    });
-  };
+  return { type: ACTIONS.FLIP_BOARD };
 }
 
-export function selectAndMove(start, stop) {
+export function move(file, rank) {
+  function writeMove(lines, currentLine, halfCount, lastMove, fen) {
+    const prevFEN = lines[currentLine][halfCount].fen;
+    const newLines = [].concat(lines);
+    newLines[currentLine][halfCount + 1] = {
+      move: lastMove,
+      san: UCIToSAN(prevFEN, lastMove),
+      fan: UCIToFAN(prevFEN, lastMove),
+      fen,
+    };
+    return newLines;
+  }
+
   return (dispatch, getState) => {
-    boardModel.select(start.file, start.rank);
-    const lastMove = boardModel.move(stop.file, stop.rank);
+    const lastMove = boardModel.move(file, rank);
     if (lastMove !== null) {
-      const { game: { fen } } = getState();
+      const {
+        game: {
+          halfCount, fen, lines, currentLine,
+        },
+      } = getState();
+      const newLines = writeMove(lines, currentLine, halfCount, lastMove, boardModel.getFEN());
       const payload = {
         ...boardModel.getGame(),
         lastMove,
         prevFen: fen,
+        lines: newLines,
+        halfCount: halfCount + 1,
       };
       dispatch({
         type: ACTIONS.MOVE,
@@ -169,30 +207,13 @@ export function getEngineMove(fen, lastMove) {
           dispatch({ type: ACTIONS.GET_ENGINE_MOVE_SUCCESS });
           const start = UCIToSquare(bestMove.slice(0, 2));
           const stop = UCIToSquare(bestMove.slice(2, 4));
-          dispatch(selectAndMove(start, stop, false));
+          dispatch(select(start.file, start.rank));
+          dispatch(move(stop.file, stop.rank, false));
         }
       })
       .catch(() => {
         dispatch({ type: ACTIONS.GET_ENGINE_MOVE_FAILURE });
       });
-  };
-}
-
-export function move(file, rank) {
-  return (dispatch, getState) => {
-    const lastMove = boardModel.move(file, rank);
-    if (lastMove !== null) {
-      const { game: { fen } } = getState();
-      const payload = {
-        ...boardModel.getGame(),
-        lastMove,
-        prevFen: fen,
-      };
-      dispatch({
-        type: ACTIONS.MOVE,
-        payload,
-      });
-    }
   };
 }
 

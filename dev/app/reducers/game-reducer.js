@@ -10,7 +10,7 @@ const initialState = {
   checkmate: false,
   halfCount: 0,
   currentLine: 0,
-  lines: [[]],
+  lines: [[{ fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1' }]],
   lastMove: '',
 };
 

@@ -78,11 +78,16 @@ class BoardContainer extends React.Component {
   }
 
   handleMouseMove(event) {
-    const { id } = this.props;
-    const { left, top } = rect(id);
-    const dl = event.pageX - left;
-    const dt = event.pageY - top;
-    this.setState({ drag: [dl, dt] });
+    if (event.buttons === 1) {
+      const { id } = this.props;
+      /* TODO
+       * Replace getElementById with ref in rect()
+       */
+      const { left, top } = rect(id);
+      const dl = event.pageX - left;
+      const dt = event.pageY - top;
+      this.setState({ drag: [dl, dt] });
+    }
   }
 
   handleMouseDown(event) {
@@ -92,6 +97,10 @@ class BoardContainer extends React.Component {
       ui: { flip },
       onMove, onSelect, onFocus,
     } = this.props;
+    const { left, top } = rect(id);
+    const dl = event.pageX - left;
+    const dt = event.pageY - top;
+    this.setState({ drag: [dl, dt] });
     const { file, rank } = convCoord(id, flip, event.pageX, event.pageY);
     if (board[file][rank].marked === true) {
       onMove(file, rank);

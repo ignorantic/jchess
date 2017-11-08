@@ -121,55 +121,6 @@ describe('jBoard', () => {
     });
   });
 
-  describe('setPiecesByArray', () => {
-    let jboard;
-
-    before(() => {
-      jboard = new JBoard();
-      jboard.setPiecesByArray([
-        {
-          file: 0,
-          rank: 1,
-          piece: {
-            type: 0,
-            color: 1,
-          },
-        },
-        {
-          file: 1,
-          rank: 2,
-          piece: {
-            type: 2,
-            color: 2,
-          },
-        },
-        {
-          file: 5,
-          rank: 7,
-          piece: {
-            type: 4,
-            color: 2,
-          },
-        },
-      ]);
-    });
-
-    it('check pawn', () => {
-      expect(jboard.board[0][1].piece.type).to.be.equal(0);
-      expect(jboard.board[0][1].piece.color).to.be.equal(1);
-    });
-
-    it('check knight', () => {
-      expect(jboard.board[1][2].piece.type).to.be.equal(2);
-      expect(jboard.board[1][2].piece.color).to.be.equal(2);
-    });
-
-    it('check queen', () => {
-      expect(jboard.board[5][7].piece.type).to.be.equal(4);
-      expect(jboard.board[5][7].piece.color).to.be.equal(2);
-    });
-  });
-
   describe('resetPosition', () => {
     let jboard;
 
@@ -218,37 +169,29 @@ describe('jBoard', () => {
       jboard = new JBoard();
     });
 
-    it('check square h2 before setup', () => {
-      expect(jboard.board[7][1].piece.type).to.be.null;
-      expect(jboard.board[7][1].piece.color).to.be.null;
-    });
-
-    it('check square c3 before setup', () => {
-      expect(jboard.board[2][2].piece.type).to.be.null;
-      expect(jboard.board[2][2].piece.color).to.be.null;
-    });
-
-    it('check square e4 before setup', () => {
-      expect(jboard.board[4][3].piece.type).to.be.null;
-      expect(jboard.board[4][3].piece.color).to.be.null;
-    });
-
     it('check square h2 after setup', () => {
-      jboard.setPiece({ file: 7, rank: 1 }, 0, 1);
       expect(jboard.board[7][1].piece.type).to.be.equal(0);
       expect(jboard.board[7][1].piece.color).to.be.equal(1);
     });
 
     it('check square c3 after setup', () => {
-      jboard.setPiece({ file: 2, rank: 2 }, 2, 1);
-      expect(jboard.board[2][2].piece.type).to.be.equal(2);
-      expect(jboard.board[2][2].piece.color).to.be.equal(1);
+      expect(jboard.board[2][2].piece.type).to.be.null;
+      expect(jboard.board[2][2].piece.color).to.be.null;
     });
 
     it('check square e4 after setup', () => {
-      jboard.setPiece({ file: 4, rank: 3 }, 1, 2);
-      expect(jboard.board[4][3].piece.type).to.be.equal(1);
-      expect(jboard.board[4][3].piece.color).to.be.equal(2);
+      expect(jboard.board[4][3].piece.type).to.be.null;
+      expect(jboard.board[4][3].piece.color).to.be.null;
+    });
+
+    it('check square b1 after setup', () => {
+      expect(jboard.board[1][0].piece.type).to.be.equal(2);
+      expect(jboard.board[1][0].piece.color).to.be.equal(1);
+    });
+
+    it('check square e8 after setup', () => {
+      expect(jboard.board[4][7].piece.type).to.be.equal(5);
+      expect(jboard.board[4][7].piece.color).to.be.equal(2);
     });
   });
 
@@ -644,44 +587,51 @@ describe('jBoard', () => {
    *   CHECK MOVE
    */
 
-  describe('isDiscoveredCheck', () => {
+  describe('isNoDiscoveredCheck', () => {
     let jboard;
+    const FEN = 'Rn2k1bR/pp3pp1/3P4/b1pP3B/3q1P1p/2N3P1/PP2P2P/2BQK1Nr w KQkq - 0 1';
 
     before(() => {
       jboard = new JBoard();
     });
 
     beforeEach(() => {
-      jboard.setPositionByFEN('Rn2k1bR/pp3pp1/3P4/b1pP3B/3q1P1p/2N3P1/PP2P2P/2BQK1Nr w KQkq - 0 1');
-    });
-
-    it('return false if arguments aren\'t correct', () => {
-      expect(jboard.isDiscoveredCheck({ file: 0, rank: 4 }, { file: 8, rank: 7 })).to.be.false;
-      expect(jboard.isDiscoveredCheck({ file: 0, rank: -1 }, { file: 7, rank: 7 })).to.be.false;
-      expect(jboard.isDiscoveredCheck({ file: 7, rank: 7 }, { file: 6, rank: 9 })).to.be.false;
-      expect(jboard.isDiscoveredCheck({ file: 10, rank: 8 }, { file: 18, rank: 8 })).to.be.false;
+      jboard.setPositionByFEN(FEN);
     });
 
     it('return false if there utils no piece on start square', () => {
-      expect(jboard.isDiscoveredCheck({ file: 0, rank: 2 }, { file: 4, rank: 3 })).to.be.false;
-      expect(jboard.isDiscoveredCheck({ file: 3, rank: 2 }, { file: 7, rank: 7 })).to.be.false;
-      expect(jboard.isDiscoveredCheck({ file: 6, rank: 5 }, { file: 4, rank: 6 })).to.be.false;
-      expect(jboard.isDiscoveredCheck({ file: 5, rank: 5 }, { file: 2, rank: 0 })).to.be.false;
+      expect(JBoard.isNoDiscoveredCheck(FEN, { file: 0, rank: 2 }, { file: 4, rank: 3 }))
+        .to.be.false;
+      expect(JBoard.isNoDiscoveredCheck(FEN, { file: 3, rank: 2 }, { file: 7, rank: 7 }))
+        .to.be.false;
+      expect(JBoard.isNoDiscoveredCheck(FEN, { file: 6, rank: 5 }, { file: 4, rank: 6 }))
+        .to.be.false;
+      expect(JBoard.isNoDiscoveredCheck(FEN, { file: 5, rank: 5 }, { file: 2, rank: 0 }))
+        .to.be.false;
     });
 
     it('return true if move utils legal', () => {
-      expect(jboard.isDiscoveredCheck({ file: 4, rank: 1 }, { file: 4, rank: 3 })).to.be.true;
-      expect(jboard.isDiscoveredCheck({ file: 2, rank: 4 }, { file: 2, rank: 3 })).to.be.true;
-      expect(jboard.isDiscoveredCheck({ file: 6, rank: 6 }, { file: 6, rank: 5 })).to.be.true;
-      expect(jboard.isDiscoveredCheck({ file: 0, rank: 1 }, { file: 0, rank: 3 })).to.be.true;
+      expect(JBoard.isNoDiscoveredCheck(FEN, { file: 4, rank: 1 }, { file: 4, rank: 3 }))
+        .to.be.true;
+      expect(JBoard.isNoDiscoveredCheck(FEN, { file: 2, rank: 4 }, { file: 2, rank: 3 }))
+        .to.be.true;
+      expect(JBoard.isNoDiscoveredCheck(FEN, { file: 6, rank: 6 }, { file: 6, rank: 5 }))
+        .to.be.true;
+      expect(JBoard.isNoDiscoveredCheck(FEN, { file: 0, rank: 1 }, { file: 0, rank: 3 }))
+        .to.be.true;
     });
 
     it('return false if move utils illegal', () => {
-      expect(jboard.isDiscoveredCheck({ file: 5, rank: 6 }, { file: 5, rank: 5 })).to.be.false;
-      expect(jboard.isDiscoveredCheck({ file: 6, rank: 7 }, { file: 7, rank: 6 })).to.be.false;
-      expect(jboard.isDiscoveredCheck({ file: 1, rank: 7 }, { file: 2, rank: 5 })).to.be.false;
-      expect(jboard.isDiscoveredCheck({ file: 2, rank: 2 }, { file: 4, rank: 3 })).to.be.false;
-      expect(jboard.isDiscoveredCheck({ file: 6, rank: 0 }, { file: 5, rank: 2 })).to.be.false;
+      expect(JBoard.isNoDiscoveredCheck(FEN, { file: 5, rank: 6 }, { file: 5, rank: 5 }))
+        .to.be.false;
+      expect(JBoard.isNoDiscoveredCheck(FEN, { file: 6, rank: 7 }, { file: 7, rank: 6 }))
+        .to.be.false;
+      expect(JBoard.isNoDiscoveredCheck(FEN, { file: 1, rank: 7 }, { file: 2, rank: 5 }))
+        .to.be.false;
+      expect(JBoard.isNoDiscoveredCheck(FEN, { file: 2, rank: 2 }, { file: 4, rank: 3 }))
+        .to.be.false;
+      expect(JBoard.isNoDiscoveredCheck(FEN, { file: 6, rank: 0 }, { file: 5, rank: 2 }))
+        .to.be.false;
     });
   });
 
@@ -1129,62 +1079,6 @@ describe('jBoard', () => {
       expect(typeof jboard.moveUCI('d7c8n')).to.be.equal('string');
       expect(typeof jboard.moveUCI('b7b5')).to.be.equal('string');
       expect(typeof jboard.moveUCI('c8d6')).to.be.equal('string');
-    });
-  });
-
-  describe('goto', () => {
-    let jboard;
-
-    beforeEach(() => {
-      jboard = new JBoard();
-      jboard.setUp();
-    });
-
-    it('return false if arguments aren\'t correct', () => {
-      expect(jboard.goto('abc', 5)).to.be.false;
-      expect(jboard.goto(0, 'xyz')).to.be.false;
-      expect(jboard.goto([0, 'xyz'])).to.be.false;
-      expect(jboard.goto({ abc: 7 })).to.be.false;
-      expect(jboard.goto(null)).to.be.false;
-    });
-
-    it('return true if OK', () => {
-      jboard.moveUCI('e2e4');
-      jboard.moveUCI('e7e5');
-      expect(jboard.goto(0, 0)).to.be.true;
-      expect(jboard.goto(0, -1)).to.be.true;
-      expect(jboard.goto(0, 1)).to.be.true;
-    });
-
-    it('check position after goto()', () => {
-      jboard.moveUCI('e2e4');
-      jboard.moveUCI('e7e5');
-      jboard.moveUCI('g1f3');
-      jboard.moveUCI('b8c6');
-      expect(jboard.goto(0, 1)).to.be.true;
-      expect(jboard.getPieceType(4, 3)).to.be.equal(0);
-      expect(jboard.getPieceType(4, 4)).to.be.null;
-      expect(jboard.getTurn()).to.be.equal(2);
-      expect(jboard.goto(0, 4)).to.be.true;
-      expect(jboard.getPieceType(2, 5)).to.be.equal(2);
-      expect(jboard.getPieceType(5, 2)).to.be.equal(2);
-      expect(jboard.getTurn()).to.be.equal(1);
-    });
-  });
-
-  describe('writeMove', () => {
-    let jboard;
-
-    beforeEach(() => {
-      jboard = new JBoard();
-      jboard.setUp();
-    });
-
-    it('writes moves to lines array', () => {
-      jboard.moveUCI('e2e4');
-      expect(jboard.lines[0][1].move).to.be.equal('e2e4');
-      jboard.moveUCI('g8f6');
-      expect(jboard.lines[0][2].move).to.be.equal('g8f6');
     });
   });
 

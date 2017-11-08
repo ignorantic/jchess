@@ -16,7 +16,8 @@ body {
   cursor: pointer;
   padding: 0 5px 0 0;
   margin: 0;
-  transition: all 0.2s;
+  transition-property: font-weight, font-weight, color, text-shadow;
+  transition-duration: 0.2s;
 
   &_active,
   &:hover,
@@ -31,7 +32,6 @@ body {
 
   &_white {
     &::before {
-      font-family: $ff;
       counter-increment: moves;
       content: counter(moves)". ";
       color: $clr-text-alt;

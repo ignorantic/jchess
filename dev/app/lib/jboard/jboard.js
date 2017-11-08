@@ -1,5 +1,5 @@
-import { toUCI, UCIToSquare, mapPieceType, UCIToSAN, UCIToFAN } from './notation';
-import { splitFEN, parseFENCastling, parseFENRanks, parseFENEnPassant, parseFENTurn,
+import { toUCI, UCIToSquare, mapPieceType } from './notation';
+import { splitFEN, parseFENCastling, parseFENBoard, parseFENEnPassant, parseFENTurn,
   generateFEN } from './fen';
 import { isSquare, isFoe, isFriend, isFoesPawn, isPawnPromotion, isSquareAttacked, isEmpty,
   isEnPassant, getAttackedSquares } from './utils';
@@ -8,54 +8,8 @@ import { isSquare, isFoe, isFriend, isFoesPawn, isPawnPromotion, isSquareAttacke
 export default class JBoard {
   /** Create a board. */
   constructor() {
-    this.initFields();
-    this.initBoard();
-    this.paintBoard();
-  }
-
-  /** Initialize fields. */
-  initFields() {
-    this.board = [];
-    this.turn = 1;
-    this.fullCount = 1;
-    this.halfCount = 0;
-    this.countFiftyMove = 0;
-    this.selected = null;
-    this.enPassant = null;
-    this.castling = { 1: 0, 2: 0 };
-    this.currentLine = 0;
     this.initialFEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
-    this.lines = [[{ fen: this.initialFEN }]];
-    this.lastMove = '';
-  }
-
-  /** Initialize board array. */
-  initBoard() {
-    for (let i = 0; i < 8; i += 1) {
-      this.board[i] = [];
-
-      for (let j = 0; j < 8; j += 1) {
-        this.board[i][j] = {
-          selected: false,
-          marked: false,
-          piece: { type: null, color: null },
-          id: `${i}.${j}`,
-        };
-      }
-    }
-  }
-
-  /** Set color of squares. */
-  paintBoard() {
-    let countSquare = 1;
-    for (let i = 0; i < 8; i += 1) {
-      countSquare += 1;
-
-      for (let j = 0; j < 8; j += 1) {
-        countSquare += 1;
-        this.board[i][j].color = countSquare % 2 ? 2 : 1;
-      }
-    }
+    this.setPositionByFEN(this.initialFEN);
   }
 
   /** Set up initial position. */
@@ -73,17 +27,16 @@ export default class JBoard {
     const hash = splitFEN(FEN);
     if (hash === null) return false;
     const { ranks, tail } = hash;
-    const pieceArray = parseFENRanks(ranks);
-    if (pieceArray === null) return false;
+    this.board = parseFENBoard(ranks);
     this.resetSelected();
     this.resetMarked();
-    this.setPiecesByArray(pieceArray);
     this.turn = parseFENTurn(tail[0]);
     this.castling = parseFENCastling(tail[1]);
     this.enPassant = parseFENEnPassant(tail[2], this.board);
     this.countFiftyMove = +tail[3];
     this.fullCount = +tail[4];
     this.halfCount = ((this.fullCount * 2) + this.turn) - 3;
+    this.currentLine = 0;
     return true;
   }
 
@@ -106,15 +59,13 @@ export default class JBoard {
     this.currentLine = 0;
     this.castling = { 1: 0, 2: 0 };
     this.currentLine = 0;
-    this.lines = [[{ fen: this.initialFEN }]];
   }
 
   /**
    * Return game object
    * @return {{
    *   board: Array.<Array>, fen: string,
-   *   turn: number, check: boolean, checkmate: boolean, halfCount: number,
-   *   currentLine: number, lines: Array.<Array>,
+   *   turn: number, check: boolean, checkmate: boolean,
    * }}
    */
   getGame() {
@@ -124,9 +75,6 @@ export default class JBoard {
       turn: this.getTurn(),
       check: this.isInCheck(),
       checkmate: this.isCheckmate(),
-      halfCount: this.getHalfCount(),
-      currentLine: this.getCurrentLine(),
-      lines: this.getLines(),
     };
   }
 
@@ -180,18 +128,6 @@ export default class JBoard {
   getPieceColor(file, rank) {
     const square = this.getSquare(file, rank);
     return square && square.piece.color;
-  }
-
-  getHalfCount() {
-    return this.halfCount;
-  }
-
-  getCurrentLine() {
-    return this.currentLine;
-  }
-
-  getLines() {
-    return this.lines;
   }
 
   /**
@@ -467,12 +403,11 @@ export default class JBoard {
     if (color === 2) {
       this.fullCount += 1;
     }
-    this.halfCount += 1;
     const promType = isPawnPromotion(type, color, stop.rank)
       ? this.getPieceType(stop.file, stop.rank)
       : null;
     this.passTurn();
-    this.writeMove(start, stop, promType);
+    this.lastMove = toUCI(start, stop, promType);
     this.resetSelected();
     this.resetMarked();
   }
@@ -491,22 +426,6 @@ export default class JBoard {
     } else {
       this.countFiftyMove += 1;
     }
-  }
-
-  /**
-   * Write the move to line.
-   * @param {{file: number, rank: number}} start
-   * @param {{file: number, rank: number}} stop
-   * @param {number} promType
-   */
-  writeMove(start, stop, promType) {
-    this.lastMove = toUCI(start, stop, promType);
-    this.lines[this.currentLine][this.halfCount] = {
-      move: this.lastMove,
-      san: UCIToSAN(this.board, this.lastMove),
-      fan: UCIToFAN(this.board, this.lastMove),
-      fen: this.getFEN(),
-    };
   }
 
   /**
@@ -547,6 +466,7 @@ export default class JBoard {
     const color = this.getPieceColor(start.file, start.rank);
 
     if (this.checkBeforeMove(start, stop, color)) {
+      this.prevFEN = this.getFEN();
       this.makeMove(type, color, start, stop, promType);
     } else return false;
 
@@ -556,15 +476,17 @@ export default class JBoard {
 
   /**
    * Check utils there discovered check on board.
+   * @param {string} FEN - FEN.
    * @param {{file: number, rank: number}} start - Start square of move.
    * @param {{file: number, rank: number}} stop - Stop square of move.
    * @returns {boolean}
    */
-  isDiscoveredCheck(start, stop) {
-    const checkBoard = JBoard.cloneBoard(this);
-    if (checkBoard.handleMove(start, stop, 4)) {
-      const { file, rank } = start;
-      const color = this.getPieceColor(file, rank);
+  static isNoDiscoveredCheck(FEN, start, stop) {
+    const checkBoard = new JBoard();
+    checkBoard.setPositionByFEN(FEN);
+    const { file, rank } = start;
+    const { color } = checkBoard.board[file][rank].piece;
+    if (checkBoard.handleMove(start, stop)) {
       return !checkBoard.isInCheck(color);
     }
 
@@ -742,7 +664,7 @@ export default class JBoard {
     if (!moves) return null;
     return moves.filter((item) => {
       const start = { file, rank };
-      return this.isDiscoveredCheck(start, item);
+      return JBoard.isNoDiscoveredCheck(this.getFEN(), start, item);
     });
   }
 
@@ -842,54 +764,6 @@ export default class JBoard {
   }
 
   /**
-   * Go to the move in the line.
-   * @param {number} line
-   * @param {number} move
-   * @returns {boolean}
-   */
-  goto(line, move) {
-    if (typeof line !== 'number' || typeof move !== 'number') return false;
-    if (line !== this.currentLine || move !== this.halfCount) {
-      if (this.lines[line][0] !== undefined) this.currentLine = line;
-      if (move >= 0 && move < this.lines[line].length) this.halfCount = move;
-      return this.setPositionByFEN(this.lines[this.currentLine][this.halfCount].fen);
-    }
-    return false;
-  }
-
-  /**
-   * Go to next move in the line.
-   * @return {boolean}
-   */
-  gotoNext() {
-    return this.goto(this.currentLine, this.halfCount + 1);
-  }
-
-  /**
-   * Go to prev move in the line.
-   * @return {boolean}
-   */
-  gotoPrev() {
-    return this.goto(this.currentLine, this.halfCount - 1);
-  }
-
-  /**
-   * Go to start position.
-   * @return {boolean}
-   */
-  gotoStart() {
-    return this.goto(this.currentLine, 0);
-  }
-
-  /**
-   * Go to last move in the line.
-   * @return {boolean}
-   */
-  gotoEnd() {
-    return this.goto(this.currentLine, this.lines[this.currentLine].length - 1);
-  }
-
-  /**
    * Return full FEN.
    * @returns {string}
    */
@@ -898,21 +772,6 @@ export default class JBoard {
       this.board, this.turn, this.castling, this.enPassant,
       this.countFiftyMove, this.fullCount,
     );
-  }
-
-  /**
-   * Set up pieces by array.
-   * @param {Array} pieceSet
-   */
-  setPiecesByArray(pieceSet) {
-    this.turn = 1;
-    this.fullCount = 1;
-    this.countFiftyMove = 0;
-    this.enPassant = null;
-    this.castling = { 1: 3, 2: 3 };
-    pieceSet.forEach((item) => {
-      this.setPiece(item, item.piece.type, item.piece.color);
-    });
   }
 
   /**

@@ -1,4 +1,6 @@
-import { isSquare } from './utils';
+import { isSquare, getAttackedSquares } from './utils';
+import { splitFEN, parseFENBoard } from './fen';
+import JBoard from '../../lib/jboard/jboard';
 
 /**
  * Return algebraic notation of square.
@@ -34,39 +36,69 @@ export function UCIToSquare(move) {
 /**
  * Helper for functions UCIToSAN and UCIToFAN.
  * Return string of move in figurine algebraic notation.
- * @param {Array.<Array>} board
+ * @param {string} FEN
  * @param {string} move
  * @param {Array.<string>} pieces
  * @return {string}
  */
-export function UCIToAN(board, move, pieces) {
+export function UCIToAN(FEN, move, pieces) {
+  const { ranks } = splitFEN(FEN);
+  const board = parseFENBoard(ranks);
+  let start = '';
   const stop = move.slice(2, 4);
+  const startSquare = UCIToSquare(move.slice(0, 2));
   const stopSquare = UCIToSquare(move.slice(2, 4));
-  const pieceNum = board[stopSquare.file][stopSquare.rank].piece.type;
-  const piece = pieces[pieceNum].toUpperCase();
-  return `${piece}${stop}`;
+  board[stopSquare.file][stopSquare.rank].piece
+    = board[startSquare.file][startSquare.rank].piece;
+  board[startSquare.file][startSquare.rank].piece = { type: null, color: null };
+  const { type, color } = board[stopSquare.file][stopSquare.rank].piece;
+
+  if (type !== 0) {
+    const checkingColor = color === 1 ? 2 : 1;
+    let checkingSquares = getAttackedSquares(
+      board, type, checkingColor,
+      stopSquare.file, stopSquare.rank,
+    );
+    checkingSquares = checkingSquares.filter(item => (
+      board[item.file][item.rank].piece.type === type
+    ));
+
+    checkingSquares = checkingSquares.filter(item => (
+      JBoard.isNoDiscoveredCheck(FEN, item, stopSquare)
+    ));
+
+    if (checkingSquares.length > 0) {
+      if (checkingSquares.every(item => startSquare.file !== item.file)) {
+        start = move.slice(0, 1);
+      } else if (checkingSquares.every(item => startSquare.rank !== item.rank)) {
+        start = move.slice(1, 2);
+      } else start = move.slice(0, 2);
+    }
+  }
+  const piece = pieces[type].toUpperCase();
+  return `${piece}${start}${stop}`;
 }
 
 /**
  * Return string of move in standart algebraic notation.
- * @param {Array.<Array>} board
+ * @param {string} FEN
  * @param {string} move
  * @return {string}
  */
-export function UCIToSAN(board, move) {
+export function UCIToSAN(FEN, move) {
   const pieces = ['', 'r', 'n', 'b', 'q', 'k'];
-  return UCIToAN(board, move, pieces);
+  return UCIToAN(FEN, move, pieces);
 }
 
 /**
  * Return string of move in figurine algebraic notation.
- * @param {Array.<Array>} board
+ * @param {string} FEN
  * @param {string} move
  * @return {string}
  */
-export function UCIToFAN(board, move) {
+export function UCIToFAN(FEN, move) {
   const pieces = ['', '\u265C', '\u265E', '\u265D', '\u265B', '\u265A'];
-  return UCIToAN(board, move, pieces);
+  return UCIToAN(FEN, move, pieces);
 }
 
 /**

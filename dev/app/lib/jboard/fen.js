@@ -65,25 +65,37 @@ export function parseFENRank(FEN) {
  * @param {string} ranks
  * @returns {Array}
  */
-export function parseFENRanks(ranks) {
+export function parseFENBoard(ranks) {
   let file;
   let rank;
   let rankSet;
   const result = [];
+  for (let i = 0; i < 8; i += 1) {
+    result[i] = [];
+    for (let j = 0; j < 8; j += 1) {
+      result[i][j] = {
+        selected: false,
+        marked: false,
+        id: `${i}.${j}`,
+      };
+    }
+  }
 
+  let countSquare = 1;
   for (rank = 0; rank < 8; rank += 1) {
+    countSquare += 1;
     rankSet = parseFENRank(ranks[rank]);
     if (rankSet === null) return null;
     if (rankSet.length !== 8) return null;
     for (file = 0; file < 8; file += 1) {
-      result.push({
-        file,
-        rank,
+      countSquare += 1;
+      result[file][rank] = {
+        color: countSquare % 2 ? 2 : 1,
         piece: {
           type: rankSet[file].type,
           color: rankSet[file].color,
         },
-      });
+      };
     }
   }
 
