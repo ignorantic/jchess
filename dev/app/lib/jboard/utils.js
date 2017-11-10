@@ -1,3 +1,5 @@
+import { parseFEN } from './fen';
+
 /**
  * Check file and rank of square.
  * @param {number|Object.<string, number>} a
@@ -190,4 +192,42 @@ export function isSquareAttacked(board, color, file, rank) {
   }
 
   return isSquareAttackedByPawn() || isSquareAttackedByPiece();
+}
+
+/**
+ * Return square on which the king stand.
+ * @param {Array} board
+ * @param {number} kingColor - Color of king.
+ * @returns {?Object}
+ */
+export function getKing(board, kingColor) {
+  for (let file = 0; file < 8; file += 1) {
+    for (let rank = 0; rank < 8; rank += 1) {
+      const { type, color } = board[file][rank].piece;
+      if (type === 5 && color === kingColor) {
+        return {
+          file,
+          rank,
+        };
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Is there check on the board?
+ * @param {string} FEN
+ * @returns {boolean}
+ */
+export function isInCheck(FEN) {
+  const { board, turn: color } = parseFEN(FEN);
+  const king = getKing(board, color);
+  if (king) {
+    const { file, rank } = king;
+    return isSquareAttacked(board, color, file, rank);
+  }
+
+  return false;
 }

@@ -677,7 +677,7 @@ export default class JBoard {
     const color = clr || this.turn;
     const king = this.getKing(color);
     if (king) {
-      const { file, rank } = this.getKing(color);
+      const { file, rank } = king;
       return isSquareAttacked(this.board, color, file, rank);
     }
 

@@ -75,6 +75,13 @@ describe('Notation', () => {
       expect(UCIToSAN(fen, 'e7g6')).to.be.equal('Neg6');
     });
 
+    it('should return "Qxa3"', () => {
+      const fen = '5n1k/2b1n1pp/p7/5p2/1Pp1p3/P3P1P1/1q3P1P/3R1RK1 b - - 0 1';
+      jboard.setPositionByFEN(fen);
+      jboard.moveUCI('b2a3');
+      expect(UCIToSAN(fen, 'b2a3')).to.be.equal('Qxa3');
+    });
+
     it('should return "Nfg6"', () => {
       const fen = '5n1k/2b1n1pp/p7/5p2/1Pp1p3/P3P1P1/1q3P1P/3R1RK1 b - - 0 1';
       jboard.setPositionByFEN(fen);
@@ -117,11 +124,39 @@ describe('Notation', () => {
       expect(UCIToSAN(fen, 'd6d2')).to.be.equal('R6d2');
     });
 
+    it('should return "Ra7"', () => {
+      const fen = '5nk1/7p/5Pp1/8/8/4qpP1/R6P/R6K w - - 0 1';
+      jboard.setPositionByFEN(fen);
+      jboard.moveUCI('a2a7');
+      expect(UCIToSAN(fen, 'a2a7')).to.be.equal('Ra7');
+    });
+
+    it('should return "R7a2"', () => {
+      const fen = '5nk1/R6p/5Pp1/8/8/4qpP1/7P/R6K w - - 0 1';
+      jboard.setPositionByFEN(fen);
+      jboard.moveUCI('a7a2');
+      expect(UCIToSAN(fen, 'a7a2')).to.be.equal('R7a2');
+    });
+
     it('should return "Nc3d5"', () => {
       const fen = '5n1k/2N1N1pp/p2R4/5p2/1Pp1p3/P1N1N1P1/1q3P1P/3R2K1 w - - 0 1';
       jboard.setPositionByFEN(fen);
       jboard.moveUCI('c3d5');
       expect(UCIToSAN(fen, 'c3d5')).to.be.equal('Nc3d5');
+    });
+
+    it('should return "bxa5"', () => {
+      const fen = '5n1k/6pp/p2R4/p1p2p2/1P2p1P1/P4PP1/1q3P1P/3R2K1 w - - 0 1';
+      jboard.setPositionByFEN(fen);
+      jboard.moveUCI('b4a5');
+      expect(UCIToSAN(fen, 'b4a5')).to.be.equal('bxa5');
+    });
+
+    it('should return "g5"', () => {
+      const fen = '5n1k/6pp/p2R4/p1p2p2/1P2p1P1/P4PP1/1q3P1P/3R2K1 w - - 0 1';
+      jboard.setPositionByFEN(fen);
+      jboard.moveUCI('g4g5');
+      expect(UCIToSAN(fen, 'g4g5')).to.be.equal('g5');
     });
   });
 });

@@ -1,5 +1,5 @@
 import { isSquare, getAttackedSquares } from './utils';
-import { splitFEN, parseFENBoard } from './fen';
+import { parseFEN } from './fen';
 import JBoard from '../../lib/jboard/jboard';
 
 /**
@@ -42,16 +42,22 @@ export function UCIToSquare(move) {
  * @return {string}
  */
 export function UCIToAN(FEN, move, pieces) {
-  const { ranks } = splitFEN(FEN);
-  const board = parseFENBoard(ranks);
-  let start = '';
-  const stop = move.slice(2, 4);
+  const { board } = parseFEN(FEN);
   const startSquare = UCIToSquare(move.slice(0, 2));
   const stopSquare = UCIToSquare(move.slice(2, 4));
-  board[stopSquare.file][stopSquare.rank].piece
-    = board[startSquare.file][startSquare.rank].piece;
-  board[startSquare.file][startSquare.rank].piece = { type: null, color: null };
-  const { type, color } = board[stopSquare.file][stopSquare.rank].piece;
+
+  function filterValidSquare(squares, type) {
+    return squares.filter(item => (
+      !(item.file === startSquare.file && item.rank === startSquare.rank)
+      && board[item.file][item.rank].piece.type === type
+      && JBoard.isNoDiscoveredCheck(FEN, item, stopSquare)
+    ));
+  }
+
+  let start = '';
+  const stop = move.slice(2, 4);
+  const { type, color } = board[startSquare.file][startSquare.rank].piece;
+  const isCapture = board[stopSquare.file][stopSquare.rank].piece.type !== null;
 
   if (type !== 0) {
     const checkingColor = color === 1 ? 2 : 1;
@@ -59,13 +65,8 @@ export function UCIToAN(FEN, move, pieces) {
       board, type, checkingColor,
       stopSquare.file, stopSquare.rank,
     );
-    checkingSquares = checkingSquares.filter(item => (
-      board[item.file][item.rank].piece.type === type
-    ));
 
-    checkingSquares = checkingSquares.filter(item => (
-      JBoard.isNoDiscoveredCheck(FEN, item, stopSquare)
-    ));
+    checkingSquares = filterValidSquare(checkingSquares, type);
 
     if (checkingSquares.length > 0) {
       if (checkingSquares.every(item => startSquare.file !== item.file)) {
@@ -74,9 +75,13 @@ export function UCIToAN(FEN, move, pieces) {
         start = move.slice(1, 2);
       } else start = move.slice(0, 2);
     }
+  } else if (isCapture) {
+    start = move.slice(0, 1);
   }
+  const middle = isCapture ? 'x' : '';
+
   const piece = pieces[type].toUpperCase();
-  return `${piece}${start}${stop}`;
+  return `${piece}${start}${middle}${stop}`;
 }
 
 /**

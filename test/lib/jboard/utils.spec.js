@@ -3,7 +3,7 @@ import { describe, it, before } from 'mocha';
 import { expect } from 'chai';
 import JBoard from '../../../dev/app/lib/jboard/jboard';
 import {
-  isSquare, isEnPassant, getAttackedSquares, isSquareAttacked,
+  isSquare, isEnPassant, getAttackedSquares, isSquareAttacked, isInCheck,
 } from '../../../dev/app/lib/jboard/utils';
 
 describe('Utils', () => {
@@ -121,6 +121,28 @@ describe('Utils', () => {
     it('return true if square isn\'t attacked', () => {
       expect(isSquareAttacked(jboard.board, 1, 6, 2)).to.be.false;
       expect(isSquareAttacked(jboard.board, 1, 1, 0)).to.be.false;
+    });
+  });
+
+  describe('isInCheck', () => {
+    it('white kings is not in check', () => {
+      const fen = 'r3k2r/pp3pp1/b2P4/b1pP1n1B/3q1P1p/2n2NP1/PP2P2P/RNBQK2R b KQkq - 0 1';
+      expect(isInCheck(fen)).to.be.false;
+    });
+
+    it('white king in check by queen', () => {
+      const fen = 'r3k2r/pp3pp1/b2P4/b1pP1n1B/5P1p/2n2NP1/PP2P2P/RNBqK2R w KQkq - 0 1';
+      expect(isInCheck(fen)).to.be.true;
+    });
+
+    it('white king in check by bishop', () => {
+      const fen = 'r3k2r/pp3pp1/b2P4/b1pP1n1B/3q1P1p/5NP1/PP2P2P/RNBnK2R w KQkq - 0 1';
+      expect(isInCheck(fen)).to.be.true;
+    });
+
+    it('black king in check by pawn', () => {
+      const fen = 'r3k2r/pp1P1pp1/b7/b1pP1n1B/3q1P1p/2n2NP1/PP2P2P/RNB1K2R b KQkq - 0 1';
+      expect(isInCheck(fen)).to.be.true;
     });
   });
 });

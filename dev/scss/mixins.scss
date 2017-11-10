@@ -1,7 +1,7 @@
 @import "vars";
 
 @mixin header {
-  font-family: $ff;
+  font-family: $ff-base;
   font-weight: 500;
   color: $clr-head;
   font-size: 24px;
@@ -18,7 +18,7 @@
 }
 
 @mixin text {
-  font-family: $ff;
+  font-family: $ff-base;
   font-size: 0.8rem;
   color: $clr-text;
   line-height: 1.5;

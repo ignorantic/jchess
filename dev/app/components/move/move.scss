@@ -7,11 +7,12 @@ body {
 
 .move {
   @include text;
+  font-family: $ff-mono;
   position: relative;
   background: transparent;
   border: 0;
   text-align: left;
-  font-size: 1.1rem;
+  font-size: 1rem;
   outline: none;
   cursor: pointer;
   padding: 0 5px 0 0;
@@ -33,7 +34,7 @@ body {
   &_white {
     &::before {
       counter-increment: moves;
-      content: counter(moves)". ";
+      content: counter(moves)".";
       color: $clr-text-alt;
       font-size: 1rem;
       text-shadow: none;
