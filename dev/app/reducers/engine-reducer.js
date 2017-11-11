@@ -4,7 +4,7 @@ const initialState = {
   status: 'ready',
   play: {
     1: false,
-    2: true,
+    2: false,
   },
 };
 

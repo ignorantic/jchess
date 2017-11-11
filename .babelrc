@@ -9,6 +9,7 @@
         "array-includes",
         "react-hot-loader/babel",
         "transform-class-properties",
+        "transform-es2015-parameters",
         "transform-object-assign",
         "transform-object-rest-spread"
       ]
@@ -21,6 +22,7 @@
       "plugins": [
         "array-includes",
         "transform-class-properties",
+        "transform-es2015-parameters",
         "transform-object-assign",
         "transform-object-rest-spread"
       ]
@@ -33,6 +35,7 @@
       "plugins": [
         "array-includes",
         "transform-class-properties",
+        "transform-es2015-parameters",
         "transform-object-assign",
         "transform-object-rest-spread"
       ]

@@ -1,6 +1,6 @@
-import { UCIToSquare, mapPieceType } from './notation';
+import { UCIToSquare, toUCI } from './notation';
 import { parseFEN, generateFEN } from './fen';
-import { isFoe, isFoesPawn, isEnPassant, isPawnPromotion } from './utils';
+import { isFoe, isFoesPawn, isEnPassant, isPawnPromotion, isCastling, isInCheck } from './utils';
 
 /**
  * Check possibility of castling move for next moves.
@@ -151,20 +151,24 @@ function handleEnPassant(position, start, stop) {
  * @param {{file: number, rank: number}} stop - Stop square of move.
  * @param {number} [promType] - Type of piece for pawn promotion.
  */
-function makeMove(position, type, color, start, stop, promType) {
+function makeMove(position, type, color, start, stop, promType = 4) {
   const newCountFiftyMove = checkFiftyMove(position, type, color, stop);
   const newPosition = handleEnPassant(position, start, stop);
   const { newEnPassant } = newPosition;
   let { newBoard } = newPosition;
+  let lastMove;
   // check castling
-  if (type === 5 && Math.abs(start.file - stop.file) === 2) {
+  if (isCastling(type, start.file, stop.file)) {
     newBoard = doCastling(newBoard, stop);
+    lastMove = toUCI(start, stop);
   } else {
     // check pawn promotion
     if (isPawnPromotion(type, color, stop.rank)) {
       newBoard[stop.file][stop.rank].piece = { type: promType, color };
+      lastMove = toUCI(start, stop, promType);
     } else {
       newBoard[stop.file][stop.rank].piece = { type, color };
+      lastMove = toUCI(start, stop);
     }
     newBoard[start.file][start.rank].piece = { type: null, color: null };
   }
@@ -173,6 +177,7 @@ function makeMove(position, type, color, start, stop, promType) {
     newBoard,
     newCountFiftyMove,
     newEnPassant,
+    lastMove,
   };
 }
 
@@ -189,7 +194,7 @@ function handleMove(position, start, stop, promType) {
   const { type, color } = board[start.file][start.rank].piece;
 
   const {
-    newBoard, newCountFiftyMove, newEnPassant,
+    newBoard, newCountFiftyMove, newEnPassant, lastMove,
   } = makeMove(position, type, color, start, stop, promType);
 
   const { newCastling, newTurn, newFullCount } = checkAfterMove(position, type, color, start);
@@ -200,6 +205,7 @@ function handleMove(position, start, stop, promType) {
     newCastling,
     newTurn,
     newFullCount,
+    lastMove,
   };
 }
 
@@ -207,20 +213,14 @@ function handleMove(position, start, stop, promType) {
  * Do move via algebraic notation.
  * @param {string} FEN
  * @param {string} UCIMove
- * @return {?string}
+ * @return {?Object}
  */
 export default function move(FEN, UCIMove) {
   if (typeof FEN !== 'string' || typeof UCIMove !== 'string') return null;
   if (UCIMove.length < 4 || UCIMove.length > 5) return null;
   const start = UCIToSquare(UCIMove.slice(0, 2));
   const stop = UCIToSquare(UCIMove.slice(2, 4));
-  const piece = UCIMove[4];
-  let promType;
-  if (piece === undefined) promType = false;
-  else {
-    promType = mapPieceType(piece);
-    if (!promType || promType > 4) return null;
-  }
+  const promType = UCIMove[4];
 
   if (start === null || stop === null) return null;
   const position = parseFEN(FEN);
@@ -231,11 +231,13 @@ export default function move(FEN, UCIMove) {
     newEnPassant,
     newCountFiftyMove,
     newFullCount,
+    lastMove,
   } = handleMove(position, start, stop, promType);
   const newFEN = generateFEN(
     newBoard, newTurn, newCastling, newEnPassant,
     newCountFiftyMove, newFullCount,
   );
+  const check = isInCheck(newFEN, newTurn);
   return {
     board: newBoard,
     turn: newTurn,
@@ -244,5 +246,7 @@ export default function move(FEN, UCIMove) {
     countFiftyMove: newCountFiftyMove,
     fullCount: newFullCount,
     FEN: newFEN,
+    lastMove,
+    check,
   };
 }

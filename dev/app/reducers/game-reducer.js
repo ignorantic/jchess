@@ -1,17 +1,20 @@
 import ACTIONS from '../consts';
-import boardModel from '../board-model';
+
+const initialFEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 
 const initialState = {
   board: [[]],
-  fen: boardModel.initialFEN,
-  prevFen: boardModel.initialFEN,
+  FEN: initialFEN,
+  prevFEN: initialFEN,
+  initialFEN,
   turn: 1,
   check: false,
   checkmate: false,
   halfCount: 0,
   currentLine: 0,
-  lines: [[{ fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1' }]],
+  lines: [[{ FEN: initialFEN }]],
   lastMove: '',
+  selected: null,
 };
 
 const game = (state = initialState, action) => {

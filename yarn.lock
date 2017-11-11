@@ -1347,7 +1347,7 @@ cheerio@^1.0.0-rc.2:
   version "1.0.0-rc.2"
   resolved "https://registry.yarnpkg.com/cheerio/-/cheerio-1.0.0-rc.2.tgz#4b9f53a81b27e4d5dac31c0ffd0cfa03cc6830db"
   dependencies:
-    css-select "~1.2.0"
+    css-selectSquare "~1.2.0"
     dom-serializer "~0.1.0"
     entities "~1.1.1"
     htmlparser2 "^3.9.1"
@@ -1784,9 +1784,9 @@ css-loader@^0.28.4:
     postcss-value-parser "^3.3.0"
     source-list-map "^2.0.0"
 
-css-select@^1.1.0, css-select@~1.2.0:
+css-selectSquare@^1.1.0, css-selectSquare@~1.2.0:
   version "1.2.0"
-  resolved "https://registry.yarnpkg.com/css-select/-/css-select-1.2.0.tgz#2b3a110539c5355f1cd8d314623e870b121ec858"
+  resolved "https://registry.yarnpkg.com/css-selectSquare/-/css-selectSquare-1.2.0.tgz#2b3a110539c5355f1cd8d314623e870b121ec858"
   dependencies:
     boolbase "~1.0.0"
     css-what "2.1"
@@ -6785,7 +6785,7 @@ renderkid@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/renderkid/-/renderkid-2.0.1.tgz#898cabfc8bede4b7b91135a3ffd323e58c0db319"
   dependencies:
-    css-select "^1.1.0"
+    css-selectSquare "^1.1.0"
     dom-converter "~0.1"
     htmlparser2 "~3.3.0"
     strip-ansi "^3.0.0"
@@ -7101,9 +7101,9 @@ seek-bzip@^1.0.3:
   dependencies:
     commander "~2.8.1"
 
-select-hose@^2.0.0:
+selectSquare-hose@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/select-hose/-/select-hose-2.0.0.tgz#625d8658f865af43ec962bfc376a37359a4994ca"
+  resolved "https://registry.yarnpkg.com/selectSquare-hose/-/selectSquare-hose-2.0.0.tgz#625d8658f865af43ec962bfc376a37359a4994ca"
 
 selfsigned@^1.9.1:
   version "1.10.1"
@@ -7398,7 +7398,7 @@ spdy@^3.4.1:
     handle-thing "^1.2.5"
     http-deceiver "^1.2.7"
     safe-buffer "^5.0.1"
-    select-hose "^2.0.0"
+    selectSquare-hose "^2.0.0"
     spdy-transport "^2.0.18"
 
 sprintf-js@~1.0.2:

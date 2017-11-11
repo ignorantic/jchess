@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Board from '../../components/board/board';
 import Turn from '../../components/turn/turn';
 import Position from '../../components/position/position';
-import { select, move, releasePiece, changeFocus, switchTurn } from '../../actions/actions';
+import { selectSquare, moveToSquare, releasePiece, changeFocus, switchTurn } from '../../actions/actions';
 import { rect, convCoord } from '../../lib/helpers';
 import './board-container.scss';
 
@@ -196,8 +196,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onMove: (file, rank) => dispatch(move(file, rank)),
-  onSelect: (file, rank, mouse) => dispatch(select(file, rank, mouse)),
+  onMove: (file, rank) => dispatch(moveToSquare(file, rank)),
+  onSelect: (file, rank, mouse) => dispatch(selectSquare(file, rank, mouse)),
   onRelease: (file, rank) => dispatch(releasePiece(file, rank)),
   onFocus: (file, rank) => dispatch(changeFocus(file, rank)),
   onSwitchTurn: () => dispatch(switchTurn()),

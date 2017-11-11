@@ -27,11 +27,11 @@ class FEN extends React.PureComponent {
   constructor(props) {
     super(props);
     FEN.propTypes = {
-      fen: PropTypes.string.isRequired,
+      FEN: PropTypes.string.isRequired,
       onInput: PropTypes.func.isRequired,
     };
     this.state = {
-      value: this.props.fen,
+      value: this.props.FEN,
       caretPos: 0,
     };
     this.handleClickOnButton = this.handleClickOnButton.bind(this);
@@ -41,7 +41,7 @@ class FEN extends React.PureComponent {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      value: nextProps.fen,
+      value: nextProps.FEN,
     });
   }
 
@@ -53,7 +53,7 @@ class FEN extends React.PureComponent {
     if (event.keyCode === 13) {
       this.props.onInput(this.state.value);
       this.setState({
-        value: this.props.fen,
+        value: this.props.FEN,
       });
     }
   }
@@ -61,7 +61,7 @@ class FEN extends React.PureComponent {
   handleClickOnButton() {
     this.props.onInput(this.state.value);
     this.setState({
-      value: this.props.fen,
+      value: this.props.FEN,
     });
   }
 
@@ -98,7 +98,7 @@ class FEN extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  fen: state.game.fen,
+  FEN: state.game.FEN,
 });
 
 const mapDispatchToProps = dispatch => ({

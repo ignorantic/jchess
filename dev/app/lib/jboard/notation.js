@@ -1,6 +1,5 @@
-import { isSquare, getAttackedSquares } from './utils';
+import { isSquare, getAttackedSquares, isCastling, willBeInCheck } from './utils';
 import { parseFEN } from './fen';
-import JBoard from '../../lib/jboard/jboard';
 
 /**
  * Return algebraic notation of square.
@@ -42,7 +41,7 @@ export function UCIToSquare(move) {
  * @return {string}
  */
 export function UCIToAN(FEN, move, pieces) {
-  const { board } = parseFEN(FEN);
+  const { board, turn } = parseFEN(FEN);
   const startSquare = UCIToSquare(move.slice(0, 2));
   const stopSquare = UCIToSquare(move.slice(2, 4));
 
@@ -50,13 +49,18 @@ export function UCIToAN(FEN, move, pieces) {
     return squares.filter(item => (
       !(item.file === startSquare.file && item.rank === startSquare.rank)
       && board[item.file][item.rank].piece.type === type
-      && JBoard.isNoDiscoveredCheck(FEN, item, stopSquare)
+      && !willBeInCheck(FEN, turn, item, stopSquare)
     ));
   }
+
 
   let start = '';
   const stop = move.slice(2, 4);
   const { type, color } = board[startSquare.file][startSquare.rank].piece;
+  if (isCastling(type, startSquare.file, stopSquare.file)) {
+    if (stopSquare.file === 2) return 'O-O-O';
+    if (stopSquare.file === 6) return 'O-O';
+  }
   const isCapture = board[stopSquare.file][stopSquare.rank].piece.type !== null;
 
   if (type !== 0) {
@@ -78,10 +82,12 @@ export function UCIToAN(FEN, move, pieces) {
   } else if (isCapture) {
     start = move.slice(0, 1);
   }
-  const middle = isCapture ? 'x' : '';
 
+  const middle = isCapture ? 'x' : '';
   const piece = pieces[type].toUpperCase();
-  return `${piece}${start}${middle}${stop}`;
+  const colorInCheck = turn === 1 ? 2 : 1;
+  const post = willBeInCheck(FEN, colorInCheck, startSquare, stopSquare) ? '+' : '';
+  return `${piece}${start}${middle}${stop}${post}`;
 }
 
 /**

@@ -51,7 +51,7 @@ export default class Move extends React.Component {
         onClick={() => onGoTo(currentLine, index)}
       >
         <span>
-          {item.fan}
+          {item.FAN}
         </span>
       </button>
     );
