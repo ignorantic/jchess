@@ -1,4 +1,4 @@
-import { isSquare, getAttackedSquares, isCastling, willBeInCheck } from './utils';
+import { isSquare, getAttackedSquares, isCastling, willBeInCheck, willBeCheckmate } from './utils';
 import { parseFEN } from './fen';
 
 /**
@@ -86,7 +86,10 @@ export function UCIToAN(FEN, move, pieces) {
   const middle = isCapture ? 'x' : '';
   const piece = pieces[type].toUpperCase();
   const colorInCheck = turn === 1 ? 2 : 1;
-  const post = willBeInCheck(FEN, colorInCheck, startSquare, stopSquare) ? '+' : '';
+  let post = '';
+  if (willBeInCheck(FEN, colorInCheck, startSquare, stopSquare)) {
+    post = willBeCheckmate(FEN, startSquare, stopSquare) ? '#' : '+';
+  }
   return `${piece}${start}${middle}${stop}${post}`;
 }
 

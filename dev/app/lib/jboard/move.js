@@ -1,6 +1,8 @@
 import { UCIToSquare, toUCI } from './notation';
 import { parseFEN, generateFEN } from './fen';
-import { isFoe, isFoesPawn, isEnPassant, isPawnPromotion, isCastling, isInCheck } from './utils';
+import {
+  isFoe, isFoesPawn, isEnPassant, isPawnPromotion, isCastling,
+} from './utils';
 
 /**
  * Check possibility of castling move for next moves.
@@ -237,7 +239,6 @@ export default function move(FEN, UCIMove) {
     newBoard, newTurn, newCastling, newEnPassant,
     newCountFiftyMove, newFullCount,
   );
-  const check = isInCheck(newFEN, newTurn);
   return {
     board: newBoard,
     turn: newTurn,
@@ -247,6 +248,5 @@ export default function move(FEN, UCIMove) {
     fullCount: newFullCount,
     FEN: newFEN,
     lastMove,
-    check,
   };
 }

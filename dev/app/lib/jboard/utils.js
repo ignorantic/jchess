@@ -467,3 +467,15 @@ export function isCheckmate(FEN) {
   const allMoves = getAllMoves(position);
   return !allMoves.length;
 }
+
+/**
+ * Check utils there discovered check on board.
+ * @param {string} FEN
+ * @param {{file: number, rank: number}} start - Start square of move.
+ * @param {{file: number, rank: number}} stop - Stop square of move.
+ * @returns {boolean}
+ */
+export function willBeCheckmate(FEN, start, stop) {
+  const { FEN: newFEN } = move(FEN, toUCI(start, stop));
+  return isCheckmate(newFEN);
+}

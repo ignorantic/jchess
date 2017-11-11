@@ -1,5 +1,5 @@
 import { squareToUCI, mapPiece } from './notation';
-import { isSquare, isInCheck } from './utils';
+import { isSquare } from './utils';
 
 /**
  * Splite FEN string.
@@ -204,7 +204,7 @@ export function parseFEN(FEN) {
   const countFiftyMove = +tail[3];
   const fullCount = +tail[4];
   const halfCount = ((fullCount * 2) + turn) - 3;
-  const position = {
+  return {
     board,
     turn,
     castling,
@@ -212,11 +212,6 @@ export function parseFEN(FEN) {
     countFiftyMove,
     fullCount,
     halfCount,
-  };
-  const check = isInCheck(position, turn);
-  return {
-    ...position,
-    check,
     FEN,
   };
 }

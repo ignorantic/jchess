@@ -6,18 +6,19 @@ import { isSquare, getMoves } from './utils';
  * @param {Object} position
  * @param {number} file - The file value.
  * @param {number} rank - The rank value.
- * @return {Array}
+ * @return {Object}
  */
 function markMoves(position, file, rank) {
   const { board } = position;
   if (board[file][rank].piece.type === null) return null;
   const moves = getMoves(position, file, rank);
   if (!moves) return null;
-  const newBord = [...board];
+  const isMarked = moves.length > 0;
+  const markedBoard = [...board];
   moves.forEach((item) => {
-    newBord[item.file][item.rank].marked = true;
+    markedBoard[item.file][item.rank].marked = true;
   });
-  return newBord;
+  return { markedBoard, isMarked };
 }
 
 /**
@@ -33,12 +34,19 @@ export default function select(FEN, file, rank) {
   const position = parseFEN(FEN);
   const { board, turn } = position;
   let newBoard;
+  let isMarked;
+  let markedPosition = null;
   if (board[file][rank].piece.color === turn) {
-    const markedBoard = markMoves(position, file, rank);
-    newBoard = markedBoard || board;
-  } else {
+    markedPosition = markMoves(position, file, rank);
+  }
+
+  if (markedPosition === null) {
     newBoard = board;
+  } else {
+    const { markedBoard, isMarked: marked } = markedPosition;
+    newBoard = markedBoard;
+    isMarked = marked;
   }
   newBoard[file][rank].selected = true;
-  return { board: newBoard, selected: { file, rank } };
+  return { board: newBoard, selected: { file, rank }, isMarked };
 }

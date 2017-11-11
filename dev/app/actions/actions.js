@@ -2,7 +2,7 @@ import ACTIONS from '../consts';
 import getMoveFromServer from '../lib/api';
 import { UCIToSquare, UCIToSAN, UCIToFAN, squareToUCI } from '../lib/jboard/notation';
 import { parseFEN } from '../lib/jboard/fen';
-import { isFriend } from '../lib/jboard/utils';
+import { isCheckmate, isInCheck } from '../lib/jboard/utils';
 import select from '../lib/jboard/select';
 import move from '../lib/jboard/move';
 
@@ -18,6 +18,8 @@ export function setUpPosition() {
       lastMove: '',
       halfCount: 0,
       lines: [[{ FEN: initialFEN }]],
+      check: false,
+      checkmate: false,
     };
     dispatch({
       type: ACTIONS.UPDATE_POSITION,
@@ -37,6 +39,8 @@ export function resetPosition() {
       lastMove: '',
       halfCount: 0,
       lines: [[{ FEN: emptyFEN }]],
+      check: false,
+      checkmate: false,
     };
     dispatch({
       type: ACTIONS.UPDATE_POSITION,
@@ -50,11 +54,16 @@ export function goto(line, moveNum) {
     const { game: { lines } } = getState();
     const { FEN } = lines[line][moveNum];
     const newPosition = parseFEN(FEN);
+    const { turn } = newPosition;
+    const check = isInCheck(FEN, turn);
+    const checkmate = isCheckmate(FEN);
     const payload = {
       ...newPosition,
       FEN,
       currentLine: line,
       halfCount: moveNum,
+      check,
+      checkmate,
     };
     dispatch({
       type: ACTIONS.GOTO,
@@ -69,10 +78,15 @@ export function gotoPrev() {
     if (lines[currentLine][halfCount - 1] === undefined) return;
     const { FEN } = lines[currentLine][halfCount - 1];
     const newPosition = parseFEN(FEN);
+    const { turn } = newPosition;
+    const check = isInCheck(FEN, turn);
+    const checkmate = isCheckmate(FEN);
     const payload = {
       ...newPosition,
       FEN,
       halfCount: halfCount - 1,
+      check,
+      checkmate,
     };
     dispatch({
       type: ACTIONS.GOTO,
@@ -87,10 +101,15 @@ export function gotoNext() {
     if (lines[currentLine][halfCount + 1] === undefined) return;
     const { FEN } = lines[currentLine][halfCount + 1];
     const newPosition = parseFEN(FEN);
+    const { turn } = newPosition;
+    const check = isInCheck(FEN, turn);
+    const checkmate = isCheckmate(FEN);
     const payload = {
       ...newPosition,
       FEN,
       halfCount: halfCount + 1,
+      check,
+      checkmate,
     };
     dispatch({
       type: ACTIONS.GOTO,
@@ -104,10 +123,15 @@ export function gotoStart() {
     const { game: { currentLine, lines } } = getState();
     const { FEN } = lines[currentLine][0];
     const newPosition = parseFEN(FEN);
+    const { turn } = newPosition;
+    const check = isInCheck(FEN, turn);
+    const checkmate = isCheckmate(FEN);
     const payload = {
       ...newPosition,
       FEN,
       halfCount: 0,
+      check,
+      checkmate,
     };
     dispatch({
       type: ACTIONS.GOTO,
@@ -122,10 +146,15 @@ export function gotoEnd() {
     const { length } = lines[currentLine];
     const { FEN } = lines[currentLine][length - 1];
     const newPosition = parseFEN(FEN);
+    const { turn } = newPosition;
+    const check = isInCheck(FEN, turn);
+    const checkmate = isCheckmate(FEN);
     const payload = {
       ...newPosition,
       FEN,
       halfCount: length - 1,
+      check,
+      checkmate,
     };
     dispatch({
       type: ACTIONS.GOTO,
@@ -136,6 +165,9 @@ export function gotoEnd() {
 
 export function changeFEN(newFEN) {
   const newPosition = parseFEN(newFEN);
+  const { turn } = newPosition;
+  const check = isInCheck(newFEN, turn);
+  const checkmate = isCheckmate(newFEN);
   const payload = {
     ...newPosition,
     prevFEN: newFEN,
@@ -143,6 +175,8 @@ export function changeFEN(newFEN) {
     lastMove: '',
     halfCount: 0,
     lines: [[{ FEN: newFEN }]],
+    check,
+    checkmate,
   };
   return {
     type: ACTIONS.CHANGE_FEN,
@@ -161,14 +195,10 @@ export function changeFocus(file, rank) {
 export function selectSquare(file, rank, mouse) {
   return (dispatch, getState) => {
     let uiPayload = null;
-    const { game: { FEN, turn } } = getState();
+    const { game: { FEN } } = getState();
     const newPosition = select(FEN, file, rank);
-    const { board } = newPosition;
-    if (
-      mouse
-      // && boardModel.getMoves(file, rank).length > 0
-      && isFriend(board, turn, file, rank)
-    ) uiPayload = [file, rank];
+    const { isMarked } = newPosition;
+    if (mouse && isMarked) uiPayload = [file, rank];
     const gamePayload = newPosition;
     dispatch({
       type: ACTIONS.SELECT,
@@ -206,13 +236,17 @@ export function moveToSquare(file, rank) {
       const start = squareToUCI(selected.file, selected.rank);
       const UCIMove = `${start}${stop}`;
       const newPosition = move(FEN, UCIMove);
-      const { lastMove, FEN: newFEN } = newPosition;
+      const { turn, lastMove, FEN: newFEN } = newPosition;
       const newLines = writeMove(lines, currentLine, halfCount, lastMove, newFEN);
+      const check = isInCheck(newFEN, turn);
+      const checkmate = isCheckmate(newFEN);
       const payload = {
         ...newPosition,
         prevFEN: FEN,
         lines: newLines,
         halfCount: halfCount + 1,
+        check,
+        checkmate,
       };
       dispatch({
         type: ACTIONS.MOVE,
