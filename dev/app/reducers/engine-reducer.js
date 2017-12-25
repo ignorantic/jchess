@@ -48,6 +48,16 @@ const engine = (state = initialState, action) => {
         },
       };
     }
+    case ACTIONS.STOP_BOTH: {
+      return {
+        ...state,
+        status: 'ready',
+        play: {
+          1: false,
+          2: false,
+        },
+      };
+    }
     default: {
       return state;
     }

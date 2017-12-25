@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import App from '../app/app';
+import '../scss/fonts.scss';
 import '../scss/vendors.scss';
 import '../img/favicon.png';
 

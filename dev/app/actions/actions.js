@@ -22,6 +22,9 @@ export function setUpPosition() {
       checkmate: false,
     };
     dispatch({
+      type: ACTIONS.STOP_BOTH,
+    });
+    dispatch({
       type: ACTIONS.UPDATE_POSITION,
       payload,
     });
@@ -43,6 +46,9 @@ export function resetPosition() {
       checkmate: false,
     };
     dispatch({
+      type: ACTIONS.STOP_BOTH,
+    });
+    dispatch({
       type: ACTIONS.UPDATE_POSITION,
       payload,
     });
@@ -52,7 +58,8 @@ export function resetPosition() {
 export function goto(line, moveNum) {
   return (dispatch, getState) => {
     const { game: { lines } } = getState();
-    const { FEN } = lines[line][moveNum];
+    const { FEN, move: lastMove } = lines[line][moveNum];
+    const { FEN: prevFEN } = lines[line][moveNum - 1];
     const newPosition = parseFEN(FEN);
     const { turn } = newPosition;
     const check = isInCheck(FEN, turn);
@@ -62,9 +69,14 @@ export function goto(line, moveNum) {
       FEN,
       currentLine: line,
       halfCount: moveNum,
+      lastMove,
+      prevFEN,
       check,
       checkmate,
     };
+    dispatch({
+      type: ACTIONS.STOP_BOTH,
+    });
     dispatch({
       type: ACTIONS.GOTO,
       payload,
@@ -76,7 +88,8 @@ export function gotoPrev() {
   return (dispatch, getState) => {
     const { game: { halfCount, currentLine, lines } } = getState();
     if (lines[currentLine][halfCount - 1] === undefined) return;
-    const { FEN } = lines[currentLine][halfCount - 1];
+    const { FEN, move: lastMove } = lines[currentLine][halfCount - 1];
+    const { FEN: prevFEN } = lines[currentLine][halfCount - 2];
     const newPosition = parseFEN(FEN);
     const { turn } = newPosition;
     const check = isInCheck(FEN, turn);
@@ -85,9 +98,14 @@ export function gotoPrev() {
       ...newPosition,
       FEN,
       halfCount: halfCount - 1,
+      lastMove,
+      prevFEN,
       check,
       checkmate,
     };
+    dispatch({
+      type: ACTIONS.STOP_BOTH,
+    });
     dispatch({
       type: ACTIONS.GOTO,
       payload,
@@ -99,7 +117,8 @@ export function gotoNext() {
   return (dispatch, getState) => {
     const { game: { halfCount, currentLine, lines } } = getState();
     if (lines[currentLine][halfCount + 1] === undefined) return;
-    const { FEN } = lines[currentLine][halfCount + 1];
+    const { FEN, move: lastMove } = lines[currentLine][halfCount + 1];
+    const { FEN: prevFEN } = lines[currentLine][halfCount];
     const newPosition = parseFEN(FEN);
     const { turn } = newPosition;
     const check = isInCheck(FEN, turn);
@@ -108,9 +127,14 @@ export function gotoNext() {
       ...newPosition,
       FEN,
       halfCount: halfCount + 1,
+      lastMove,
+      prevFEN,
       check,
       checkmate,
     };
+    dispatch({
+      type: ACTIONS.STOP_BOTH,
+    });
     dispatch({
       type: ACTIONS.GOTO,
       payload,
@@ -120,7 +144,7 @@ export function gotoNext() {
 
 export function gotoStart() {
   return (dispatch, getState) => {
-    const { game: { currentLine, lines } } = getState();
+    const { game: { currentLine, lines, initialFEN } } = getState();
     const { FEN } = lines[currentLine][0];
     const newPosition = parseFEN(FEN);
     const { turn } = newPosition;
@@ -130,9 +154,14 @@ export function gotoStart() {
       ...newPosition,
       FEN,
       halfCount: 0,
+      lastMove: '',
+      prevFEN: initialFEN,
       check,
       checkmate,
     };
+    dispatch({
+      type: ACTIONS.STOP_BOTH,
+    });
     dispatch({
       type: ACTIONS.GOTO,
       payload,
@@ -144,7 +173,8 @@ export function gotoEnd() {
   return (dispatch, getState) => {
     const { game: { currentLine, lines } } = getState();
     const { length } = lines[currentLine];
-    const { FEN } = lines[currentLine][length - 1];
+    const { FEN, move: lastMove } = lines[currentLine][length - 1];
+    const { FEN: prevFEN } = lines[currentLine][length - 2];
     const newPosition = parseFEN(FEN);
     const { turn } = newPosition;
     const check = isInCheck(FEN, turn);
@@ -153,9 +183,14 @@ export function gotoEnd() {
       ...newPosition,
       FEN,
       halfCount: length - 1,
+      lastMove,
+      prevFEN,
       check,
       checkmate,
     };
+    dispatch({
+      type: ACTIONS.STOP_BOTH,
+    });
     dispatch({
       type: ACTIONS.GOTO,
       payload,
@@ -164,23 +199,28 @@ export function gotoEnd() {
 }
 
 export function changeFEN(newFEN) {
-  const newPosition = parseFEN(newFEN);
-  const { turn } = newPosition;
-  const check = isInCheck(newFEN, turn);
-  const checkmate = isCheckmate(newFEN);
-  const payload = {
-    ...newPosition,
-    prevFEN: newFEN,
-    FEN: newFEN,
-    lastMove: '',
-    halfCount: 0,
-    lines: [[{ FEN: newFEN }]],
-    check,
-    checkmate,
-  };
-  return {
-    type: ACTIONS.CHANGE_FEN,
-    payload,
+  return (dispatch) => {
+    const newPosition = parseFEN(newFEN);
+    const { turn } = newPosition;
+    const check = isInCheck(newFEN, turn);
+    const checkmate = isCheckmate(newFEN);
+    const payload = {
+      ...newPosition,
+      prevFEN: newFEN,
+      FEN: newFEN,
+      lastMove: '',
+      halfCount: 0,
+      lines: [[{ FEN: newFEN }]],
+      check,
+      checkmate,
+    };
+    dispatch({
+      type: ACTIONS.STOP_BOTH,
+    });
+    dispatch({
+      type: ACTIONS.CHANGE_FEN,
+      payload,
+    });
   };
 }
 

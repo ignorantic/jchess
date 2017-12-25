@@ -13,6 +13,7 @@ const ACTIONS = keyMirror({
 
   TOGGLE_WHITE: null,
   TOGGLE_BLACK: null,
+  STOP_BOTH: null,
 
   GET_ENGINE_MOVE_REQUEST: null,
   GET_ENGINE_MOVE_SUCCESS: null,

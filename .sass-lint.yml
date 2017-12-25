@@ -4,6 +4,7 @@ files:
   ignore:
     - '~scss/sprite-svg.scss'
     - '~scss/sprite-tmpl.scss'
+    - '~scss/fonts.scss'
 rules:
   # Extends
   extends-before-mixins: 0

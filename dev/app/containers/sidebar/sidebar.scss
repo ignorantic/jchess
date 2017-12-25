@@ -22,6 +22,55 @@
 
     .button {
       width: 48%;
+      text-align: left;
+      padding-left: 16px;
+      text-transform: capitalize;
+    }
+
+    .sidebar__players_human,
+    .sidebar__players_engine {
+      &::after {
+        position: absolute;
+        right: 16px;
+        font-family: "fontello", Arial, sans-serif;
+        content: "\e839";
+      }
+    }
+
+    .sidebar__players_human {
+      &::after {
+        content: '\e800';
+      }
+    }
+
+    .sidebar__players_engine {
+      &::after {
+        content: '\f109';
+      }
+    }
+
+    .sidebar__players_black {
+      position: relative;
+      color: $clr-black;
+
+      .sidebar_waiting.sidebar_black & {
+        &::after {
+          content: "\e839";
+          animation: spin 2s infinite linear;
+        }
+      }
+    }
+
+    .sidebar__players_white {
+      position: relative;
+      color: $clr-white;
+
+      .sidebar_waiting.sidebar_white & {
+        &::after {
+          content: "\e839";
+          animation: spin 2s infinite linear;
+        }
+      }
     }
   }
 
@@ -33,12 +82,14 @@
       width: 22%;
     }
   }
+}
 
-  &__white {
-    color: $clr-white;
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
 
-  &__black {
-    color: $clr-black;
+  100% {
+    transform: rotate(359deg);
   }
 }

@@ -20,6 +20,7 @@ class Sidebar extends React.PureComponent {
       }).isRequired,
       whitePlayer: PropTypes.bool.isRequired,
       blackPlayer: PropTypes.bool.isRequired,
+      engineStatus: PropTypes.string.isRequired,
       onNewClick: PropTypes.func.isRequired,
       onClearClick: PropTypes.func.isRequired,
       onFlipClick: PropTypes.func.isRequired,
@@ -35,19 +36,23 @@ class Sidebar extends React.PureComponent {
 
   render() {
     const {
-      game, whitePlayer, blackPlayer,
+      game, whitePlayer, blackPlayer, engineStatus,
       onNewClick, onClearClick, onFlipClick,
       onGoTo, onGoToPrev, onGoToNext, onGoToStart, onGoToEnd,
       onToggleWhite, onToggleBlack,
     } = this.props;
     const {
-      halfCount, currentLine, lines,
+      halfCount, currentLine, lines, turn,
     } = game;
-    const whiteToggle = whitePlayer ? 'Engine' : 'Human';
-    const blackToggle = blackPlayer ? 'Engine' : 'Human';
+    const color = turn === 1 ? 'white' : 'black';
+    const classNameSidebar = `sidebar sidebar_${engineStatus} sidebar_${color}`;
+    const whiteToggle = whitePlayer ? 'engine' : 'human';
+    const blackToggle = blackPlayer ? 'engine' : 'human';
+    const classNameWhite = `sidebar__players_white sidebar__players_${whiteToggle}`;
+    const classNameBlack = `sidebar__players_black sidebar__players_${blackToggle}`;
 
     return (
-      <aside className="sidebar">
+      <aside className={classNameSidebar}>
         <Button
           key="new"
           label="New game"
@@ -65,13 +70,13 @@ class Sidebar extends React.PureComponent {
         />
         <div className="sidebar__players">
           <Button
-            className="sidebar__white"
+            className={classNameWhite}
             key="white"
             label={whiteToggle}
             onClick={onToggleWhite}
           />
           <Button
-            className="sidebar__black"
+            className={classNameBlack}
             key="black"
             label={blackToggle}
             onClick={onToggleBlack}
@@ -116,6 +121,7 @@ const mapStateToProps = state => ({
   game: state.game,
   whitePlayer: state.engine.play[1],
   blackPlayer: state.engine.play[2],
+  engineStatus: state.engine.status,
 });
 
 const mapDispatchToProps = dispatch => ({
