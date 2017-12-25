@@ -1,6 +1,11 @@
 const gulp          = require('gulp');
 const svgSprite     = require('gulp-svg-sprite');
 
+gulp.task('fonts', function () {
+  return gulp.src('dev/fonts/*')
+    .pipe(gulp.dest('build/fonts'));
+});
+
 gulp.task('svgSprite', function () {
   return gulp.src('dev/img/sprite-src/**/*.*')
     .pipe(svgSprite({
@@ -24,3 +29,5 @@ gulp.task('svgSprite', function () {
     }))
     .pipe(gulp.dest('./'));
 });
+
+gulp.task('default', ['fonts', 'svgSprite']);
