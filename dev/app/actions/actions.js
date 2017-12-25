@@ -329,8 +329,16 @@ export function releasePiece(file, rank) {
 
 export function switchTurn() {
   return (dispatch, getState) => {
-    const { game: { prevFEN, lastMove, turn }, engine: { status, play } } = getState();
-    if (play[turn] === true && status !== 'waiting') {
+    const {
+      game: {
+        prevFEN,
+        lastMove,
+        turn,
+        checkmate,
+      },
+      engine: { status, play },
+    } = getState();
+    if (play[turn] === true && status !== 'waiting' && !checkmate) {
       dispatch(getEngineMove(prevFEN, lastMove));
     }
   };
